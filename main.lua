@@ -1,14 +1,14 @@
 function love.load()
   Object = require "classic"
-  require "player"
+  require "game"
 
-  player = Player()
+  game = Game()
 end
 
 function love.update(dt)
-  player:update(dt)
+  game:update(dt)
 end
 
 function love.draw()
-  player:draw()
+  game:draw()
 end

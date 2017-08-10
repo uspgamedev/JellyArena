@@ -2,24 +2,30 @@ Player = Object:extend()
 function Player:new()
   self.x = 0
   self.y = 0
-  self.radius = 15
+  self.radius = 20
   self.speed = 800
+  self.bulletSpeed = 1000
   self.actions = {
-    w = function (dt) self.y = self.y - self.speed * dt end,
-    s = function (dt) self.y = self.y + self.speed * dt end,
-    a = function (dt) self.x = self.x - self.speed * dt end,
-    d = function (dt) self.x = self.x + self.speed * dt end,
+    w = function (game, dt) self.y = self.y - self.speed * dt end,
+    s = function (game, dt) self.y = self.y + self.speed * dt end,
+    a = function (game, dt) self.x = self.x - self.speed * dt end,
+    d = function (game, dt) self.x = self.x + self.speed * dt end,
+    ["up"] = function (game, dt) self:fire(game, 0, -1) end,
+    ["down"] = function (game, dt) self:fire(game, 0, 1) end,
+    ["left"] = function (game, dt) self:fire(game, -1, 0) end,
+    ["right"] = function (game, dt) self:fire(game, 1, 0) end,
   }
 end
 
-function Player.fire()
-
+function Player:fire(game, x, y)
+  bullet = Bullet(self.x + x * 30, self.y + y * 30, self.bulletSpeed * x, self.bulletSpeed * y)
+  table.insert(game.bullets, bullet)
 end
 
-function Player:update(dt)
+function Player:update(game, dt)
   for key, action in pairs(self.actions) do
     if love.keyboard.isDown(key) then
-      action(dt)
+      action(game, dt)
     end
   end
 
@@ -41,5 +47,6 @@ function Player:update(dt)
 end
 
 function Player:draw()
+  love.graphics.setColor(255, 255, 255)
   love.graphics.circle("fill", self.x, self.y, self.radius)
 end
