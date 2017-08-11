@@ -5,6 +5,7 @@ function Player:new()
   self.radius = 20
   self.speed = 800
   self.bulletSpeed = 1000
+  self.hp = 200
   self.actions = {
     w = function (game, dt) self.y = self.y - self.speed * dt end,
     s = function (game, dt) self.y = self.y + self.speed * dt end,
@@ -20,6 +21,10 @@ end
 function Player:fire(game, x, y)
   bullet = Bullet(self.x + x * 30, self.y + y * 30, self.bulletSpeed * x, self.bulletSpeed * y)
   table.insert(game.bullets, bullet)
+
+  if self.hp > 0 then
+    self.hp = self.hp - 1
+  end
 end
 
 function Player:update(game, dt)
@@ -49,4 +54,5 @@ end
 function Player:draw()
   love.graphics.setColor(255, 255, 255)
   love.graphics.circle("fill", self.x, self.y, self.radius)
+  love.graphics.printf(self.hp, 10, 10, 200, "left")
 end
