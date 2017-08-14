@@ -5,7 +5,8 @@ function Player:new()
   self.radius = 20
   self.speed = 800
   self.bulletSpeed = 1000
-  self.hp = 200
+  self.maxHp = 200
+  self.hp = self.maxHp
   self.actions = {
     w = function (game, dt) self.y = self.y - self.speed * dt end,
     s = function (game, dt) self.y = self.y + self.speed * dt end,
@@ -54,5 +55,9 @@ end
 function Player:draw()
   love.graphics.setColor(255, 255, 255)
   love.graphics.circle("fill", self.x, self.y, self.radius)
-  love.graphics.printf(self.hp, 10, 10, 200, "left")
+  love.graphics.rectangle("line", 10, 10, 200, 20)
+  love.graphics.setColor(255, 0, 0)
+  love.graphics.rectangle("fill", 11, 11, 198*(self.hp/self.maxHp), 18)
+  love.graphics.setColor(255, 255, 255)
+  love.graphics.printf( self.hp.."/"..self.maxHp, 20, 15, 200, "center")
 end
