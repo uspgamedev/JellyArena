@@ -4,10 +4,12 @@ function Game:new()
   require "player"
   require "bullet"
   require "message"
+  require "hud"
   self.player = Player()
   self.bullets = {}
   self.music = love.audio.newSource("test.ogg")
   self.message = Message()
+  self.HUD = HUD()
 end
 
 function Game:update(dt)
@@ -15,6 +17,7 @@ function Game:update(dt)
   if (self.player.hp == 0) then
     self.message.text = "Você morreu! huehuehue"
   end
+  HUD:update(self.player.hp)
   for i, b in ipairs(self.bullets) do
     if(b:update(self, dt)) then
       table.remove(self.bullets, i)
@@ -30,4 +33,5 @@ function Game:draw()
     b:draw()
   end
   self.message:draw()
+  self.HUD:draw()
 end
