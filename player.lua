@@ -55,9 +55,11 @@ end
 function Player:draw()
   love.graphics.setColor(255, 255, 255)
   love.graphics.circle("fill", self.x, self.y, self.radius)
+
   love.graphics.rectangle("line", 10, 10, 200, 20)
+  love.graphics.setNewFont(16)
   love.graphics.setColor(255, 0, 0)
   love.graphics.rectangle("fill", 11, 11, 198*(self.hp/self.maxHp), 18)
   love.graphics.setColor(255, 255, 255)
-  love.graphics.printf( self.hp.."/"..self.maxHp, 20, 15, 200, "center")
+  love.graphics.printf( self.hp.."/"..self.maxHp, 20, 12, 200, "center")
 end
