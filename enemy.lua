@@ -9,6 +9,17 @@ function Enemy:new()
 end
 
 function Enemy:update(game, dt)
+  for _,b in pairs(game.bullets) do
+    dist = self.radius + b.radius
+    dist = dist * dist
+    deltaX = (self.x - b.x) * (self.x - b.x)
+    deltaY = (self.y - b.y) * (self.y - b.y)
+    if dist > deltaY + deltaX then
+      self.x = self.x + (b.speedX / 10)
+      self.y = self.y + (b.speedY / 10)
+      b.dead = true
+    end
+  end
 
   step = self.speed * dt
   if step > math.abs(self.x - game.player.x) then
@@ -28,6 +39,20 @@ function Enemy:update(game, dt)
     self.y = self.y - step
   else
     self.y = self.y + step
+  end
+
+  window_width = love.graphics.getWidth() - self.radius
+  if self.x < self.radius then
+    self.x = self.radius
+  elseif self.x > window_width then
+    self.x = window_width
+  end
+
+  window_height = love.graphics.getHeight() - self.radius
+  if self.y < self.radius then
+    self.y = self.radius
+  elseif self.y > window_height then
+    self.y = window_height
   end
 
 end

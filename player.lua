@@ -5,6 +5,8 @@ function Player:new()
   self.radius = 20
   self.speed = 800
   self.bulletSpeed = 1000
+  self.fireDelay = 0.2
+  self.cooldown = 0
   self.actions = {
     w = function (game, dt) self.y = self.y - self.speed * dt end,
     s = function (game, dt) self.y = self.y + self.speed * dt end,
@@ -18,11 +20,15 @@ function Player:new()
 end
 
 function Player:fire(game, x, y)
-  bullet = Bullet(self.x + x * 30, self.y + y * 30, self.bulletSpeed * x, self.bulletSpeed * y)
-  table.insert(game.bullets, bullet)
+  if self.cooldown <= 0 then
+    self.cooldown = self.fireDelay
+    bullet = Bullet(self.x + x * 30, self.y + y * 30, self.bulletSpeed * x, self.bulletSpeed * y)
+    table.insert(game.bullets, bullet)
+  end
 end
 
 function Player:update(game, dt)
+  self.cooldown = self.cooldown - dt
   for key, action in pairs(self.actions) do
     if love.keyboard.isDown(key) then
       action(game, dt)

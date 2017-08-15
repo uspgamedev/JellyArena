@@ -5,12 +5,14 @@ function Bullet:new(x, y, speedX, speedY)
   self.speedX = speedX
   self.speedY = speedY
   self.radius = 5
+  self.dead = false
 end
 
 function Bullet:update(game, dt)
   self.x = self.x + self.speedX * dt
   self.y = self.y + self.speedY * dt
-  return false
+
+  return self.dead
 end
 
 function Bullet:draw()
