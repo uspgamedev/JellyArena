@@ -22,7 +22,7 @@ end
 function Player:fire(game, x, y)
   if self.cooldown <= 0 then
     self.cooldown = self.fireDelay
-    bullet = Bullet(self.x + x * 30, self.y + y * 30, self.bulletSpeed * x, self.bulletSpeed * y)
+    bullet = Bullet(self.x + x * 30, self.y + y * 30, self.bulletSpeed * x, self.bulletSpeed * y, 1)
     table.insert(game.bullets, bullet)
   end
 end
@@ -34,7 +34,6 @@ function Player:update(game, dt)
       action(game, dt)
     end
   end
-
 
   window_width = love.graphics.getWidth() - self.radius
   if self.x < self.radius then
