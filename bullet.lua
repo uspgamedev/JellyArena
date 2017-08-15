@@ -1,7 +1,8 @@
 Bullet = Object:extend()
-function Bullet:new(x, y, speedX, speedY)
+function Bullet:new(x, y, speedX, speedY, damage)
   self.x = x
   self.y = y
+  self.damage = damage
   self.speedX = speedX
   self.speedY = speedY
   self.radius = 5

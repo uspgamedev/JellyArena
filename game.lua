@@ -13,7 +13,14 @@ function Game:new()
   self.HUD = HUD()
   self.player = Player()
   self.bullets = {}
-  self.enemy = Enemy()
+  self.enemies = {}
+  self:spawnEnemies()
+end
+
+function Game:spawnEnemies()
+  for i = 1, 50 do
+    table.insert(self.enemies, Enemy(i*50, i*50))
+  end
 end
 
 function Game:update(dt)
@@ -25,19 +32,34 @@ function Game:update(dt)
     self.message.text = "Você morreu!"
   end
 
-  self.enemy:update(self, dt)
+  for i, e in ipairs(self.enemies) do
+    if(e:update(self, dt)) then
+      table.remove(self.enemies, i)
+    end
+  end
+  if(#self.enemies == 0) then
+    self:spawnEnemies()
+  end
   for i, b in ipairs(self.bullets) do
     if(b:update(self, dt)) then
       table.remove(self.bullets, i)
     end
   end
+
   self.music:setVolume(0.5)
-  --love.audio.play(self.music)
+
+  if(love.keyboard.isDown("escape")) then
+    love.event.quit(0)
+  end
 end
 
 function Game:draw()
   self.player:draw()
-  self.enemy:draw()
+
+  for i, e in ipairs(self.enemies) do
+    e:draw()
+  end
+
   for _, b in ipairs(self.bullets) do
     b:draw()
   end
