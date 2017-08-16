@@ -1,12 +1,14 @@
 Player = Object:extend()
 function Player:new()
+  self.maxHp = 200
+  self.movementSpeed = 1
+  self.attackSpeed = 5
+  self.hp = self.maxHp
   self.x = 0
   self.y = 0
   self.radius = 20
-  self.speed = 800
-  self.bulletSpeed = 1000
-  self.maxHp = 200
-  self.hp = self.maxHp
+  self.speed = 200 + self.movementSpeed * 20
+  self.bulletSpeed = 200 + self.attackSpeed * 50
   self.actions = {
     w = function (game, dt) self.y = self.y - self.speed * dt end,
     s = function (game, dt) self.y = self.y + self.speed * dt end,
