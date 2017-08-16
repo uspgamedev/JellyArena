@@ -17,7 +17,6 @@ function Game:update(dt)
   if (self.player.hp == 0) then
     self.message.text = "Você morreu! huehuehue"
   end
-  HUD:update(self.player.hp)
   for i, b in ipairs(self.bullets) do
     if(b:update(self, dt)) then
       table.remove(self.bullets, i)
@@ -33,5 +32,5 @@ function Game:draw()
     b:draw()
   end
   self.message:draw()
-  self.HUD:draw()
+  self.HUD:draw(self.player)
 end
