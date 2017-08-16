@@ -5,6 +5,8 @@ function Player:new()
   self.radius = 20
   self.speed = 800
   self.bulletSpeed = 1000
+  self.maxHp = 200
+  self.hp = self.maxHp
   self.actions = {
     w = function (game, dt) self.y = self.y - self.speed * dt end,
     s = function (game, dt) self.y = self.y + self.speed * dt end,
@@ -20,6 +22,10 @@ end
 function Player:fire(game, x, y)
   bullet = Bullet(self.x + x * 30, self.y + y * 30, self.bulletSpeed * x, self.bulletSpeed * y)
   table.insert(game.bullets, bullet)
+
+  if self.hp > 0 then
+    self.hp = self.hp - 1
+  end
 end
 
 function Player:update(game, dt)
