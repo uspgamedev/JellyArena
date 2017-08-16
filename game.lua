@@ -15,7 +15,9 @@ end
 function Game:update(dt)
   self.player:update(self, dt)
   if (self.player.hp == 0) then
-    self.message.text = "Você morreu! huehuehue"
+    self.player.speed =  0
+    self.player.bulletSpeed = 0
+    self.message.text = "Você morreu! huehuehue\n Tentar novamente?"
   end
   for i, b in ipairs(self.bullets) do
     if(b:update(self, dt)) then

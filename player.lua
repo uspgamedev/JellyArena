@@ -20,10 +20,9 @@ function Player:new()
 end
 
 function Player:fire(game, x, y)
-  bullet = Bullet(self.x + x * 30, self.y + y * 30, self.bulletSpeed * x, self.bulletSpeed * y)
-  table.insert(game.bullets, bullet)
-
   if self.hp > 0 then
+    bullet = Bullet(self.x + x * 30, self.y + y * 30, self.bulletSpeed * x, self.bulletSpeed * y)
+    table.insert(game.bullets, bullet)
     self.hp = self.hp - 1
   end
 end
