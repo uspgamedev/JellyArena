@@ -46,13 +46,14 @@ end
 
 function Enemy:checkBulletCollision(game, dt)
   for _,b in pairs(game.bullets) do
-    if(b.dead) then return end
-    dist = self.radius + b.radius
-    dist = dist * dist
-    deltaX = (self.x - b.x) * (self.x - b.x)
-    deltaY = (self.y - b.y) * (self.y - b.y)
-    if dist > deltaY + deltaX then
-      self:bulletHit(game, dt, b)
+    if(not b.dead) then
+      dist = self.radius + b.radius
+      dist = dist * dist
+      deltaX = (self.x - b.x) * (self.x - b.x)
+      deltaY = (self.y - b.y) * (self.y - b.y)
+      if dist > deltaY + deltaX then
+        self:bulletHit(game, dt, b)
+      end
     end
   end
 end

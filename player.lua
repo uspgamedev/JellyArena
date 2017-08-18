@@ -1,16 +1,11 @@
 Player = Object:extend()
 function Player:new()
-  self.maxHp = 200
-  self.movementSpeed = 1
-  self.attackSpeed = 5
+  self.maxHp = 5
   self.hp = self.maxHp
   self.x = 0
   self.y = 0
   self.radius = 20
-  self.speed = 200 + self.movementSpeed * 20
-  self.bulletSpeed = 200 + self.attackSpeed * 50
-
-  self.speed = 800
+  self.speed = 200
   self.bulletSpeed = 1000
   self.fireDelay = 0.2
   self.cooldown = 0
@@ -32,8 +27,11 @@ function Player:fire(game, x, y)
     bullet = Bullet(self.x + x * 30, self.y + y * 30, self.bulletSpeed * x, self.bulletSpeed * y, 1)
     table.insert(game.bullets, bullet)
     self.hp = self.hp - 1
-
   end
+end
+
+function Player:dead()
+  return self.hp == 0;
 end
 
 function Player:update(game, dt)
@@ -57,7 +55,6 @@ function Player:update(game, dt)
   elseif self.y > window_height then
     self.y = window_height
   end
-
 end
 
 function Player:draw()

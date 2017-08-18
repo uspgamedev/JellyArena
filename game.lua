@@ -18,28 +18,29 @@ function Game:new()
 end
 
 function Game:spawnEnemies()
-  for i = 1, 50 do
-    table.insert(self.enemies, Enemy(i*50, i*50))
+  for i = 1, 5 do
+    table.insert(self.enemies, Enemy(100+i*50, i*50))
   end
 end
 
 function Game:update(dt)
-  self.player:update(self, dt)
-
   if (self.player.hp == 0) then
-    self.player.speed =  0
-    self.player.bulletSpeed = 0
     self.message.text = "Você morreu!"
+    return
   end
+
+  self.player:update(self, dt)
 
   for i, e in ipairs(self.enemies) do
     if(e:update(self, dt)) then
       table.remove(self.enemies, i)
     end
   end
+
   if(#self.enemies == 0) then
     self:spawnEnemies()
   end
+
   for i, b in ipairs(self.bullets) do
     if(b:update(self, dt)) then
       table.remove(self.bullets, i)
@@ -64,5 +65,5 @@ function Game:draw()
     b:draw()
   end
   self.message:draw()
-  self.HUD:draw(self.player)
+  self.HUD:draw(self)
 end
