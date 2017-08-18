@@ -1,6 +1,6 @@
 Player = Object:extend()
 function Player:new()
-  self.maxHp = 5
+  self.maxHp = 10
   self.hp = self.maxHp
   self.x = 0
   self.y = 0

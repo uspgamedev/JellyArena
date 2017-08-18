@@ -54,6 +54,7 @@ function Enemy:checkBulletCollision(game, dt)
       if dist > deltaY + deltaX then
         self:bulletHit(game, dt, b)
       end
+
     end
   end
 end

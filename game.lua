@@ -41,6 +41,7 @@ function Game:update(dt)
     self:spawnEnemies()
   end
 
+
   for i, b in ipairs(self.bullets) do
     if(b:update(self, dt)) then
       table.remove(self.bullets, i)
