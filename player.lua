@@ -2,7 +2,7 @@ Vector = require "hump.vector"
 Player = Object:extend()
 
 function Player:new()
-  self.maxHp = 10
+  self.maxHp = 20
   self.hp = self.maxHp
   self.position = Vector(love.graphics.getWidth()/2, love.graphics.getHeight()/2)
   self.radius = 20

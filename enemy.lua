@@ -5,6 +5,9 @@ function Enemy:new(x, y)
   self.position = Vector(x,y)
   self.radius = 20
   self.speed = 100
+  self.damage = 1
+  self.attackSpeed = 100
+  self.cooldown = 0
   self.hp = 5
   self.color = {0, 255, 255}
   self.dead = false
@@ -13,7 +16,9 @@ end
 function Enemy:update(game, dt)
   self:followPlayer(game, dt)
   self:checkBulletCollision(game, dt)
+  self:checkPlayerCollision(game, dt)
   self:checkWindowLimit(game, dt)
+  self.cooldown = self.cooldown - dt
   return self.dead
 end
 
@@ -50,6 +55,19 @@ function Enemy:bulletHit(game, dt, b)
   self.position.x = self.position.x + (b.speed.x / 10)
   self.position.y = self.position.y + (b.speed.y / 10)
   b.dead = true
+end
+
+function Enemy:checkPlayerCollision(game, dt)
+  if (game.player.position - self.position):len() < self.radius + game.player.radius then
+    if self.cooldown <= 0 then
+      self:hitPlayer(game.player)
+      self.cooldown = 1 - self.attackSpeed/1000 --TODO: balancear
+    end
+  end
+end
+
+function Enemy:hitPlayer(player)
+  player.hp = player.hp - self.damage
 end
 
 function Enemy:takeDamage(damage)

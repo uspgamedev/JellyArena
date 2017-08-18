@@ -34,7 +34,7 @@ function Game:update(dt)
         self:reset()
       end
       if love.keyboard.isDown("n") then
-        --TODO: voltar para o menu
+        --TODO: go to start screen
       end
     end
     self.message:update()
