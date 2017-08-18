@@ -6,13 +6,15 @@ function Game:new()
   require "enemy"
   require "message"
   require "hud"
-  self.player = Player()
+  self:reset()
+end
+
+function Game:reset()
   self.bullets = {}
   self.music = love.audio.newSource("test.ogg")
   self.message = Message()
   self.HUD = HUD()
   self.player = Player()
-  self.bullets = {}
   self.enemies = {}
   self:spawnEnemies()
 end
@@ -25,33 +27,41 @@ end
 
 function Game:update(dt)
   if (self.player.hp == 0) then
-    self.message.text = "Você morreu!"
-    return
-  end
+    self.message.text = "Você morreu!\nContinuar? \n (Press y or n)"
 
-  self.player:update(self, dt)
-
-  for i, e in ipairs(self.enemies) do
-    if(e:update(self, dt)) then
-      table.remove(self.enemies, i)
+    self.message.event = function()
+      if love.keyboard.isDown("y") then
+        self:reset()
+      end
+      if love.keyboard.isDown("n") then
+        --TODO: voltar para o menu
+      end
     end
-  end
+    self.message:update()
+  else
+    self.player:update(self, dt)
 
-  if(#self.enemies == 0) then
-    self:spawnEnemies()
-  end
-
-
-  for i, b in ipairs(self.bullets) do
-    if(b:update(self, dt)) then
-      table.remove(self.bullets, i)
+    for i, e in ipairs(self.enemies) do
+      if(e:update(self, dt)) then
+        table.remove(self.enemies, i)
+      end
     end
-  end
 
-  self.music:setVolume(0.5)
+    if(#self.enemies == 0) then
+      self:spawnEnemies()
+    end
 
-  if(love.keyboard.isDown("escape")) then
-    love.event.quit(0)
+
+    for i, b in ipairs(self.bullets) do
+      if(b:update(self, dt)) then
+        table.remove(self.bullets, i)
+      end
+    end
+    self.music:setVolume(0.5)
+
+    if(love.keyboard.isDown("escape")) then
+      love.event.quit(0)
+    end
   end
 end
 
