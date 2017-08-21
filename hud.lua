@@ -6,7 +6,6 @@ end
 function HUD:draw(game)
   self:drawPlayerStats(game.player)
   self:drawPlayerHp(game.player)
-
 end
 
 function HUD:drawPlayerHp(player)
@@ -20,6 +19,9 @@ end
 
 function HUD:drawPlayerStats(player)
   love.graphics.setNewFont(16)
-  love.graphics.printf( "Movement Speed: " .. player.speed, 250, 12, 200, "left")
+  love.graphics.printf( "Damage: " .. player.bulletDamage, 250, 12, 200, "left")
   love.graphics.printf( "Attack Speed: " .. (1 / player.fireDelay), 250, 30, 200, "left")
+  love.graphics.printf( "Bullet Speed: " .. player.bulletSpeed, 500, 30, 200, "left")
+  love.graphics.printf( "Movement Speed: " .. player.speed, 500, 12, 200, "left")
+
 end

@@ -27,7 +27,7 @@ function generateDrop()
 end
 
 function Drop:update(game, dt)
-  self:checkPlayerCollision(game, dt)
+  self:checkPlayerCollision(game)
   return self.taken
 end
 
@@ -36,15 +36,15 @@ function Drop:draw()
   love.graphics.circle("fill", self.position.x, self.position.y, self.radius)
 end
 
-function Drop:checkPlayerCollision(game, dt)
+function Drop:checkPlayerCollision(game)
   if (game.player.position - self.position):len() < self.radius + game.player.radius then
-    if self.type == 'hp' then game.player:recoverHp(math.random(5))
-    elseif self.type  == 'maxHp' then game.player.maxHp = game.player.maxHp + 1
-    elseif self.type  == 'bulletDamage' then game.player.bulletDamage = game.player.bulletDamage + 1
-    elseif self.type  == 'bulletSpeed' then game.player.bulletSpeed = game.player.bulletSpeed + 100
-    elseif self.type  == 'speed' then game.player.speed = game.player.speed + 20
-    else game.player.fireDelay = game.player.fireDelay - 0.01
-    end
+    self:activateEffect(game.player)
     self.taken = true
+  end
+end
+
+function Drop:activateEffect(player)
+  if self.type == 'hp' then player:recoverHp(math.random(5))
+  else player:upgrade(self.type)
   end
 end

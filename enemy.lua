@@ -4,7 +4,7 @@ Enemy = Object:extend()
 function Enemy:new(x, y)
   self.position = Vector(x,y)
   self.radius = 20
-  self.speed = 100
+  self.speed = 50
   self.damage = 1
   self.attackSpeed = 100
   self.cooldown = 0

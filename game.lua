@@ -46,7 +46,9 @@ function Game:update(dt)
     for i, e in ipairs(self.enemies) do
       if(e:update(self, dt)) then
         table.remove(self.enemies, i)
-        table.insert(self.drops, Drop(e.position.x, e.position.y))
+        if math.random() >= 0.5 then
+          table.insert(self.drops, Drop(e.position.x, e.position.y))
+        end
       end
     end
 
@@ -78,12 +80,12 @@ end
 function Game:draw()
   self.player:draw()
 
-  for i, e in ipairs(self.enemies) do
-    e:draw()
-  end
-
   for i, d in ipairs(self.drops) do
     d:draw()
+  end
+
+  for i, e in ipairs(self.enemies) do
+    e:draw()
   end
 
   for _, b in ipairs(self.bullets) do

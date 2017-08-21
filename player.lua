@@ -6,10 +6,10 @@ function Player:new()
   self.hp = self.maxHp
   self.position = Vector(love.graphics.getWidth()/2, love.graphics.getHeight()/2)
   self.radius = 20
-  self.speed = 200
+  self.speed = 150
   self.bulletDamage = 5
   self.bulletSpeed = 1000
-  self.fireDelay = 0.2
+  self.fireDelay = 0.4
   self.cooldown = 0
 
   self.movementDirections = {
@@ -32,6 +32,15 @@ function Player:recoverHp(quantity)
     self.hp = self.maxHp
   else
     self.hp = self.hp + quantity
+  end
+end
+
+function Player:upgrade(type)
+  if type  == 'maxHp' then self.maxHp = self.maxHp + 1
+  elseif type  == 'bulletDamage' then self.bulletDamage = self.bulletDamage + 1
+  elseif type  == 'bulletSpeed' then self.bulletSpeed = self.bulletSpeed + 100
+  elseif type  == 'speed' then self.speed = self.speed + 20
+  else self.fireDelay = self.fireDelay - 0.01
   end
 end
 
