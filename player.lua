@@ -27,6 +27,14 @@ function Player:new()
   }
 end
 
+function Player:recoverHp(quantity)
+  if self.hp + quantity > self.maxHp then
+    self.hp = self.maxHp
+  else
+    self.hp = self.hp + quantity
+  end
+end
+
 function Player:move(game, dt, direction)
   self.position = self.position + self.speed * direction * dt
   self:checkWindowLimit(game, dt)

@@ -6,6 +6,7 @@ function Game:new()
   require "enemy"
   require "message"
   require "hud"
+  require "drop"
   self:reset()
 end
 
@@ -16,6 +17,7 @@ function Game:reset()
   self.HUD = HUD()
   self.player = Player()
   self.enemies = {}
+  self.drops = {}
   self:spawnEnemies()
 end
 
@@ -44,6 +46,7 @@ function Game:update(dt)
     for i, e in ipairs(self.enemies) do
       if(e:update(self, dt)) then
         table.remove(self.enemies, i)
+        table.insert(self.drops, Drop(e.position.x, e.position.y))
       end
     end
 
@@ -57,6 +60,13 @@ function Game:update(dt)
         table.remove(self.bullets, i)
       end
     end
+
+    for i, d in ipairs(self.drops) do
+      if(d:update(self, dt)) then
+        table.remove(self.drops, i)
+      end
+    end
+
     self.music:setVolume(0.5)
 
     if(love.keyboard.isDown("escape")) then
@@ -70,6 +80,10 @@ function Game:draw()
 
   for i, e in ipairs(self.enemies) do
     e:draw()
+  end
+
+  for i, d in ipairs(self.drops) do
+    d:draw()
   end
 
   for _, b in ipairs(self.bullets) do
