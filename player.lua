@@ -1,4 +1,3 @@
-local Vector = require "hump.vector"
 Player = Object:extend()
 
 function Player:new()

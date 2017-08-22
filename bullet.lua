@@ -1,4 +1,3 @@
-Vector = require "hump.vector"
 Bullet = Object:extend()
 function Bullet:new(x, y, speedX, speedY, damage)
   self.position = Vector(x,y)

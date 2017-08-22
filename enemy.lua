@@ -1,4 +1,3 @@
-Vector = require "hump.vector"
 Enemy = Object:extend()
 
 function Enemy:new(x, y)

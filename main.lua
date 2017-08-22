@@ -1,4 +1,5 @@
 function love.load()
+  Vector = require "hump.vector"
   Object = require "classic"
   require "game"
 
