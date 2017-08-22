@@ -5,4 +5,6 @@ function Player:new()
   self.velocity = Vector(0, 0)
   self.speed = 500
   self.radius = 20
+  self.fireDelay = 0.5
+  self.cooldown = 0
 end
