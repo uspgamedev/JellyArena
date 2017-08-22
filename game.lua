@@ -3,18 +3,18 @@ Game = Object:extend()
 function Game:new()
   require "player"
   require "inputSubsystem"
-  require "physicsSubsystem"
+  require "movementSubsystem"
 
   self.player = Player()
   self.input = InputSubsystem()
-  self.physics = PhysicsSubsystem()
+  self.movement = MovementSubsystem()
   self.movableEntities = {}
   table.insert(self.movableEntities, self.player)
 end
 
 function Game:update(dt)
   self.input:update(self, dt)
-  self.physics:update(self, dt)
+  self.movement:update(self, dt)
 end
 
 function Game:draw()
