@@ -16,7 +16,6 @@ end
 function Enemy:update(game, dt)
   self:followPlayer(game, dt)
   self:checkBulletCollision(game, dt)
-  self:checkPlayerCollision(game, dt)
   self:checkWindowLimit(game, dt)
   self.cooldown = self.cooldown - dt
   return self.dead
@@ -29,15 +28,16 @@ end
 
 function Enemy:followPlayer(game, dt)
   distance = self.speed*dt -- distance the enemy can walk
-  direction = (self.position - game.player.position)
+  direction = (game.player.position - self.position)
   maxDistance = direction:len() - self.radius - game.player.radius -- distance between enemy and player
   direction:normalizeInplace()
 
   if(distance > maxDistance) then
     distance = maxDistance
+    self:checkPlayerCollision(game, dt)
   end
 
-  self.position = self.position - direction * distance
+  self.position = self.position + direction * distance
 end
 
 function Enemy:checkBulletCollision(game, dt)
@@ -58,11 +58,9 @@ function Enemy:bulletHit(game, dt, b)
 end
 
 function Enemy:checkPlayerCollision(game, dt)
-  if (game.player.position - self.position):len() < self.radius + game.player.radius then
-    if self.cooldown <= 0 then
-      self:hitPlayer(game.player)
-      self.cooldown = 1 - self.attackSpeed/1000 --TODO: balancear
-    end
+  if self.cooldown <= 0 then
+    self:hitPlayer(game.player)
+    self.cooldown = 1 - self.attackSpeed/1000 --TODO: balancear
   end
 end
 

@@ -28,6 +28,10 @@ function Game:spawnEnemies()
 end
 
 function Game:update(dt)
+  if(love.keyboard.isDown("escape")) then
+    love.event.quit(0)
+  end
+
   if (self.player.hp == 0) then
     self.message.text = "Você morreu!\nContinuar? \n (Press y or n)"
 
@@ -70,10 +74,6 @@ function Game:update(dt)
     end
 
     self.music:setVolume(0.5)
-
-    if(love.keyboard.isDown("escape")) then
-      love.event.quit(0)
-    end
   end
 end
 
