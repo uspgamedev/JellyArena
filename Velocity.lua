@@ -1,9 +1,9 @@
 local Velocity = Component.create("Velocity")
 
 function Velocity:initialize(x, y, speed)
-    self.x = x
-    self.y = y
-    self.speed = speed
+  self.x = x
+  self.y = y
+  self.speed = speed
 end
 
 function Velocity:getDirection()

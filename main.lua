@@ -13,6 +13,7 @@ require "Velocity"
 
 -- models
 Player = require "Player"
+Bullet = require "Bullet"
 
 -- systems
 DrawSystem = require "DrawSystem"
