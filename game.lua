@@ -5,11 +5,14 @@ function Game:new()
   require "bullet"
   require "inputSubsystem"
   require "movementSubsystem"
+  require "drawSubsystem"
 
   self.player = Player()
   self.input = InputSubsystem()
+  self.drawSubsystem = DrawSubsystem()
   self.movement = MovementSubsystem()
   self.movableEntities = {self.player}
+  self.drawableEntities = {self.player}
 end
 
 function Game:update(dt)
@@ -18,8 +21,5 @@ function Game:update(dt)
 end
 
 function Game:draw()
-  for _,e in ipairs(self.movableEntities) do
-    love.graphics.setColor(255, 255, 255)
-    love.graphics.circle("fill", e.position.x, e.position.y, e.radius)
-  end
+  self.drawSubsystem:draw(self)
 end

@@ -7,4 +7,6 @@ function Player:new()
   self.radius = 20
   self.fireDelay = 0.5
   self.cooldown = 0
+  self.maxHp = 20
+  self.hp = self.maxHp
 end
