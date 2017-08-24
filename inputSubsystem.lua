@@ -30,8 +30,9 @@ function InputSubsystem:update(game, dt)
     if player.cooldown <= 0 then
       if love.keyboard.isDown(key) then
         player.cooldown = player.fireDelay
-        table.insert(game.movableEntities, Bullet(player.position, dir))
-        table.insert(game.drawableEntities, Bullet(player.position, dir))
+        bullet = Bullet(player.position, dir)
+        table.insert(game.movableEntities, bullet)
+        table.insert(game.drawableEntities, bullet)
       end
     end
   end
