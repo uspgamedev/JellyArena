@@ -8,21 +8,23 @@ lovetoys.initialize({
 -- components
 require "Position"
 require "Circle"
-
+require "IsPlayer"
+require "Velocity"
 
 -- models
 Player = require "Player"
 
 -- systems
 DrawSystem = require "DrawSystem"
-
-local Position  = Component.load({"Position"})
+PlayerInputSystem = require "PlayerInputSystem"
+MovementSystem = require "MovementSystem"
 
 function love.load()
   engine = Engine()
   eventmanager = EventManager()
   engine:addSystem(DrawSystem())
-
+  engine:addSystem(PlayerInputSystem())
+  engine:addSystem(MovementSystem())
   engine:addEntity(Player())
 end
 

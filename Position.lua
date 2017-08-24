@@ -8,3 +8,8 @@ end
 function Position:toVector()
   return Vector(self.x, self.y)
 end
+
+function Position:setVector(vector)
+  self.x = vector.x
+  self.y = vector.y
+end
