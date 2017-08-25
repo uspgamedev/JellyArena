@@ -7,7 +7,7 @@ function Player:initialize()
   self:add(Position(100, 100))
   self:add(Circle(20))
   self:add(Velocity(0, 0, 500))
-  self:add(Combat(20, 0.1, "SimpleBullet", 5))
+  self:add(Combat(20, 0.1, "PlayerSimpleBullet", 5))
   self:add(IsPlayer())
 end
 

@@ -1,10 +1,6 @@
 local CombatSystem = class("CombatSystem", System)
 
-local Attacks = {
-  SimpleBullet = function(combat, position)
-    engine:addEntity(Bullet(position.x, position.y, combat.attackDirection, combat.attackDmg))
-  end
-}
+local Attacks = {}
 
 function CombatSystem:update(dt)
   for i, target in pairs(self.targets) do
@@ -24,6 +20,19 @@ end
 
 function CombatSystem:requires()
   return { "Position", "Combat" }
+end
+
+
+-- Attack types functions
+function Attacks.SimpleBullet(combat, position)
+  engine:addEntity(Bullet(position.x, position.y, combat.attackDirection, combat.attackDmg))
+end
+
+function Attacks.PlayerSimpleBullet(combat, position)
+  if combat.hp > 1 then
+    engine:addEntity(Bullet(position.x, position.y, combat.attackDirection, combat.attackDmg))
+    combat.hp = combat.hp - 1
+  end
 end
 
 return CombatSystem
