@@ -8,7 +8,7 @@ function PlayerInputSystem:update(dt)
 end
 
 function PlayerInputSystem:requires()
-  return {"Position", "Velocity", "IsPlayer"}
+  return {"Position", "Velocity", "Combat", "IsPlayer"}
 end
 
 function PlayerInputSystem:movement(entity)
@@ -20,18 +20,19 @@ function PlayerInputSystem:movement(entity)
   velocity:setDirection(movementDir)
 end
 
+local fireDirections = {
+  ["up"] = Vector(0, -1),
+  ["down"] = Vector(0, 1),
+  ["left"] = Vector(-1, 0),
+  ["right"] = Vector(1, 0)
+}
 function PlayerInputSystem:fire(entity)
-  fireDirections = {
-    ["up"] = Vector(0, -1),
-    ["down"] = Vector(0, 1),
-    ["left"] = Vector(-1, 0),
-    ["right"] = Vector(1, 0)
-  }
+  -- reset attack direction
+  entity:get("Combat"):attack(nil)
 
   for key, dir in pairs(fireDirections) do
     if love.keyboard.isDown(key) then
-      local position = entity:get("Position")
-      engine:addEntity(Bullet(position.x, position.y, dir))
+      entity:get("Combat"):attack(dir)
     end
   end
 end
