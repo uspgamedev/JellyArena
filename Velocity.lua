@@ -1,9 +1,10 @@
 local Velocity = Component.create("Velocity")
 
-function Velocity:initialize(x, y, speed)
+function Velocity:initialize(x, y, maxSpeed)
   self.x = x
   self.y = y
-  self.speed = speed
+  self.maxSpeed = maxSpeed
+  self.speed = maxSpeed
 end
 
 function Velocity:getDirection()

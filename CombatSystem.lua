@@ -3,7 +3,8 @@ local CombatSystem = class("CombatSystem", System)
 local Attacks = {
   SimpleBullet = function(combat, position)
     engine:addEntity(Bullet(position.x, position.y, combat.attackDirection, combat.attackDmg))
-  end
+  end,
+  SimpleMelee = function() end
 }
 
 function CombatSystem:update(dt)

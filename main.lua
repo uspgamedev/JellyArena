@@ -7,6 +7,7 @@ lovetoys.initialize({
 
 -- components
 require "IsPlayer"
+require "IsEnemy"
 require "Position"
 require "Circle"
 require "Velocity"
@@ -15,6 +16,7 @@ require "Projectile"
 
 -- models
 Player = require "Player"
+Enemy = require "Enemy"
 Bullet = require "Bullet"
 
 -- systems
@@ -22,15 +24,18 @@ DrawSystem = require "DrawSystem"
 PlayerInputSystem = require "PlayerInputSystem"
 MovementSystem = require "MovementSystem"
 CombatSystem = require "CombatSystem"
+EnemyAISystem = require "EnemyAISystem"
 
 function love.load()
   engine = Engine()
   eventmanager = EventManager()
   engine:addSystem(DrawSystem())
   engine:addSystem(PlayerInputSystem())
-  engine:addSystem(MovementSystem())
   engine:addSystem(CombatSystem())
-  engine:addEntity(Player())
+  engine:addSystem(EnemyAISystem())
+  engine:addSystem(MovementSystem())
+  engine:addEntity(Player(30, 30))
+  engine:addEntity(Enemy(300, 300))
 end
 
 function love.update(dt)
