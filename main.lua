@@ -25,13 +25,17 @@ PlayerInputSystem = require "PlayerInputSystem"
 MovementSystem = require "MovementSystem"
 CombatSystem = require "CombatSystem"
 EnemyAISystem = require "EnemyAISystem"
+HudDrawSystem = require "HudDrawSystem"
 
 function love.load()
   engine = Engine()
   eventmanager = EventManager()
+
+  engine:addSystem(HudDrawSystem())
   engine:addSystem(DrawSystem())
   engine:addSystem(PlayerInputSystem())
   engine:addSystem(CombatSystem())
+
   engine:addSystem(EnemyAISystem())
   engine:addSystem(MovementSystem())
   engine:addEntity(Player(30, 30))
@@ -39,10 +43,15 @@ function love.load()
 end
 
 function love.update(dt)
-    -- Engine update function
     engine:update(dt)
 end
 
 function love.draw()
     engine:draw()
+end
+
+function love.keypressed(key)
+  if key == "escape" then
+    love.event.quit(0)
+  end
 end
