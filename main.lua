@@ -41,3 +41,9 @@ end
 function love.draw()
     engine:draw()
 end
+
+function love.keypressed(key)
+  if key == "escape" then
+    love.event.quit(0)
+  end
+end
