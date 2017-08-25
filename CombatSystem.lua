@@ -35,4 +35,7 @@ function Attacks.PlayerSimpleBullet(combat, position)
   end
 end
 
+function Attacks.SimpleMelee(combat, position)
+end
+
 return CombatSystem

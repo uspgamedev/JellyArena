@@ -35,9 +35,9 @@ function love.load()
   engine:addSystem(DrawSystem())
   engine:addSystem(PlayerInputSystem())
   engine:addSystem(CombatSystem())
-
   engine:addSystem(EnemyAISystem())
   engine:addSystem(MovementSystem())
+
   engine:addEntity(Player(30, 30))
   engine:addEntity(Enemy(300, 300))
 end
