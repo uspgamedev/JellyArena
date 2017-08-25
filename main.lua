@@ -22,19 +22,22 @@ DrawSystem = require "DrawSystem"
 PlayerInputSystem = require "PlayerInputSystem"
 MovementSystem = require "MovementSystem"
 CombatSystem = require "CombatSystem"
+HudDrawSystem = require "HudDrawSystem"
 
 function love.load()
   engine = Engine()
   eventmanager = EventManager()
+
+  engine:addSystem(HudDrawSystem())
   engine:addSystem(DrawSystem())
   engine:addSystem(PlayerInputSystem())
   engine:addSystem(MovementSystem())
   engine:addSystem(CombatSystem())
+
   engine:addEntity(Player())
 end
 
 function love.update(dt)
-    -- Engine update function
     engine:update(dt)
 end
 
