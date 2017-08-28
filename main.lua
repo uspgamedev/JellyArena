@@ -31,14 +31,14 @@ function love.load()
   engine = Engine()
   eventmanager = EventManager()
 
-  engine:addSystem(HudDrawSystem())
   engine:addSystem(DrawSystem())
+  engine:addSystem(HudDrawSystem())
   engine:addSystem(PlayerInputSystem())
   engine:addSystem(CombatSystem())
   engine:addSystem(EnemyAISystem())
   engine:addSystem(MovementSystem())
 
-  engine:addEntity(Player(30, 30))
+  engine:addEntity(Player(love.graphics.getWidth()/2, love.graphics.getHeight()/2))
   engine:addEntity(Enemy(300, 300))
 end
 
