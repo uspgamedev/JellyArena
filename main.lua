@@ -12,6 +12,7 @@ require "Position"
 require "Circle"
 require "Velocity"
 require "Combat"
+require "Timer"
 require "Projectile"
 
 --- models
@@ -20,18 +21,19 @@ Enemy   = require "Enemy"
 Bullet  = require "Bullet"
 
 --- systems
-PlayerInputSystem   = require "PlayerInputSystem"
-EnemyAISystem       = require "EnemyAISystem"
-MovementSystem      = require "MovementSystem"
-CombatSystem        = require "CombatSystem"
-DrawSystem          = require "DrawSystem"
-HudDrawSystem       = require "HudDrawSystem"
+PlayerInputSystem         = require "PlayerInputSystem"
+EnemyAISystem             = require "EnemyAISystem"
+MovementSystem            = require "MovementSystem"
+TimerSystem               = require "TimerSystem"
+CombatSystem              = require "CombatSystem"
+DrawSystem                = require "DrawSystem"
+HudDrawSystem             = require "HudDrawSystem"
 
 function love.load()
   engine = Engine()
   eventmanager = EventManager()
 
-  --Process input
+  -- Process input
   engine:addSystem(PlayerInputSystem(), "update")
     -- Update player vars and state
     -- Go to menu
@@ -49,6 +51,8 @@ function love.load()
     -- Process each pair (maybe use callbacks for collision response, like play sound, die, etc)
       -- If we 'delete' something, invalidade all remaining collisions for that body
       -- If not, just separate both bodies (may generate new collisions, not that important)
+  -- Update timers
+  engine:addSystem(TimerSystem(), "update")
   -- Update statistics (collision response can also change statistics)
   -- Update animations & visual effects
   -- Do clean up
@@ -56,8 +60,8 @@ function love.load()
   engine:addSystem(DrawSystem(), "draw")
   engine:addSystem(HudDrawSystem(), "draw")
 
--- ???
-  engine:addSystem(CombatSystem(), "update")
+  -- ???
+  --engine:addSystem(CombatSystem(), "update")
 
   engine:addEntity(Player(love.graphics.getWidth()/2, love.graphics.getHeight()/2))
   engine:addEntity(Enemy(300, 300))

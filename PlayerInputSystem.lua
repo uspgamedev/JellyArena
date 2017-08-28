@@ -3,7 +3,7 @@ local PlayerInputSystem = class("PlayerInputSystem", System)
 function PlayerInputSystem:update(dt)
   for i, entity in pairs(self.targets) do
     self:movement(entity)
-    self:fire(entity)
+    self:fire(entity, dt)
   end
 end
 
@@ -26,14 +26,34 @@ local fireDirections = {
   ["left"] = Vector(-1, 0),
   ["right"] = Vector(1, 0)
 }
-function PlayerInputSystem:fire(entity)
+function PlayerInputSystem:fire(entity, dt)
   -- reset attack direction
-  entity:get("Combat"):attack(nil)
+  local fireDirection = Vector(0, 0)
+  local fireTimer = entity:get("Timer");
 
+  -- Continue only if we can shoot
+  if fireTimer.isActive and fireTimer.cooldown > 0 then
+    return
+  end
+
+  fireTimer.isActive = false
+
+  -- Get fire direction
+  -- Key preference is in reverse order of fireDirections
   for key, dir in pairs(fireDirections) do
     if love.keyboard.isDown(key) then
-      entity:get("Combat"):attack(dir)
+      fireDirection = dir
+      fireTimer.isActive = true
     end
+  end
+
+  -- Fire a bullet
+  if fireTimer.isActive then    
+    -- TODO: Create AttackProperties component with fireTimer and damage
+    local position = entity:get("Position")
+    engine:addEntity(Bullet(position.x, position.y, fireDirection, 10))
+
+    fireTimer.cooldown = fireTimer.waitTime
   end
 end
 
