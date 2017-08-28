@@ -13,7 +13,7 @@ end
 function EnemyAISystem:requires()
   return {
     Enemies = {"Position", "Velocity", "Combat", "Circle", "IsEnemy" },
-    Player = {"Position", "Combat", "Circle", "IsPlayer" }
+    Player = {"Position", "Hitpoints", "Circle", "IsPlayer" }
   }
 end
 

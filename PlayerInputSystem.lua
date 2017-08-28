@@ -8,7 +8,7 @@ function PlayerInputSystem:update(dt)
 end
 
 function PlayerInputSystem:requires()
-  return {"Position", "Velocity", "Combat", "IsPlayer"}
+  return {"Position", "Velocity", "Combat", "Hitpoints", "IsPlayer"}
 end
 
 function PlayerInputSystem:movement(entity)
@@ -48,12 +48,16 @@ function PlayerInputSystem:fire(entity, dt)
   end
 
   -- Fire a bullet
-  if fireTimer.isActive then    
-    -- TODO: Create AttackProperties component with fireTimer and damage
-    local position = entity:get("Position")
-    engine:addEntity(Bullet(position.x, position.y, fireDirection, 10))
+  if fireTimer.isActive then
+    local hp = entity:get("Hitpoints")
+    if hp.cur > 1 then
+      fireTimer.cooldown = fireTimer.waitTime
+      -- TODO: Create AttackProperties component with fireTimer and damage
+      local position = entity:get("Position")
+      engine:addEntity(Bullet(position.x, position.y, fireDirection, 10))
 
-    fireTimer.cooldown = fireTimer.waitTime
+      hp.cur = hp.cur - 1;
+    end
   end
 end
 

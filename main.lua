@@ -9,6 +9,7 @@ lovetoys.initialize({
 require "IsPlayer"
 require "IsEnemy"
 require "Position"
+require "Hitpoints"
 require "Circle"
 require "Velocity"
 require "Combat"
