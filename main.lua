@@ -20,23 +20,23 @@ Enemy = require "Enemy"
 Bullet = require "Bullet"
 
 -- systems
-DrawSystem = require "DrawSystem"
-PlayerInputSystem = require "PlayerInputSystem"
-MovementSystem = require "MovementSystem"
-CombatSystem = require "CombatSystem"
-EnemyAISystem = require "EnemyAISystem"
-HudDrawSystem = require "HudDrawSystem"
+PlayerInputSystem   = require "PlayerInputSystem"
+EnemyAISystem       = require "EnemyAISystem"
+MovementSystem      = require "MovementSystem"
+CombatSystem        = require "CombatSystem"
+DrawSystem          = require "DrawSystem"
+HudDrawSystem       = require "HudDrawSystem"
 
 function love.load()
   engine = Engine()
   eventmanager = EventManager()
 
-  engine:addSystem(DrawSystem())
-  engine:addSystem(HudDrawSystem())
   engine:addSystem(PlayerInputSystem())
-  engine:addSystem(CombatSystem())
   engine:addSystem(EnemyAISystem())
   engine:addSystem(MovementSystem())
+  engine:addSystem(CombatSystem())
+  engine:addSystem(DrawSystem())
+  engine:addSystem(HudDrawSystem())
 
   engine:addEntity(Player(love.graphics.getWidth()/2, love.graphics.getHeight()/2))
   engine:addEntity(Enemy(300, 300))
