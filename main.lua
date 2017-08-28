@@ -13,6 +13,7 @@ require "Hitpoints"
 require "Circle"
 require "Velocity"
 require "Combat"
+require "AttackProperties"
 require "Timer"
 require "Projectile"
 
