@@ -6,30 +6,31 @@ lovetoys.initialize({
 })
 
 --- components
-require "IsPlayer"
-require "IsEnemy"
-require "Position"
-require "Hitpoints"
-require "Circle"
-require "Velocity"
-require "Combat"
 require "AttackProperties"
-require "Timer"
+require "Circle"
+require "Combat"
+require "Color"
+require "Hitpoints"
+require "IsEnemy"
+require "IsPlayer"
+require "Position"
 require "Projectile"
+require "Timer"
+require "Velocity"
 
 --- models
-Player  = require "Player"
-Enemy   = require "Enemy"
 Bullet  = require "Bullet"
+Enemy   = require "Enemy"
+Player  = require "Player"
 
 --- systems
-PlayerInputSystem         = require "PlayerInputSystem"
-EnemyAISystem             = require "EnemyAISystem"
-MovementSystem            = require "MovementSystem"
-TimerSystem               = require "TimerSystem"
 CombatSystem              = require "CombatSystem"
 DrawSystem                = require "DrawSystem"
+EnemyAISystem             = require "EnemyAISystem"
 HudDrawSystem             = require "HudDrawSystem"
+MovementSystem            = require "MovementSystem"
+PlayerInputSystem         = require "PlayerInputSystem"
+TimerSystem               = require "TimerSystem"
 
 function love.load()
   engine = Engine()

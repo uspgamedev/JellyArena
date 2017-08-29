@@ -1,6 +1,6 @@
 local Player = class("Player", Entity)
-local Position, Circle, IsPlayer, Velocity, AttackProperties, Timer, HP =
-  Component.load({"Position", "Circle", "IsPlayer", "Velocity", "AttackProperties", "Timer", "Hitpoints"})
+local Position, Circle, IsPlayer, Velocity, AttackProperties, Timer, HP, Color =
+  Component.load({"Position", "Circle", "IsPlayer", "Velocity", "AttackProperties", "Timer", "Hitpoints", "Color"})
 
 function Player:initialize(x, y)
   Entity.initialize(self)
@@ -11,6 +11,7 @@ function Player:initialize(x, y)
   self:add(HP(20))
   self:add(Timer(0.3))
   self:add(IsPlayer())
+  self:add(Color(255, 255, 255))
 end
 
 return Player
