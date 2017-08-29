@@ -24,7 +24,6 @@ Enemy   = require "entities/Enemy"
 Player  = require "entities/Player"
 
 --- systems
-CombatSystem              = require "systems/CombatSystem"
 DrawSystem                = require "systems/DrawSystem"
 EnemyAISystem             = require "systems/EnemyAISystem"
 HudDrawSystem             = require "systems/HudDrawSystem"
@@ -62,9 +61,6 @@ function love.load()
   -- Display
   engine:addSystem(DrawSystem(), "draw")
   engine:addSystem(HudDrawSystem(), "draw")
-
-  -- ???
-  --engine:addSystem(CombatSystem(), "update")
 
   engine:addEntity(Player(love.graphics.getWidth()/2, love.graphics.getHeight()/2))
   engine:addEntity(Enemy(300, 300))
