@@ -29,6 +29,8 @@ HudDrawSystem             = require "systems/HudDrawSystem"
 MovementSystem            = require "systems/MovementSystem"
 PlayerInputSystem         = require "systems/PlayerInputSystem"
 TimerSystem               = require "systems/TimerSystem"
+WaveAISystem              = require "systems/WaveAISystem"
+
 
 function love.load()
   engine = Engine()
@@ -58,11 +60,12 @@ function love.load()
   -- Update animations & visual effects
   -- Do clean up
   -- Display
+  engine:addSystem(WaveAISystem(), "update")
   engine:addSystem(DrawSystem(), "draw")
   engine:addSystem(HudDrawSystem(), "draw")
 
   engine:addEntity(Player(love.graphics.getWidth()/2, love.graphics.getHeight()/2))
-  engine:addEntity(Enemy(300, 300))
+  -- engine:addEntity(Enemy(300, 300))
 end
 
 function love.update(dt)
