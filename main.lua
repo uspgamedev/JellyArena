@@ -6,31 +6,31 @@ lovetoys.initialize({
 })
 
 --- components
-require "AttackProperties"
-require "Circle"
-require "Combat"
-require "Color"
-require "Hitpoints"
-require "IsEnemy"
-require "IsPlayer"
-require "Position"
-require "Projectile"
-require "Timer"
-require "Velocity"
+require "components/AttackProperties"
+require "components/Circle"
+require "components/Combat"
+require "components/Color"
+require "components/Hitpoints"
+require "components/IsEnemy"
+require "components/IsPlayer"
+require "components/Position"
+require "components/Projectile"
+require "components/Timer"
+require "components/Velocity"
 
---- models
-Bullet  = require "Bullet"
-Enemy   = require "Enemy"
-Player  = require "Player"
+--- Entities
+Bullet  = require "entities/Bullet"
+Enemy   = require "entities/Enemy"
+Player  = require "entities/Player"
 
 --- systems
-CombatSystem              = require "CombatSystem"
-DrawSystem                = require "DrawSystem"
-EnemyAISystem             = require "EnemyAISystem"
-HudDrawSystem             = require "HudDrawSystem"
-MovementSystem            = require "MovementSystem"
-PlayerInputSystem         = require "PlayerInputSystem"
-TimerSystem               = require "TimerSystem"
+CombatSystem              = require "systems/CombatSystem"
+DrawSystem                = require "systems/DrawSystem"
+EnemyAISystem             = require "systems/EnemyAISystem"
+HudDrawSystem             = require "systems/HudDrawSystem"
+MovementSystem            = require "systems/MovementSystem"
+PlayerInputSystem         = require "systems/PlayerInputSystem"
+TimerSystem               = require "systems/TimerSystem"
 
 function love.load()
   engine = Engine()
