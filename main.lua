@@ -8,7 +8,6 @@ lovetoys.initialize({
 --- components
 require "components/AttackProperties"
 require "components/Circle"
-require "components/Combat"
 require "components/Color"
 require "components/Hitpoints"
 require "components/IsEnemy"
