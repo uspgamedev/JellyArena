@@ -5,6 +5,8 @@ lovetoys.initialize({
   globals = true
 })
 
+require("lib/utils")
+
 --- components
 require "components/AttackProperties"
 require "components/Circle"
@@ -13,6 +15,7 @@ require "components/Hitpoints"
 require "components/IsEnemy"
 require "components/IsPlayer"
 require "components/Position"
+require "components/WindowLimited"
 require "components/Projectile"
 require "components/Timer"
 require "components/Velocity"
@@ -27,6 +30,7 @@ DrawSystem                = require "systems/DrawSystem"
 EnemyAISystem             = require "systems/EnemyAISystem"
 HudDrawSystem             = require "systems/HudDrawSystem"
 MovementSystem            = require "systems/MovementSystem"
+CollisionSystem            = require "systems/CollisionSystem"
 PlayerInputSystem         = require "systems/PlayerInputSystem"
 TimerSystem               = require "systems/TimerSystem"
 WaveAISystem              = require "systems/WaveAISystem"
@@ -54,6 +58,8 @@ function love.load()
     -- Process each pair (maybe use callbacks for collision response, like play sound, die, etc)
       -- If we 'delete' something, invalidade all remaining collisions for that body
       -- If not, just separate both bodies (may generate new collisions, not that important)
+
+  engine:addSystem(CollisionSystem(), "update")
   -- Update timers
   engine:addSystem(TimerSystem(), "update")
   -- Update statistics (collision response can also change statistics)
@@ -64,7 +70,7 @@ function love.load()
   engine:addSystem(DrawSystem(), "draw")
   engine:addSystem(HudDrawSystem(), "draw")
 
-  engine:addEntity(Player(love.graphics.getWidth()/2, love.graphics.getHeight()/2))
+  engine:addEntity(Player(getCenter().x, getCenter().y))
   -- engine:addEntity(Enemy(300, 300))
 end
 
