@@ -30,10 +30,11 @@ DrawSystem                = require "systems/DrawSystem"
 EnemyAISystem             = require "systems/EnemyAISystem"
 HudDrawSystem             = require "systems/HudDrawSystem"
 MovementSystem            = require "systems/MovementSystem"
-CollisionSystem            = require "systems/CollisionSystem"
+CollisionSystem           = require "systems/CollisionSystem"
 PlayerInputSystem         = require "systems/PlayerInputSystem"
 TimerSystem               = require "systems/TimerSystem"
 WaveAISystem              = require "systems/WaveAISystem"
+ProjectileSystem          = require "systems/ProjectileSystem"
 
 
 function love.load()
@@ -59,6 +60,7 @@ function love.load()
       -- If we 'delete' something, invalidade all remaining collisions for that body
       -- If not, just separate both bodies (may generate new collisions, not that important)
 
+  engine:addSystem(ProjectileSystem(), "update")
   engine:addSystem(CollisionSystem(), "update")
   -- Update timers
   engine:addSystem(TimerSystem(), "update")

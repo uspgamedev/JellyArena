@@ -7,7 +7,7 @@ function Bullet:initialize(x, y, direction, damage)
   self:add(Position(x, y))
   self:add(Circle(5))
   self:add(Velocity(direction.x, direction.y, 1000))
-  self:add(Projectile(damage))
+  self:add(Projectile(damage, distToPix(7)))
   self:add(Color(255, 255, 255))
 end
 
