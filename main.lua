@@ -36,7 +36,6 @@ TimerSystem               = require "systems/TimerSystem"
 WaveAISystem              = require "systems/WaveAISystem"
 ProjectileSystem          = require "systems/ProjectileSystem"
 
-
 function love.load()
   engine = Engine()
   eventmanager = EventManager()
@@ -45,12 +44,17 @@ function love.load()
   engine:addSystem(PlayerInputSystem(), "update")
     -- Update player vars and state
     -- Go to menu
-  -- process enemy AI
+  -- process wave AI
+  engine:addSystem(WaveAISystem(), "update")
+    -- select group of enemies to spawn
+    -- process group AI
+  -- process individual enemy AI
   engine:addSystem(EnemyAISystem(), "update")
     -- Based on current game state
     -- Based on player current input <-- cheating AI
   -- Process movement
   engine:addSystem(MovementSystem(), "update")
+  engine:addSystem(ProjectileSystem(), "update")
     -- Update velocity
     -- Update position
     -- Update collision groups
@@ -59,8 +63,6 @@ function love.load()
     -- Process each pair (maybe use callbacks for collision response, like play sound, die, etc)
       -- If we 'delete' something, invalidade all remaining collisions for that body
       -- If not, just separate both bodies (may generate new collisions, not that important)
-
-  engine:addSystem(ProjectileSystem(), "update")
   engine:addSystem(CollisionSystem(), "update")
   -- Update timers
   engine:addSystem(TimerSystem(), "update")
@@ -68,12 +70,11 @@ function love.load()
   -- Update animations & visual effects
   -- Do clean up
   -- Display
-  engine:addSystem(WaveAISystem(), "update")
   engine:addSystem(DrawSystem(), "draw")
   engine:addSystem(HudDrawSystem(), "draw")
 
+  engine:addEntity(Enemy(300, 300))
   engine:addEntity(Player(getCenter().x, getCenter().y))
-  -- engine:addEntity(Enemy(300, 300))
 end
 
 function love.update(dt)
