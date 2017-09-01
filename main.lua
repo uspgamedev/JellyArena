@@ -19,6 +19,7 @@ require "components/WindowLimited"
 require "components/Projectile"
 require "components/Timer"
 require "components/Velocity"
+require "components/Collidable"
 
 --- Entities
 Bullet  = require "entities/Bullet"
@@ -39,6 +40,7 @@ ProjectileSystem          = require "systems/ProjectileSystem"
 function love.load()
   engine = Engine()
   eventmanager = EventManager()
+  world = love.physics.newWorld(0, 0, true)
 
   -- Process input
   engine:addSystem(PlayerInputSystem(), "update")
@@ -79,6 +81,7 @@ end
 
 function love.update(dt)
     engine:update(dt)
+    world:update(dt)
 end
 
 function love.draw()
