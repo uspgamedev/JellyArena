@@ -10,6 +10,7 @@ require("lib/utils")
 --- components
 require "components/AttackProperties"
 require "components/Circle"
+require "components/Collidable"
 require "components/Color"
 require "components/Hitpoints"
 require "components/IsEnemy"
@@ -19,12 +20,12 @@ require "components/WindowLimited"
 require "components/Projectile"
 require "components/Timer"
 require "components/Velocity"
-require "components/Collidable"
 
 --- Entities
-Bullet  = require "entities/Bullet"
-Enemy   = require "entities/Enemy"
-Player  = require "entities/Player"
+require "entities/Bullet"
+require "entities/Enemy"
+require "entities/HpDrop"
+require "entities/Player"
 
 --- systems
 DrawSystem                = require "systems/DrawSystem"
@@ -75,8 +76,8 @@ function love.load()
   engine:addSystem(DrawSystem(), "draw")
   engine:addSystem(HudDrawSystem(), "draw")
 
-  engine:addEntity(Enemy(300, 300))
-  engine:addEntity(Player(getCenter().x, getCenter().y))
+  engine:addEntity(createEnemy(300, 300))
+  engine:addEntity(createPlayer(getCenter().x, getCenter().y))
 end
 
 function love.update(dt)

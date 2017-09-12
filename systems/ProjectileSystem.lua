@@ -7,12 +7,16 @@ function ProjectileSystem:update(dt)
     projectile:addDisplacement((velocity:toVector() * dt):len())
     if ( not projectile:moving() ) then
       velocity:setDirection(Vector(0, 0))
+      local position = v:get("Position")
+      drop = createHpDrop(position.x, position.y)
+      engine:addEntity(drop)
+      engine:removeEntity(v)
     end
   end
 end
 
 function ProjectileSystem:requires()
-  return { "Projectile", "Velocity" }
+  return { "Projectile", "Velocity", "Position" }
 end
 
 return ProjectileSystem
