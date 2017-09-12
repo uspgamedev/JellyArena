@@ -5,7 +5,9 @@ function CollisionSystem:update(dt)
   for i, v in pairs(self.targets.WindowLimited) do
     local position = v:get("Position")
     local radius = v:get("Circle").radius
-    self:checkWindowLimit(position, radius)
+    if (self:checkWindowLimit(position, radius)) then
+      v:get("WindowLimited"):collide()
+    end
 
   end
 
@@ -41,18 +43,24 @@ end
 function CollisionSystem:checkWindowLimit(position, radius)
   window_width = love.graphics.getWidth() - radius
   window_height = love.graphics.getHeight() - radius
-
+  check = false
   if position.x < radius then
+    check = true
     position.x = radius
   elseif position.x > window_width then
+    check = true
     position.x = window_width
   end
 
   if position.y < radius then
+    check = true
     position.y = radius
   elseif position.y > window_height then
+    check = true
     position.y = window_height
   end
+
+  return check
 end
 
 return CollisionSystem
