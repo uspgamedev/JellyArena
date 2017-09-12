@@ -10,13 +10,19 @@ function CollisionSystem:update(dt)
   end
 
   for i, v in pairs(self.targets.Collisions) do
-    --TODO: check collision
-    local position = v:get("Position")
-    local collidable = v:get("Collidable")
-    local velocity = v:get("Velocity")
-    collidable.body:setLinearVelocity(velocity.x*1000, velocity.y*1000)
-    position.x = collidable.body:getX()
-    position.y = collidable.body:getY()
+    local vPos = v:get("Position"):toVector()
+    local vRad = v:get("Circle").radius
+    for j, w in pairs(self.targets.Collisions) do
+      if (j > i) then
+        local wPos = w:get("Position"):toVector()
+        local wRad = w:get("Circle").radius
+        local dist = (vPos - wPos):len2()
+        local minDist = (vRad + wRad) * (vRad + wRad)
+        if (dist < minDist) then
+          lovetoys.debug("BATEU: "..v.id..":"..w.id)
+        end
+      end
+    end
   end
 end
 
@@ -28,7 +34,7 @@ end
 function CollisionSystem:requires()
   return {
     WindowLimited = { "Position", "Circle", "WindowLimited" },
-    Collisions = { "Position", "Circle", "Velocity", "Collidable" }
+    Collisions = { "IsCollidable" }
   }
 end
 
