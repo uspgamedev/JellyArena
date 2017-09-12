@@ -1,5 +1,5 @@
-local Position, Circle, IsPlayer, Velocity, WindowLimited, AttackProperties, Timer, HP, Color =
-  Component.load({"Position", "Circle", "IsPlayer", "Velocity", "WindowLimited", "AttackProperties", "Timer", "Hitpoints", "Color"})
+local Position, Circle, IsPlayer, Velocity, WindowLimited, AttackProperties, Timer, HP, Color, IsCollidable =
+  Component.load({"Position", "Circle", "IsPlayer", "Velocity", "WindowLimited", "AttackProperties", "Timer", "Hitpoints", "Color", "IsCollidable"})
 
 function createPlayer(x, y)
   local entity = Entity()
@@ -12,5 +12,6 @@ function createPlayer(x, y)
   entity:add(Timer(0.3))
   entity:add(IsPlayer())
   entity:add(Color(255, 255, 255))
+  entity:add(IsCollidable())
   return entity
 end
