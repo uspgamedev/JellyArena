@@ -10,7 +10,6 @@ require("lib/utils")
 --- components
 require "components/AttackProperties"
 require "components/Circle"
-require "components/Collidable"
 require "components/Color"
 require "components/Hitpoints"
 require "components/IsCollidable"
@@ -19,6 +18,7 @@ require "components/IsPlayer"
 require "components/Position"
 require "components/WindowLimited"
 require "components/Projectile"
+require "components/Text"
 require "components/Timer"
 require "components/Velocity"
 
@@ -27,6 +27,7 @@ require "entities/Bullet"
 require "entities/Enemy"
 require "entities/HpDrop"
 require "entities/Player"
+require "entities/Message"
 
 --- systems
 DrawSystem                = require "systems/DrawSystem"
@@ -38,11 +39,12 @@ PlayerInputSystem         = require "systems/PlayerInputSystem"
 TimerSystem               = require "systems/TimerSystem"
 WaveAISystem              = require "systems/WaveAISystem"
 ProjectileSystem          = require "systems/ProjectileSystem"
+MessageSystem             = require "systems/MessageSystem"
 
 function love.load()
   engine = Engine()
   eventmanager = EventManager()
-  world = love.physics.newWorld(0, 0, true)
+  debug_text = ""
 
   -- Process input
   engine:addSystem(PlayerInputSystem(), "update")
@@ -76,14 +78,15 @@ function love.load()
   -- Display
   engine:addSystem(DrawSystem(), "draw")
   engine:addSystem(HudDrawSystem(), "draw")
+  engine:addSystem(MessageSystem(), "draw")
 
   engine:addEntity(createEnemy(300, 300))
   engine:addEntity(createPlayer(getCenter().x, getCenter().y))
+  engine:addEntity(createMessage())
 end
 
 function love.update(dt)
     engine:update(dt)
-    world:update(dt)
 end
 
 function love.draw()

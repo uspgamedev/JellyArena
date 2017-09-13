@@ -1,7 +1,6 @@
 local CollisionSystem = class("CollisionSystem", System)
 
 function CollisionSystem:update(dt)
-  world:setCallbacks(beginContact)
   for i, v in pairs(self.targets.WindowLimited) do
     local position = v:get("Position")
     local radius = v:get("Circle").radius
@@ -22,15 +21,11 @@ function CollisionSystem:update(dt)
         local minDist = (vRad + wRad) * (vRad + wRad)
         if (dist < minDist) then
           lovetoys.debug("BATEU: "..v.id..":"..w.id)
+          debug_text = "BATEU: "..v.id..":"..w.id
         end
       end
     end
   end
-end
-
-function beginContact(a, b, coll)
-  x, y = coll:getNormal()
-  text = "colidiu!!!"
 end
 
 function CollisionSystem:requires()
