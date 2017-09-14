@@ -1,10 +1,14 @@
 local WaveAISystem = class("WaveAISystem", System)
 
 function WaveAISystem:update(dt)
-  if #self.targets == 0 then
-    engine:addEntity(Enemy(100, 100))
-    engine:addEntity(Enemy(200, 200))
-    engine:addEntity(Enemy(300, 300))
+  count = 0
+  for _,p in pairs(self.targets) do
+    count = count + 1
+  end
+  if count == 0 then
+    engine:addEntity(createEnemy(100, 100))
+    engine:addEntity(createEnemy(200, 200))
+    engine:addEntity(createEnemy(300, 300))
   end
 end
 

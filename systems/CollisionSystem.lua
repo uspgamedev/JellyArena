@@ -70,6 +70,10 @@ function CollisionSystem:update(dt)
         self:PlayerAndHpDrop(v, w)
       elseif (vtype == "HpDrop" and wType == "Player") then
         self:PlayerAndHpDrop(w, v)
+      elseif (vType == "Bullet" and wType == "Enemy") then
+        self:BulletAndEnemy(v, w)
+      elseif (vType == "Enemy" and wType == "Bullet") then
+        self:BulletAndEnemy(w, v)
       end
 
       lovetoys.debug("BATEU: "..v.id..":"..w.id)
@@ -128,6 +132,18 @@ function CollisionSystem:PlayerAndHpDrop(player, drop)
   hp:add(1)
   self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
   self.entitiesToRemove[self.entitiesToRemoveCount] = drop
+end
+
+function CollisionSystem:BulletAndEnemy(bullet, enemy)
+  self:killAndDrop(bullet)
+  self:killAndDrop(enemy)
+end
+
+function CollisionSystem:killAndDrop (entity)
+  position = entity:get("Position")
+  engine:addEntity(createHpDrop(position.x, position.y))
+  self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
+  self.entitiesToRemove[self.entitiesToRemoveCount] = entity
 end
 
 return CollisionSystem

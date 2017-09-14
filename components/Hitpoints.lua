@@ -8,6 +8,6 @@ end
 function Hitpoints:add (num)
   self.cur = self.cur + num
   if (self.cur > self.max) then
-    self.cur = self.max
+    self.max = self.cur
   end
 end
