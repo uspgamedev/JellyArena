@@ -6,6 +6,6 @@ function createHpDrop(x, y)
   entity:add(Position(x, y))
   entity:add(Circle(5))
   entity:add(Color(255, 0, 0))
-  entity:add(Collider(true))
+  entity:add(Collider("HpDrop", true))
   return entity
 end

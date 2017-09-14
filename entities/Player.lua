@@ -11,6 +11,6 @@ function createPlayer(x, y)
   entity:add(Timer(0.3))
   entity:add(IsPlayer())
   entity:add(Color(255, 255, 255))
-  entity:add(Collider(true))
+  entity:add(Collider("Player", true))
   return entity
 end

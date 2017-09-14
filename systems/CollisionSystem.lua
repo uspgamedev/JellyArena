@@ -2,7 +2,7 @@ local CollisionSystem = class("CollisionSystem", System)
 
 function CollisionSystem:initialize()
   System.initialize(self)
-  
+
   self.collisionPairs = {}
   self.collisionPairsCount = 0
 
@@ -36,7 +36,7 @@ function CollisionSystem:update(dt)
       for j, w in pairs(self.targets) do
         if (j > i) then
           local wCollider = w:get("Collider")
-          
+
           if(wCollider.active) then
             -- TODO: change to a shape intersection test
 
@@ -45,7 +45,7 @@ function CollisionSystem:update(dt)
 
             local dist = (vPos - wPos):len2()
             local minDist = (vRad + wRad) * (vRad + wRad)
-            
+
             if (dist < minDist) then
               self.collisionPairsCount = self.collisionPairsCount + 1
               self.collisionPairs[self.collisionPairsCount] = {v, w}
@@ -59,17 +59,26 @@ function CollisionSystem:update(dt)
   -- Resolve collision pairs
   for _,pair in pairs(self.collisionPairs) do
       -- TODO: handle each pair type
-      
+
       local v = pair[1]
       local w = pair[2]
-      
+
+      vType = v:get("Collider").type
+      wType = w:get("Collider").type
+
+      if (vType == "Player" and wType == "HpDrop") then
+        self:PlayerAndHpDrop(v, w)
+      elseif (vtype == "HpDrop" and wType == "Player") then
+        self:PlayerAndHpDrop(w, v)
+      end
+
       lovetoys.debug("BATEU: "..v.id..":"..w.id)
       debug_text = "BATEU: "..v.id..":"..w.id
   end
 
   -- Clean collisionPairs array
   for i = 1, self.collisionPairsCount, 1 do
-    local pair = self.collisionPairs[i] 
+    local pair = self.collisionPairs[i]
 
     pair[1].resolved = false
     pair[2].resolved = false
@@ -112,6 +121,13 @@ function CollisionSystem:checkWindowLimit(position, radius)
   end
 
   return check
+end
+
+function CollisionSystem:PlayerAndHpDrop(player, drop)
+  hp = player:get("Hitpoints")
+  hp:add(1)
+  self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
+  self.entitiesToRemove[self.entitiesToRemoveCount] = drop
 end
 
 return CollisionSystem

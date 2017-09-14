@@ -8,6 +8,6 @@ function createEnemy(x, y)
   entity:add(Velocity(0, 0, 200))
   entity:add(IsEnemy("FollowPlayer"))
   entity:add(Color(0, 255, 255))
-  entity:add(Collider(true))
+  entity:add(Collider("Enemy", true))
   return entity
 end
