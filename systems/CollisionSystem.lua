@@ -145,8 +145,13 @@ end
 function CollisionSystem:PlayerAndEnemy(pair)
   player = pair["Player"]
   enemy = pair["Enemy"]
+  timer = enemy:get("Timer")
+  if (timer.cooldown > 0) then
+    return
+  end
   hp = player:get("Hitpoints")
   hp.cur = hp.cur - 1
+  timer:start()
 
 end
 

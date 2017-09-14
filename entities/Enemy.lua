@@ -1,5 +1,5 @@
-local Position, Circle, IsEnemy, Velocity, Color, Collider =
-  Component.load({"Position", "Circle", "IsEnemy", "Velocity", "Color", "Collider"})
+local Position, Circle, IsEnemy, Velocity, Color, Collider, Timer =
+  Component.load({"Position", "Circle", "IsEnemy", "Velocity", "Color", "Collider", "Timer"})
 
 function createEnemy(x, y)
   local entity = Entity()
@@ -9,5 +9,6 @@ function createEnemy(x, y)
   entity:add(IsEnemy("FollowPlayer"))
   entity:add(Color(0, 255, 255))
   entity:add(Collider("Enemy", true))
+  entity:add(Timer(0.5))
   return entity
 end
