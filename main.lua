@@ -39,12 +39,15 @@ TimerSystem               = require "systems/TimerSystem"
 WaveAISystem              = require "systems/WaveAISystem"
 ProjectileSystem          = require "systems/ProjectileSystem"
 MessageSystem             = require "systems/MessageSystem"
+NewGameSystem             = require "systems/NewGameSystem"
 
 function love.load()
   engine = Engine()
   eventmanager = EventManager()
   debug_text = ""
 
+  -- Reset game when Player Dies
+  engine:addSystem(NewGameSystem(), "update")
   -- Update timers
   engine:addSystem(TimerSystem(), "update")
   -- Process input
@@ -78,10 +81,6 @@ function love.load()
   engine:addSystem(DrawSystem(), "draw")
   engine:addSystem(HudDrawSystem(), "draw")
   engine:addSystem(MessageSystem(), "draw")
-
-  engine:addEntity(createEnemy(300, 300))
-  engine:addEntity(createPlayer(getCenter().x, getCenter().y))
-  engine:addEntity(createMessage())
 end
 
 function love.update(dt)
