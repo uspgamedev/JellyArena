@@ -48,8 +48,8 @@ function CollisionSystem:update(dt)
 
             if (dist < minDist) then
               self.collisionPairsCount = self.collisionPairsCount + 1
-              self.collisionPairs[self.collisionPairsCount] = {v, w}
-            end
+              self.collisionPairs[self.collisionPairsCount] = {[vCollider.type] = v, [wCollider.type] = w}
+                 end
           end
         end
       end
@@ -57,36 +57,34 @@ function CollisionSystem:update(dt)
   end
 
   -- Resolve collision pairs
-  for _,pair in pairs(self.collisionPairs) do
-      -- TODO: handle each pair type
+  for _, pair in pairs(self.collisionPairs) do
+    -- TODO: handle each pair type
 
-      local v = pair[1]
-      local w = pair[2]
+    local resolved = false
+    for _, entity in pairs(pair) do
+      resolved = resolved or entity:get("Collider").resolved
+    end
 
-      vType = v:get("Collider").type
-      wType = w:get("Collider").type
-
-      if (vType == "Player" and wType == "HpDrop") then
-        self:PlayerAndHpDrop(v, w)
-      elseif (vtype == "HpDrop" and wType == "Player") then
-        self:PlayerAndHpDrop(w, v)
-      elseif (vType == "Bullet" and wType == "Enemy") then
-        self:BulletAndEnemy(v, w)
-      elseif (vType == "Enemy" and wType == "Bullet") then
-        self:BulletAndEnemy(w, v)
+    if not resolved then
+      if (pair["Player"] and pair["HpDrop"]) then
+        self:PlayerAndHpDrop(pair)
+      elseif (pair["Enemy"] and pair["Bullet"]) then
+        self:BulletAndEnemy(pair)
+      elseif (pair["Player"] and pair["Enemy"]) then
+        self:PlayerAndEnemy(pair)
       end
+    end
 
-      lovetoys.debug("BATEU: "..v.id..":"..w.id)
-      debug_text = "BATEU: "..v.id..":"..w.id
+    -- lovetoys.debug("BATEU: "..v.id..":"..w.id)
+    -- debug_text = "BATEU: "..v.id..":"..w.id
   end
 
   -- Clean collisionPairs array
   for i = 1, self.collisionPairsCount, 1 do
     local pair = self.collisionPairs[i]
-
-    pair[1].resolved = false
-    pair[2].resolved = false
-
+    for _,entity in pairs(pair) do
+      entity:get("Collider").resolved = false
+    end
     self.collisionPairs[i] = nil
   end
   self.collisionPairsCount = 0
@@ -127,16 +125,29 @@ function CollisionSystem:checkWindowLimit(position, radius)
   return check
 end
 
-function CollisionSystem:PlayerAndHpDrop(player, drop)
+function CollisionSystem:PlayerAndHpDrop(pair)
+  player = pair["Player"]
+  drop = pair["HpDrop"]
   hp = player:get("Hitpoints")
   hp:add(1)
   self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
   self.entitiesToRemove[self.entitiesToRemoveCount] = drop
 end
 
-function CollisionSystem:BulletAndEnemy(bullet, enemy)
+function CollisionSystem:BulletAndEnemy(pair)
+  bullet = pair["Bullet"]
+  enemy = pair["Enemy"]
   self:killAndDrop(bullet)
+  bullet:get("Collider").resolved = true
   self:killAndDrop(enemy)
+end
+
+function CollisionSystem:PlayerAndEnemy(pair)
+  player = pair["Player"]
+  enemy = pair["Enemy"]
+  hp = player:get("Hitpoints")
+  hp.cur = hp.cur - 1
+
 end
 
 function CollisionSystem:killAndDrop (entity)
