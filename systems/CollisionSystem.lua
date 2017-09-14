@@ -70,8 +70,8 @@ function CollisionSystem:update(dt)
         self:PlayerAndHpDrop(pair)
       elseif (pair["Enemy"] and pair["Bullet"]) then
         self:BulletAndEnemy(pair)
-      elseif (pair["Player"] and pair["Enemy"]) then
-        self:PlayerAndEnemy(pair)
+      elseif (pair["Player"] and pair["Damage"]) then
+        self:PlayerAndDamage(pair)
       end
     end
 
@@ -142,17 +142,12 @@ function CollisionSystem:BulletAndEnemy(pair)
   self:killAndDrop(enemy)
 end
 
-function CollisionSystem:PlayerAndEnemy(pair)
+function CollisionSystem:PlayerAndDamage(pair)
   player = pair["Player"]
-  enemy = pair["Enemy"]
-  timer = enemy:get("Timer")
-  if (timer.cooldown > 0) then
-    return
-  end
+  damage = pair["Damage"]
+
   hp = player:get("Hitpoints")
   hp.cur = hp.cur - 1
-  timer:start()
-
 end
 
 function CollisionSystem:killAndDrop (entity)

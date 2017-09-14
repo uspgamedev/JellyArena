@@ -22,6 +22,7 @@ require "components/Timer"
 require "components/Velocity"
 
 --- Entities
+require "entities/Damage"
 require "entities/Bullet"
 require "entities/Enemy"
 require "entities/HpDrop"

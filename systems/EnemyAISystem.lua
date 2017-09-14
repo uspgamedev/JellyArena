@@ -1,6 +1,7 @@
 local EnemyAISystem = class("EnemyAISystem", System)
 
-local Modes = require "systems/ai/MovementModes"
+local MovementModes = require "systems/ai/MovementModes"
+local AttackModes = require "systems/ai/AttackModes"
 
 function EnemyAISystem:update(dt)
   local player = nil
@@ -14,7 +15,9 @@ function EnemyAISystem:update(dt)
   if player == nil then return end
 
   for i, enemy in pairs(self.targets.Enemies) do
-    Modes[enemy:get("IsEnemy").mode](enemy, player, dt)
+    MovementModes[enemy:get("IsEnemy").movementMode](enemy, player, dt)
+    AttackModes[enemy:get("IsEnemy").attackMode](enemy, player, dt)
+
   end
 end
 

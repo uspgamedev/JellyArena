@@ -17,8 +17,4 @@ function Modes.FollowPlayer(enemy, player, dt)
   end
 end
 
-function Modes.AttackPlayer(enemy, player, dt)
-
-end
-
 return Modes
