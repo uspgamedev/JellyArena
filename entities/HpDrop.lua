@@ -1,12 +1,11 @@
-local Position, Circle, Color, IsCollidable, WindowLimited =
-  Component.load({"Position", "Circle", "Color", "IsCollidable", "WindowLimited"})
+local Position, Circle, Color, Collider =
+  Component.load({"Position", "Circle", "Color", "Collider"})
 
 function createHpDrop(x, y)
   local entity = Entity()
   entity:add(Position(x, y))
   entity:add(Circle(5))
   entity:add(Color(255, 0, 0))
-  entity:add(IsCollidable())
-  entity:add(WindowLimited())
+  entity:add(Collider(true))
   return entity
 end

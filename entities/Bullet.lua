@@ -1,5 +1,5 @@
-local Position, Circle, Velocity, Projectile, Color, IsCollidable, WindowLimited
-  = Component.load({"Position", "Circle", "Velocity", "Projectile", "Color", "IsCollidable", "WindowLimited"})
+local Position, Circle, Velocity, Projectile, Color, Collider
+  = Component.load({"Position", "Circle", "Velocity", "Projectile", "Color", "Collider"})
 
 f = function (entity)
   projectile = entity:get("Projectile")
@@ -13,7 +13,6 @@ function createBullet(x, y, direction, damage)
   entity:add(Velocity(direction.x, direction.y, 1000))
   entity:add(Projectile(damage, distToPix(7)))
   entity:add(Color(255, 255, 255))
-  entity:add(IsCollidable())
-  entity:add(WindowLimited(entity, f))
+  entity:add(Collider(false))
   return entity
 end

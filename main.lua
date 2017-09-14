@@ -10,13 +10,12 @@ require("lib/utils")
 --- components
 require "components/AttackProperties"
 require "components/Circle"
+require "components/Collider"
 require "components/Color"
 require "components/Hitpoints"
-require "components/IsCollidable"
 require "components/IsEnemy"
 require "components/IsPlayer"
 require "components/Position"
-require "components/WindowLimited"
 require "components/Projectile"
 require "components/Text"
 require "components/Timer"
@@ -46,6 +45,8 @@ function love.load()
   eventmanager = EventManager()
   debug_text = ""
 
+  -- Update timers
+  engine:addSystem(TimerSystem(), "update")
   -- Process input
   engine:addSystem(PlayerInputSystem(), "update")
     -- Update player vars and state
@@ -70,8 +71,6 @@ function love.load()
       -- If we 'delete' something, invalidade all remaining collisions for that body
       -- If not, just separate both bodies (may generate new collisions, not that important)
   engine:addSystem(CollisionSystem(), "update")
-  -- Update timers
-  engine:addSystem(TimerSystem(), "update")
   -- Update statistics (collision response can also change statistics)
   -- Update animations & visual effects
   -- Do clean up
