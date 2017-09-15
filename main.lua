@@ -9,6 +9,7 @@ require("lib/utils")
 
 --- components
 require "components/AttackProperties"
+require "components/Background"
 require "components/Circle"
 require "components/Collider"
 require "components/Color"
@@ -18,8 +19,10 @@ require "components/IsPlayer"
 require "components/Position"
 require "components/Projectile"
 require "components/Text"
+require "components/Title"
 require "components/Timer"
 require "components/Velocity"
+
 
 --- Entities
 require "entities/Damage"
@@ -28,6 +31,7 @@ require "entities/Enemy"
 require "entities/HpDrop"
 require "entities/Player"
 require "entities/Message"
+require "entities/Menu"
 
 --- systems
 DrawSystem                = require "systems/DrawSystem"
@@ -41,12 +45,14 @@ WaveAISystem              = require "systems/WaveAISystem"
 ProjectileSystem          = require "systems/ProjectileSystem"
 MessageSystem             = require "systems/MessageSystem"
 NewGameSystem             = require "systems/NewGameSystem"
+MenuSystem                = require "systems/MenuSystem"
 
 function love.load()
   engine = Engine()
   eventmanager = EventManager()
   debug_text = ""
-
+  yes = true
+  no = false
   -- Reset game when Player Dies
   engine:addSystem(NewGameSystem(), "update")
   -- Update timers
@@ -82,6 +88,7 @@ function love.load()
   engine:addSystem(DrawSystem(), "draw")
   engine:addSystem(HudDrawSystem(), "draw")
   engine:addSystem(MessageSystem(), "draw")
+  engine:addSystem(MenuSystem(), "draw")
 end
 
 function love.update(dt)

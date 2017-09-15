@@ -13,12 +13,16 @@ function NewGameSystem:update(dt)
   end
 
   if gameOver then
-    for _, entity in pairs(engine.entities) do
-      engine:removeEntity(entity, true)
-    end
+    debug_text = "Você morreu! Deseja voltar do início?"
+    if (yes) then
+      debug_text = ""
+      for _, entity in pairs(engine.entities) do
+        engine:removeEntity(entity, true)
+      end
 
-    engine:addEntity(createPlayer(getCenter().x, getCenter().y))
-    engine:addEntity(createMessage())
+      engine:addEntity(createPlayer(getCenter().x, getCenter().y))
+      engine:addEntity(createMessage())
+    end
   end
 end
 
