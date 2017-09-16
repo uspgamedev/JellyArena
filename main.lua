@@ -34,16 +34,16 @@ require "entities/Message"
 require "entities/Menu"
 
 --- systems
-DrawSystem                = require "systems/DrawSystem"
-HudDrawSystem             = require "systems/HudDrawSystem"
-DrawMenuSystem            = require "systems/DrawMenuSystem"
+DrawSystem                = require "systems/draw/DrawSystem"
+DrawHUDSystem             = require "systems/draw/DrawHUDSystem"
+DrawMenuSystem            = require "systems/draw/DrawMenuSystem"
+DrawMessageSystem         = require "systems/draw/DrawMessageSystem"
 
 TimerSystem               = require "systems/TimerSystem"
-MessageSystem             = require "systems/MessageSystem"
 
-PlayerInputSystem         = require "systems/PlayerInputSystem"
-TestMenuInputSystem       = require "systems/TestMenuInputSystem"
-GameOverInputSystem       = require "systems/GameOverInputSystem"
+PlayerInputSystem         = require "systems/input/PlayerInputSystem"
+TestMenuInputSystem       = require "systems/input/TestMenuInputSystem"
+GameOverInputSystem       = require "systems/input/GameOverInputSystem"
 
 EnemyAISystem             = require "systems/EnemyAISystem"
 MovementSystem            = require "systems/MovementSystem"
@@ -94,8 +94,8 @@ function love.load()
   -- Do clean up
   -- Display
   engine:addSystem(DrawSystem(), "draw")
-  engine:addSystem(HudDrawSystem(), "draw")
-  engine:addSystem(MessageSystem(), "draw")
+  engine:addSystem(DrawHUDSystem(), "draw")
+  engine:addSystem(DrawMessageSystem(), "draw")
   engine:addSystem(DrawMenuSystem(), "draw")
 
   changeGameState(curGameState)

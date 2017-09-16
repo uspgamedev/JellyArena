@@ -1,6 +1,6 @@
-local HudDrawSystem = class("HudDrawSystem", System)
+local DrawHUDSystem = class("DrawHUDSystem", System)
 
-function HudDrawSystem:draw()
+function DrawHUDSystem:draw()
   for i, v in pairs(self.targets) do
     local hp = v:get("Hitpoints")
     love.graphics.setNewFont(16)
@@ -12,8 +12,8 @@ function HudDrawSystem:draw()
   end
 end
 
-function HudDrawSystem:requires()
+function DrawHUDSystem:requires()
   return {"IsPlayer", "Hitpoints"}
 end
 
-return HudDrawSystem
+return DrawHUDSystem
