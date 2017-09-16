@@ -35,30 +35,38 @@ require "entities/Menu"
 
 --- systems
 DrawSystem                = require "systems/DrawSystem"
-EnemyAISystem             = require "systems/EnemyAISystem"
 HudDrawSystem             = require "systems/HudDrawSystem"
+DrawMenuSystem            = require "systems/DrawMenuSystem"
+
+TimerSystem               = require "systems/TimerSystem"
+MessageSystem             = require "systems/MessageSystem"
+
+PlayerInputSystem         = require "systems/PlayerInputSystem"
+TestMenuInputSystem       = require "systems/TestMenuInputSystem"
+GameOverInputSystem       = require "systems/GameOverInputSystem"
+
+EnemyAISystem             = require "systems/EnemyAISystem"
 MovementSystem            = require "systems/MovementSystem"
 CollisionSystem           = require "systems/CollisionSystem"
-PlayerInputSystem         = require "systems/PlayerInputSystem"
-TimerSystem               = require "systems/TimerSystem"
 WaveAISystem              = require "systems/WaveAISystem"
 ProjectileSystem          = require "systems/ProjectileSystem"
-MessageSystem             = require "systems/MessageSystem"
-NewGameSystem             = require "systems/NewGameSystem"
-MenuSystem                = require "systems/MenuSystem"
+
+
+--- Utils
+require "lib/GameState"
 
 function love.load()
   engine = Engine()
   eventmanager = EventManager()
   debug_text = ""
-  yes = true
-  no = false
-  -- Reset game when Player Dies
-  engine:addSystem(NewGameSystem(), "update")
+  curGameState = GameStates.newGame
+
   -- Update timers
   engine:addSystem(TimerSystem(), "update")
   -- Process input
   engine:addSystem(PlayerInputSystem(), "update")
+  engine:addSystem(TestMenuInputSystem(), "update")
+  engine:addSystem(GameOverInputSystem(), "update")
     -- Update player vars and state
     -- Go to menu
   -- process wave AI
@@ -76,11 +84,11 @@ function love.load()
     -- Update position
     -- Update collision groups
   -- Process collisions
+  engine:addSystem(CollisionSystem(), "update")
     -- Find all colliding pairs
     -- Process each pair (maybe use callbacks for collision response, like play sound, die, etc)
       -- If we 'delete' something, invalidade all remaining collisions for that body
       -- If not, just separate both bodies (may generate new collisions, not that important)
-  engine:addSystem(CollisionSystem(), "update")
   -- Update statistics (collision response can also change statistics)
   -- Update animations & visual effects
   -- Do clean up
@@ -88,7 +96,9 @@ function love.load()
   engine:addSystem(DrawSystem(), "draw")
   engine:addSystem(HudDrawSystem(), "draw")
   engine:addSystem(MessageSystem(), "draw")
-  engine:addSystem(MenuSystem(), "draw")
+  engine:addSystem(DrawMenuSystem(), "draw")
+
+  changeGameState(curGameState)
 end
 
 function love.update(dt)
@@ -100,7 +110,17 @@ function love.draw()
 end
 
 function love.keypressed(key)
-  if key == "escape" then
+  if(key == "escape") then
     love.event.quit(0)
+
+  elseif(key == "m") then
+    if(curGameState == GameStates.ingame) then
+      changeGameState(GameStates.testMenu)
+
+    elseif(curGameState == GameStates.testMenu) then
+      -- TODO: handle messaging properly
+      debug_text = ""
+      changeGameState(GameStates.ingame)
+    end
   end
 end

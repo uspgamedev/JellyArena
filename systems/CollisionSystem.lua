@@ -148,6 +148,10 @@ function CollisionSystem:PlayerAndDamage(pair)
 
   hp = player:get("Hitpoints")
   hp.cur = hp.cur - 1
+
+  if(hp.cur <= 0) then
+    changeGameState(GameStates.gameOver)
+  end
 end
 
 function CollisionSystem:killAndDrop (entity)

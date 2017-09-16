@@ -4,26 +4,11 @@ function PlayerInputSystem:update(dt)
   for i, entity in pairs(self.targets) do
     self:movement(entity)
     self:fire(entity, dt)
-    self:playerResponse()
   end
 end
 
 function PlayerInputSystem:requires()
   return {"Position", "Velocity", "AttackProperties", "Hitpoints", "IsPlayer"}
-end
-
-function PlayerInputSystem:playerResponse()
-  if (love.keyboard.isDown("y")) then
-    yes = true
-  else yes = false end
-
-  if (love.keyboard.isDown("n")) then
-    no = true
-  else no = false end
-
-  if (love.keyboard.isDown("m")) then
-    engine:addEntity(createMenu("Menu teste"))
-  end
 end
 
 function PlayerInputSystem:movement(entity)
@@ -42,7 +27,7 @@ local fireDirections = {
   ["right"] = Vector(1, 0)
 }
 function PlayerInputSystem:fire(entity, dt)
-  -- reset attack direction
+  -- Reset attack direction
   local fireDirection = Vector(0, 0)
   local fireTimer = entity:get("Timer");
 

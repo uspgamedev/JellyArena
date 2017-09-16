@@ -1,6 +1,6 @@
-local MenuSystem = class("MenuSystem", System)
+local DrawMenuSystem = class("DrawMenuSystem", System)
 
-function MenuSystem:draw()
+function DrawMenuSystem:draw()
   for i, v in pairs(self.targets) do
     local title = v:get("Title")
     local background = v:get("Background")
@@ -10,8 +10,8 @@ function MenuSystem:draw()
   end
 end
 
-function MenuSystem:requires()
+function DrawMenuSystem:requires()
   return {"Title", "Background"}
 end
 
-return MenuSystem
+return DrawMenuSystem
