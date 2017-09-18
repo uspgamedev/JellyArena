@@ -5,6 +5,7 @@ GameStates = {
   gameOver  = {}
 }
 
+
 ------------- Auxiliary functions -------------
 local function startIngameSystems()
   engine:startSystem("TimerSystem")
@@ -33,7 +34,7 @@ local function stopMenuSystems()
 end
 -----------------------------------------------
 ---------- State creation funcitons -----------
-local function setIngameState()  
+local function setIngameState()
   startIngameSystems()
   stopMenuSystems()
 end
@@ -51,7 +52,11 @@ local function setTestMenuState()
   stopIngameSystems()
 
   -- TODO: create menu
-  debug_text = "Test Menu (press M to exit)"
+  if not pauseMenu then
+    pauseMenu = createMenu("Pause", {r = 0, g = 0, b = 0})
+    engine:addEntity(pauseMenu)
+  end
+  debug_text = "DEBUG: Test Menu (press M to exit)"
 
   engine:startSystem("TestMenuInputSystem")
   engine:startSystem("DrawMenuSystem")
@@ -68,11 +73,11 @@ local function setGameOverState()
 end
 
 function changeGameState(gameState)
-  curGameState = gameState 
-  
+  curGameState = gameState
+
   if(gameState == GameStates.ingame) then setIngameState()
   elseif(gameState == GameStates.newGame) then setNewGameState()
   elseif(gameState == GameStates.testMenu) then setTestMenuState()
-  elseif(gameState == GameStates.gameOver) then setGameOverState() 
+  elseif(gameState == GameStates.gameOver) then setGameOverState()
   end
 end

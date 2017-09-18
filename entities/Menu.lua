@@ -1,9 +1,9 @@
 local Title, Background =
   Component.load({"Title", "Background",})
 
-function createMenu(title)
+function createMenu(title, backgrund_color)
   local entity = Entity()
   entity:add(Title(title))
-  entity:add(Background({ r = 0, g = 0, b = 0 }))
+  entity:add(Background(backgrund_color))
   return entity
 end
