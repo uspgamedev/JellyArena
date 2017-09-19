@@ -1,7 +1,7 @@
 local WaveAISystem = class("WaveAISystem", System)
 
 function WaveAISystem:update(dt)
-  count = 0
+  local count = 0
   for _,p in pairs(self.targets) do
     count = count + 1
   end

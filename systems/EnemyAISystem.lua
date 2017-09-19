@@ -10,7 +10,6 @@ function EnemyAISystem:update(dt)
     player = p
     break
   end
-
   -- continue only if player exists
   if player == nil then return end
 

@@ -13,8 +13,8 @@ function Modes.Melee(enemy, player, dt)
   local enemyPosition = enemy:get("Position")
   local playerPosition = player:get("Position")
 
-  distance = (enemyPosition:toVector() - playerPosition:toVector()):len()
-  distance = distance - enemy:get("Circle").radius - player:get("Circle").radius
+  local distance = (enemyPosition:toVector() - playerPosition:toVector()):len()
+  local distance = distance - enemy:get("Circle").radius - player:get("Circle").radius
 
   if(distance <= 1) then -- distance <= enemy.range-1
     engine:addEntity(createDamage(enemy))

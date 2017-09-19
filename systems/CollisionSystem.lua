@@ -103,9 +103,9 @@ end
 
 function CollisionSystem:checkWindowLimit(position, radius)
   -- TODO: change to stage bounds instead of window bounds
-  window_width = love.graphics.getWidth() - radius
-  window_height = love.graphics.getHeight() - radius
-  check = false
+  local window_width = love.graphics.getWidth() - radius
+  local window_height = love.graphics.getHeight() - radius
+  local check = false
   if position.x < radius then
     check = true
     position.x = radius
@@ -126,27 +126,27 @@ function CollisionSystem:checkWindowLimit(position, radius)
 end
 
 function CollisionSystem:PlayerAndHpDrop(pair)
-  player = pair["Player"]
-  drop = pair["HpDrop"]
-  hp = player:get("Hitpoints")
+  local player = pair["Player"]
+  local drop = pair["HpDrop"]
+  local hp = player:get("Hitpoints")
   hp:add(1)
   self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
   self.entitiesToRemove[self.entitiesToRemoveCount] = drop
 end
 
 function CollisionSystem:BulletAndEnemy(pair)
-  bullet = pair["Bullet"]
-  enemy = pair["Enemy"]
+  local bullet = pair["Bullet"]
+  local enemy = pair["Enemy"]
   self:killAndDrop(bullet)
   bullet:get("Collider").resolved = true
   self:killAndDrop(enemy)
 end
 
 function CollisionSystem:PlayerAndDamage(pair)
-  player = pair["Player"]
-  damage = pair["Damage"]
+  local player = pair["Player"]
+  local damage = pair["Damage"]
 
-  hp = player:get("Hitpoints")
+  local hp = player:get("Hitpoints")
   hp.cur = hp.cur - 1
 
   if(hp.cur <= 0) then
@@ -155,7 +155,7 @@ function CollisionSystem:PlayerAndDamage(pair)
 end
 
 function CollisionSystem:killAndDrop (entity)
-  position = entity:get("Position")
+  local position = entity:get("Position")
   engine:addEntity(createHpDrop(position.x, position.y))
   self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
   self.entitiesToRemove[self.entitiesToRemoveCount] = entity

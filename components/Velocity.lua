@@ -12,7 +12,7 @@ function Velocity:getDirection()
 end
 
 function Velocity:setDirection(vector)
-  normalizedVector = vector:normalized()
+  local normalizedVector = vector:normalized()
   self.x = normalizedVector.x
   self.y = normalizedVector.y
 end

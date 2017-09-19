@@ -1,11 +1,6 @@
 local Position, Circle, Velocity, Projectile, Color, Collider
   = Component.load({"Position", "Circle", "Velocity", "Projectile", "Color", "Collider"})
 
-f = function (entity)
-  projectile = entity:get("Projectile")
-  projectile.displacement = 9999999
-end
-
 function createBullet(x, y, direction, damage)
   local entity = Entity()
   entity:add(Position(x, y))
