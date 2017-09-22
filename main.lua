@@ -40,6 +40,7 @@ DrawMenuSystem            = require "systems/draw/DrawMenuSystem"
 DrawMessageSystem         = require "systems/draw/DrawMessageSystem"
 
 TimerSystem               = require "systems/TimerSystem"
+SoundSystem               = require "systems/SoundSystem"
 
 PlayerInputSystem         = require "systems/input/PlayerInputSystem"
 TestMenuInputSystem       = require "systems/input/TestMenuInputSystem"
@@ -60,6 +61,15 @@ function love.load()
   eventmanager = EventManager()
   debug_text = ""
   curGameState = GameStates.newGame
+  music = {
+    sample1 = love.audio.newSource(love.sound.newSoundData(getSound("sample_1.ogg"))),
+    sample2 = love.audio.newSource(love.sound.newSoundData(getSound("sample_2.mp3")))
+  }
+  sounds = {
+    teste = love.audio.newSource(getSound("select.ogg"), "static")
+  }
+
+  current_music = music.sample1
 
   -- Update timers
   engine:addSystem(TimerSystem(), "update")
@@ -103,6 +113,9 @@ end
 
 function love.update(dt)
     engine:update(dt)
+    current_music:setVolume(0.5)
+    current_music:setLooping(true)
+    love.audio.play(music.sample1)
 end
 
 function love.draw()

@@ -60,6 +60,8 @@ function PlayerInputSystem:fire(entity, dt)
       engine:addEntity(bullet)
       hp.cur = hp.cur - 1;
       fireTimer.cooldown = fireTimer.waitTime
+      love.audio.rewind(sounds.teste)
+      love.audio.play(sounds.teste)
     end
   end
 end
