@@ -5,11 +5,10 @@ lovetoys.initialize({
   globals = true
 })
 
-require("lib/utils")
+require("lib/Utils")
 
 --- components
 require "components/AttackProperties"
-require "components/Background"
 require "components/Circle"
 require "components/Collider"
 require "components/Color"
@@ -18,8 +17,6 @@ require "components/IsEnemy"
 require "components/IsPlayer"
 require "components/Position"
 require "components/Projectile"
-require "components/Text"
-require "components/Title"
 require "components/Timer"
 require "components/Velocity"
 
@@ -30,8 +27,6 @@ require "entities/Bullet"
 require "entities/Enemy"
 require "entities/HpDrop"
 require "entities/Player"
-require "entities/Message"
-require "entities/Menu"
 
 --- systems
 DrawSystem                = require "systems/draw/DrawSystem"
@@ -63,7 +58,7 @@ function love.load()
   curGameState = GameStates.newGame
   music = {
     sample1 = love.audio.newSource(love.sound.newSoundData(getSound("sample_1.ogg"))),
-    sample2 = love.audio.newSource(love.sound.newSoundData(getSound("sample_2.mp3")))
+    sample2 = love.audio.newSource(love.sound.newSoundData(getSound("sample_2.ogg")))
   }
   sounds = {
     teste = love.audio.newSource(getSound("select.ogg"), "static")
@@ -115,7 +110,7 @@ function love.update(dt)
     engine:update(dt)
     current_music:setVolume(0.5)
     current_music:setLooping(true)
-    love.audio.play(music.sample1)
+    love.audio.play(current_music)
 end
 
 function love.draw()
@@ -132,7 +127,6 @@ function love.keypressed(key)
 
     elseif(curGameState == GameStates.testMenu) then
       -- TODO: handle messaging properly
-      debug_text = ""
       changeGameState(GameStates.ingame)
     end
   end

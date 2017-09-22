@@ -5,8 +5,7 @@ function DrawMessageSystem:draw()
     local text = v:get("Text")
     love.graphics.setColor(255,255,255,255)
     love.graphics.setNewFont(20)
-    -- TODO: use Text instead of debug_text
-    love.graphics.printf(debug_text, 0, 100, love.graphics.getWidth(), "center")
+    love.graphics.printf(text, 0, 100, love.graphics.getWidth(), "center")
   end
 end
 

@@ -2,11 +2,11 @@ local SoundSystem = class("SoundSystem", System)
 
 music = {
   sample1 = love.audio.newSource(love.sound.newSoundData(getSound("sample_1.ogg"))),
-  sample2 = love.audio.newSource(love.sound.newSoundData(getSound("sample_2.mp3")))
+  sample2 = love.audio.newSource(love.sound.newSoundData(getSound("sample_2.ogg")))
 }
 
 sounds = {
-  teste = love.audio.newSource(getSound("select.mid"), "static")
+  teste = love.audio.newSource(getSound("select.ogg"), "static")
 }
 
 function SoundSystem:update(dt)

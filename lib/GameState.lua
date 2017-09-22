@@ -41,8 +41,6 @@ end
 
 local function setNewGameState()
   engine:addEntity(createPlayer(getCenter().x, getCenter().y))
-  -- TODO: remove this gambs
-  engine:addEntity(createMessage())
 
   setIngameState()
   curGameState = GameStates.ingame
@@ -52,10 +50,6 @@ local function setTestMenuState()
   stopIngameSystems()
 
   -- TODO: create menu
-  if not pauseMenu then
-    pauseMenu = createMenu("Pause", {r = 0, g = 0, b = 0})
-    engine:addEntity(pauseMenu)
-  end
   debug_text = "DEBUG: Test Menu (press M to exit)"
 
   engine:startSystem("TestMenuInputSystem")
@@ -66,8 +60,7 @@ local function setGameOverState()
   stopIngameSystems()
 
   -- TODO: create menu
-  debug_text = "Game Over! Press R to restart"
-
+  debug_text = "Game Over! Press r to restart game"
   engine:startSystem("GameOverInputSystem")
   engine:startSystem("DrawMenuSystem")
 end
