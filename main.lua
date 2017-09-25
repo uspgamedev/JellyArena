@@ -5,7 +5,8 @@ lovetoys.initialize({
   globals = true
 })
 
-require("lib/Utils")
+require ("lib/Utils")
+require ("systems/SoundController")
 
 --- components
 require "components/AttackProperties"
@@ -35,7 +36,6 @@ DrawMenuSystem            = require "systems/draw/DrawMenuSystem"
 DrawMessageSystem         = require "systems/draw/DrawMessageSystem"
 
 TimerSystem               = require "systems/TimerSystem"
-SoundSystem               = require "systems/SoundSystem"
 
 PlayerInputSystem         = require "systems/input/PlayerInputSystem"
 TestMenuInputSystem       = require "systems/input/TestMenuInputSystem"
@@ -56,15 +56,7 @@ function love.load()
   eventmanager = EventManager()
   debug_text = ""
   curGameState = GameStates.newGame
-  music = {
-    sample1 = love.audio.newSource(love.sound.newSoundData(getSound("sample_1.ogg"))),
-    sample2 = love.audio.newSource(love.sound.newSoundData(getSound("sample_2.ogg")))
-  }
-  sounds = {
-    teste = love.audio.newSource(getSound("select.ogg"), "static")
-  }
-
-  current_music = music.sample1
+  setTrack("sample1")
 
   -- Update timers
   engine:addSystem(TimerSystem(), "update")
@@ -108,9 +100,7 @@ end
 
 function love.update(dt)
     engine:update(dt)
-    current_music:setVolume(0.5)
-    current_music:setLooping(true)
-    love.audio.play(current_music)
+    playTrack()
 end
 
 function love.draw()
