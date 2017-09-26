@@ -5,19 +5,20 @@ function createBullet(entity, x, y, direction, damage)
   entity:add(Position(x, y))
   entity:add(Circle(5))
   entity:add(Velocity(direction.x, direction.y, 1000))
-  entity:add(Color(255, 255, 255))
 end
 
 function createPlayerBullet(x, y, direction, damage)
   local entity = Entity()
+  entity:add(Color(255, 255, 255))
   createBullet(entity, x, y, direction, damage)
-  entity:add(Projectile("Player", damage, distToPix(7)))
+  entity:add(Projectile("Player", damage, distToPix(10)))
   entity:add(Collider("PlayerBullet", true))
   return entity
 end
 
 function createEnemyBullet (x, y, direction, damage)
   local entity = Entity()
+  entity:add(Color(255, 255, 0))
   createBullet(entity, x, y, direction, damage)
   entity:add(Projectile("Enemy", damage, distToPix(7)))
   entity:add(Collider("EnemyBullet", true))
