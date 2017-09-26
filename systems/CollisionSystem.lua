@@ -68,8 +68,8 @@ function CollisionSystem:update(dt)
     if not resolved then
       if (pair["Player"] and pair["HpDrop"]) then
         self:PlayerAndHpDrop(pair)
-      elseif (pair["Enemy"] and pair["Bullet"]) then
-        self:BulletAndEnemy(pair)
+      elseif (pair["Enemy"] and pair["PlayerBullet"]) then
+        self:PlayerBulletAndEnemy(pair)
       elseif (pair["Player"] and pair["Damage"]) then
         self:PlayerAndDamage(pair)
       end
@@ -134,8 +134,8 @@ function CollisionSystem:PlayerAndHpDrop(pair)
   self.entitiesToRemove[self.entitiesToRemoveCount] = drop
 end
 
-function CollisionSystem:BulletAndEnemy(pair)
-  local bullet = pair["Bullet"]
+function CollisionSystem:PlayerBulletAndEnemy(pair)
+  local bullet = pair["PlayerBullet"]
   local enemy = pair["Enemy"]
   self:killAndDrop(bullet)
   bullet:get("Collider").resolved = true
