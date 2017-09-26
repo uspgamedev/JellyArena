@@ -14,7 +14,7 @@ function WaveAISystem:update(dt)
 end
 
 function WaveAISystem:requires()
-  return {"IsEnemy"}
+  return {"AI"}
 end
 
 return WaveAISystem

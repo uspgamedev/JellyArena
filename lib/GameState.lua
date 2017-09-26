@@ -15,6 +15,7 @@ local function startIngameSystems()
   engine:startSystem("PlayerInputSystem")
   engine:startSystem("WaveAISystem")
   engine:startSystem("ProjectileSystem")
+  engine:startSystem("CleanUpSystem")
 end
 
 local function stopIngameSystems()
@@ -25,6 +26,7 @@ local function stopIngameSystems()
   engine:stopSystem("PlayerInputSystem")
   engine:stopSystem("WaveAISystem")
   engine:stopSystem("ProjectileSystem")
+  engine:stopSystem("CleanUpSystem")
 end
 
 local function stopMenuSystems()

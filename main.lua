@@ -14,7 +14,7 @@ require "components/Circle"
 require "components/Collider"
 require "components/Color"
 require "components/Hitpoints"
-require "components/IsEnemy"
+require "components/AI"
 require "components/IsPlayer"
 require "components/Position"
 require "components/Projectile"
@@ -46,6 +46,7 @@ MovementSystem            = require "systems/MovementSystem"
 CollisionSystem           = require "systems/CollisionSystem"
 WaveAISystem              = require "systems/WaveAISystem"
 ProjectileSystem          = require "systems/ProjectileSystem"
+CleanUpSystem             = require "systems/CleanUpSystem"
 
 
 --- Utils
@@ -55,6 +56,7 @@ function love.load()
   engine = Engine()
   eventmanager = EventManager()
   debug_text = ""
+  garbage_list = {}
   curGameState = GameStates.newGame
   setTrack("sample1")
 
@@ -94,6 +96,7 @@ function love.load()
   engine:addSystem(DrawHUDSystem(), "draw")
   engine:addSystem(DrawMessageSystem(), "draw")
   engine:addSystem(DrawMenuSystem(), "draw")
+  engine:addSystem(CleanUpSystem(), "update")
 
   changeGameState(curGameState)
 end
