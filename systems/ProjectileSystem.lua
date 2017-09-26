@@ -5,7 +5,7 @@ function ProjectileSystem:update(dt)
     local projectile = v:get("Projectile")
     local velocity = v:get("Velocity")
     projectile:addDisplacement((velocity:toVector() * dt):len())
-    if ( not projectile:moving() ) then
+    if (not projectile:moving() and projectile.owner == "Player") then
       velocity:setDirection(Vector(0, 0))
       local position = v:get("Position")
       drop = createHpDrop(position.x, position.y)

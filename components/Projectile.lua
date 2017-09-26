@@ -1,6 +1,7 @@
 local Projectile  = Component.create("Projectile")
 
-function Projectile:initialize(damage, maxDistance)
+function Projectile:initialize(owner, damage, maxDistance)
+  self.owner = owner
   self.damage = damage
   self.maxDistance = maxDistance
   self.displacement = 0

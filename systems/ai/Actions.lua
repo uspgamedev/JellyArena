@@ -24,6 +24,32 @@ Actions.MeleeAttack = {
   end
 }
 
+Actions.RangedAttack = {
+  prerequisites = {
+    {
+      name = "InRange",
+      target = "Player",
+    },
+    {
+      name = "AttackAvailable"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  perform = function(agent, target, dt)
+    local attackTimer = agent:get("Timer")
+    local position = agent:get("Position")
+    local direction = (target:get("Position"):toVector() - position:toVector())
+    direction:normalizeInplace()
+    bullet = createEnemyBullet(position.x, position.y, direction, 1)
+    engine:addEntity(bullet)
+    attackTimer:start()
+  end
+}
+
 Actions.FollowPlayer = {
   prerequisites = {
   },
