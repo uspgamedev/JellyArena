@@ -6,7 +6,7 @@ lovetoys.initialize({
 })
 
 require ("lib/Utils")
-require ("systems/SoundController")
+require ("lib/SoundController")
 
 --- components
 require "components/AttackProperties"
