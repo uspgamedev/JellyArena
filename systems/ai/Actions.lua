@@ -20,6 +20,7 @@ Actions.MeleeAttack = {
   },
   perform = function(agent, target, dt)
     local attack = getAttack(agent, "MeleeAttack")
+    local globalTimer = agent:get("Timer")
     local attackTimer = attack:get("Timer")
     local attackProperties = attack:get("AttackProperties")
     local radius = agent:get("Circle").radius + attackProperties.range
@@ -27,6 +28,7 @@ Actions.MeleeAttack = {
     engine:addEntity(damage)
     table.insert(garbage_list, damage)
     attackTimer:start()
+    globalTimer:start()
   end
 }
 
@@ -50,6 +52,7 @@ Actions.RangedAttack = {
   },
   perform = function(agent, target, dt)
     local attack = getAttack(agent, "RangedAttack")
+    local globalTimer = agent:get("Timer")
     local attackTimer = attack:get("Timer")
     local attackProperties = attack:get("AttackProperties")
     local position = agent:get("Position")
@@ -58,6 +61,7 @@ Actions.RangedAttack = {
     bullet = createEnemyBullet(position.x, position.y, direction, attackProperties.damage, attackProperties.range)
     engine:addEntity(bullet)
     attackTimer:start()
+    globalTimer:start()
   end
 }
 

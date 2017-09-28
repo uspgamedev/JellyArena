@@ -18,9 +18,10 @@ end
 
 function Prerequisites.AttackAvailable(action, prerequisite, agent, target, dt)
   local attack = getAttack(agent, prerequisite.target)
+  local globalTimer = agent:get("Timer")
   if attack then
     local attackTimer = attack:get("Timer")
-    if (attackTimer.cooldown <= 0) then
+    if (attackTimer.cooldown <= 0 and globalTimer.cooldown <= 0) then
       return true
     end
   end
