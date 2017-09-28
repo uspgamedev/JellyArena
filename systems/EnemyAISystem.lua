@@ -18,23 +18,26 @@ function EnemyAISystem:update(dt)
 
   for i, enemy in pairs(self.targets.Enemies) do
     local AI = enemy:get("AI")
-    local action = AI:getAction(AI.goal)
-    local accomplished = false
+    local actions = AI:getActions(AI.goal)
+    local nextAction = Actions.Idle
+    local actionStack = Stack()
+    local acomplished
+    actionStack:multiPush(actions)
     repeat
+      action = actionStack:pop()
       accomplished = true
       for _, prerequisite in pairs(action.prerequisites) do
-        print(prerequisite.name)
-        accomplished = Prerequisites[prerequisite.name](action.name, prerequisite, enemy, player, dt)
+        accomplished = accomplished and Prerequisites[prerequisite.name](action.name, prerequisite, enemy, player, dt)
         if not accomplished then
-          action = AI:getAction(prerequisite)
+          actionStack:multiPush(AI:getActions(prerequisite))
           break
         end
       end
-    until accomplished or not action
-    if action == nil then
-      action = Actions.Idle
-    end
-    action.perform(enemy, player, dt)
+      if accomplished and action.score > nextAction.score then
+        nextAction = action
+      end
+    until actionStack:isEmpty()
+    nextAction.perform(enemy, player, dt)
   end
 end
 

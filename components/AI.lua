@@ -15,3 +15,15 @@ function AI:getAction(effect)
   end
   return nil
 end
+
+function AI:getActions(effect)
+  local result = {}
+  for _, action in pairs(self.actions) do
+    for _, e in pairs(action.effects) do
+      if (e.name == effect.name and e.target == effect.target) then
+        table.insert(result, action)
+      end
+    end
+  end
+  return result
+end

@@ -4,6 +4,7 @@ lovetoys.initialize({
   debug = true,
   globals = true
 })
+Stack = require "lib/Stack"
 
 require ("lib/Utils")
 require ("lib/SoundController")
