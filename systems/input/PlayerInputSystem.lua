@@ -4,6 +4,7 @@ function PlayerInputSystem:update(dt)
   for i, entity in pairs(self.targets) do
     self:movement(entity)
     self:fire(entity, dt)
+    self:testTrack() --remove after track test
   end
 end
 
@@ -62,6 +63,17 @@ function PlayerInputSystem:fire(entity, dt)
       fireTimer.cooldown = fireTimer.waitTime
       playSound("teste")
     end
+  end
+end
+
+--remove after track test
+function PlayerInputSystem:testTrack()
+  if love.keyboard.isDown("1") then
+    setTrack("sample1")
+  elseif love.keyboard.isDown("2") then
+    setTrack("sample2")
+  elseif love.keyboard.isDown("3") then
+    setTrack("sample3")
   end
 end
 
