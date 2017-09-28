@@ -42,7 +42,9 @@ local function setIngameState()
 end
 
 local function setNewGameState()
-  engine:addEntity(createPlayer(getCenter().x, getCenter().y))
+  local player = createPlayer(getCenter().x, getCenter().y)
+  engine:addEntity(player)
+  engine:addEntity(createPlayerAttack(player))
 
   setIngameState()
   curGameState = GameStates.ingame

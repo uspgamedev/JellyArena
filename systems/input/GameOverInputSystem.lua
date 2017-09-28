@@ -6,8 +6,11 @@ function GameOverInputSystem:update(dt)
       engine:removeEntity(entity, true)
     end
 
-    engine:addEntity(createPlayer(getCenter().x, getCenter().y))
-    
+
+    local player = createPlayer(getCenter().x, getCenter().y)
+    engine:addEntity(player)
+    engine:addEntity(createPlayerAttack(player))
+
     changeGameState(GameStates.ingame)
   end
 end

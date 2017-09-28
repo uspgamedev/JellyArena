@@ -16,7 +16,6 @@ function CollisionSystem:update(dt)
     local collider = v:get("Collider")
     local position = v:get("Position")
     local radius = v:get("Circle").radius
-
     -- Delete entities that have gone outside stage bounds
     if (self:checkWindowLimit(position, radius) and not collider.clampToStageBounds) then
       collider.active = false
@@ -70,8 +69,10 @@ function CollisionSystem:update(dt)
         self:PlayerAndHpDrop(pair)
       elseif (pair["Enemy"] and pair["PlayerBullet"]) then
         self:PlayerBulletAndEnemy(pair)
-      elseif (pair["Player"] and pair["Damage"]) then
-        self:PlayerAndDamage(pair)
+      elseif (pair["Player"] and pair["DamageArea"]) then
+        self:PlayerAndDamageArea(pair)
+      elseif (pair["Player"] and pair["EnemyBullet"]) then
+        self:PlayerAndEnemyBullet(pair)
       end
     end
 
@@ -142,16 +143,28 @@ function CollisionSystem:PlayerBulletAndEnemy(pair)
   self:killAndDrop(enemy)
 end
 
-function CollisionSystem:PlayerAndDamage(pair)
+function CollisionSystem:PlayerAndDamageArea(pair)
   local player = pair["Player"]
-  local damage = pair["Damage"]
+  local damage = pair["DamageArea"]
 
   local hp = player:get("Hitpoints")
-  hp.cur = hp.cur - 1
+  hp.cur = hp.cur - damage:get("Damage").damage
   if(hp.cur <= 0) then
     changeGameState(GameStates.gameOver)
   end
 end
+
+function CollisionSystem:PlayerAndEnemyBullet(pair)
+  local player = pair["Player"]
+  local bullet = pair["EnemyBullet"]
+  local hp = player:get("Hitpoints")
+  hp.cur = hp.cur - bullet:get("Projectile").damage
+  engine:removeEntity(bullet)
+  if(hp.cur <= 0) then
+    changeGameState(GameStates.gameOver)
+  end
+end
+
 
 function CollisionSystem:killAndDrop (entity)
   local position = entity:get("Position")

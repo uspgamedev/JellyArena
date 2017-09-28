@@ -6,10 +6,18 @@ function WaveAISystem:update(dt)
     count = count + 1
   end
   if count == 0 then
-    engine:addEntity(createEnemy(10, 10))
-    engine:addEntity(createEnemy(10, 10000))
-    engine:addEntity(createEnemy(10000, 10))
-    engine:addEntity(createEnemy(10000, 100000))
+    local enemy = createRangedEnemy(10, 10)
+    engine:addEntity(enemy)
+    engine:addEntity(createRangedAttack(enemy))
+    enemy = createMeleeEnemy(10, 1000000)
+    engine:addEntity(enemy)
+    engine:addEntity(createMeleeAttack(enemy))
+    enemy = createMeleeEnemy(1000000, 10)
+    engine:addEntity(enemy)
+    engine:addEntity(createMeleeAttack(enemy))
+    enemy = createMeleeEnemy(1000000, 1000000)
+    engine:addEntity(enemy)
+    engine:addEntity(createMeleeAttack(enemy))
   end
 end
 

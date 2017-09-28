@@ -9,7 +9,7 @@ function PlayerInputSystem:update(dt)
 end
 
 function PlayerInputSystem:requires()
-  return {"Position", "Velocity", "AttackProperties", "Hitpoints", "IsPlayer"}
+  return {"IsPlayer"}
 end
 
 function PlayerInputSystem:movement(entity)
@@ -29,8 +29,14 @@ local fireDirections = {
 }
 function PlayerInputSystem:fire(entity, dt)
   -- Reset attack direction
+  local attack
+  for _, child in pairs(entity.children) do
+    if child:has("AttackProperties") then
+      attack = child
+    end
+  end
   local fireDirection = Vector(0, 0)
-  local fireTimer = entity:get("Timer");
+  local fireTimer = attack:get("Timer");
 
   -- Continue only if we can shoot
   if fireTimer.isActive and fireTimer.cooldown > 0 then
@@ -54,10 +60,10 @@ function PlayerInputSystem:fire(entity, dt)
     if hp.cur > 1 then
       local playerPosition = entity:get("Position")
       local position = playerPosition:toVector()
-      local attack = entity:get("AttackProperties")
+      local attackProperties = attack:get("AttackProperties")
 
-      position = position + attack.spawnDistance * fireDirection
-      bullet = createPlayerBullet(position.x, position.y, fireDirection, attack.damage)
+      position = position + attackProperties.spawnDistance * fireDirection
+      bullet = createPlayerBullet(position.x, position.y, fireDirection, attackProperties.damage, attackProperties.range)
       engine:addEntity(bullet)
       hp.cur = hp.cur - 1;
       fireTimer.cooldown = fireTimer.waitTime

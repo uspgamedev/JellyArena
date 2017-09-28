@@ -1,13 +1,15 @@
 local Actions = {}
 
 Actions.MeleeAttack = {
+  name = "MeleeAttack",
   prerequisites = {
     {
-      name = "InRange",
+      name = "InAttackRange",
       target = "Player",
     },
     {
-      name = "AttackAvailable"
+      name = "AttackAvailable",
+      target = "MeleeAttack"
     }
   },
   effects = {
@@ -16,8 +18,11 @@ Actions.MeleeAttack = {
     }
   },
   perform = function(agent, target, dt)
-    local attackTimer = agent:get("Timer")
-    local damage = createDamage(agent)
+    local attack = getAttack(agent, "MeleeAttack")
+    local attackTimer = attack:get("Timer")
+    local attackProperties = attack:get("AttackProperties")
+    local radius = agent:get("Circle").radius + attackProperties.range
+    local damage = createDamageArea(agent:get("Position"), radius, attackProperties.damage)
     engine:addEntity(damage)
     table.insert(garbage_list, damage)
     attackTimer:start()
@@ -25,13 +30,15 @@ Actions.MeleeAttack = {
 }
 
 Actions.RangedAttack = {
+  name = "RangedAttack",
   prerequisites = {
     {
-      name = "InRange",
+      name = "InAttackRange",
       target = "Player",
     },
     {
-      name = "AttackAvailable"
+      name = "AttackAvailable",
+      target = "RangedAttack"
     }
   },
   effects = {
@@ -40,22 +47,25 @@ Actions.RangedAttack = {
     }
   },
   perform = function(agent, target, dt)
-    local attackTimer = agent:get("Timer")
+    local attack = getAttack(agent, "RangedAttack")
+    local attackTimer = attack:get("Timer")
+    local attackProperties = attack:get("AttackProperties")
     local position = agent:get("Position")
     local direction = (target:get("Position"):toVector() - position:toVector())
     direction:normalizeInplace()
-    bullet = createEnemyBullet(position.x, position.y, direction, 1)
+    bullet = createEnemyBullet(position.x, position.y, direction, attackProperties.damage, attackProperties.range)
     engine:addEntity(bullet)
     attackTimer:start()
   end
 }
 
 Actions.FollowPlayer = {
+  name = "FollowPlayer",
   prerequisites = {
   },
   effects = {
     {
-      name = "InRange",
+      name = "InAttackRange",
       target = "Player"
     }
   },
@@ -78,6 +88,7 @@ Actions.FollowPlayer = {
 }
 
 Actions.Idle = {
+  name = "Idle",
   prerequisites = {},
   effects = {},
   perform = function(agent, target, dt)
