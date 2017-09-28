@@ -21,6 +21,6 @@ function createEnemyBullet (x, y, direction, damage, range)
   entity:add(Color(255, 255, 0))
   createBullet(entity, x, y, direction, damage)
   entity:add(Projectile("Enemy", damage, range))
-  entity:add(Collider("EnemyBullet", true))
+  entity:add(Collider("EnemyBullet", false))
   return entity
 end
