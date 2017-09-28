@@ -1,7 +1,8 @@
 local Prerequisites = {}
 
-function Prerequisites.InRange(prerequisite, agent, target, dt)
-  local range = 2
+function Prerequisites.InAttackRange(action, prerequisite, agent, target, dt)
+  local attack = getAttack(agent, action)
+  local range = attack:get("AttackProperties").range
   local agentPosition = agent:get("Position")
   local targetPosition = target:get("Position")
 
@@ -13,7 +14,7 @@ function Prerequisites.InRange(prerequisite, agent, target, dt)
   return false
 end
 
-function Prerequisites.AttackAvailable(prerequisite, agent, target, dt)
+function Prerequisites.AttackAvailable(action, prerequisite, agent, target, dt)
   local attack = getAttack(agent, prerequisite.target)
   if attack then
     local attackTimer = attack:get("Timer")

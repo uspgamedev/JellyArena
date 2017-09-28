@@ -1,9 +1,10 @@
 local Actions = {}
 
 Actions.MeleeAttack = {
+  name = "MeleeAttack",
   prerequisites = {
     {
-      name = "InRange",
+      name = "InAttackRange",
       target = "Player",
     },
     {
@@ -29,6 +30,7 @@ Actions.MeleeAttack = {
 }
 
 Actions.RangedAttack = {
+  name = "RangedAttack",
   prerequisites = {
     {
       name = "InRange",
@@ -56,11 +58,12 @@ Actions.RangedAttack = {
 }
 
 Actions.FollowPlayer = {
+  name = "FollowPlayer",
   prerequisites = {
   },
   effects = {
     {
-      name = "InRange",
+      name = "InAttackRange",
       target = "Player"
     }
   },
@@ -83,6 +86,7 @@ Actions.FollowPlayer = {
 }
 
 Actions.Idle = {
+  name = "Idle",
   prerequisites = {},
   effects = {},
   perform = function(agent, target, dt)
