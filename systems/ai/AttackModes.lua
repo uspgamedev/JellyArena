@@ -17,7 +17,7 @@ function Modes.Melee(enemy, player, dt)
   local distance = distance - enemy:get("Circle").radius - player:get("Circle").radius
 
   if(distance <= 1) then -- distance <= enemy.range-1
-    engine:addEntity(createDamage(enemy))
+    engine:addEntity(createDamageArea(enemy))
     attackTimer:start()
   end
 

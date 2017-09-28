@@ -21,10 +21,11 @@ require "components/Projectile"
 require "components/Timer"
 require "components/Velocity"
 require "components/Label"
+require "components/Damage"
 
 
 --- Entities
-require "entities/Damage"
+require "entities/DamageArea"
 require "entities/Bullet"
 require "entities/Enemy"
 require "entities/HpDrop"

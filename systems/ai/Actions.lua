@@ -7,7 +7,8 @@ Actions.MeleeAttack = {
       target = "Player",
     },
     {
-      name = "AttackAvailable"
+      name = "AttackAvailable",
+      target = "MeleeAttack"
     }
   },
   effects = {
@@ -16,8 +17,11 @@ Actions.MeleeAttack = {
     }
   },
   perform = function(agent, target, dt)
-    local attackTimer = agent:get("Timer")
-    local damage = createDamage(agent)
+    local attack = getAttack(agent, "MeleeAttack")
+    local attackTimer = attack:get("Timer")
+    local attackProperties = attack:get("AttackProperties")
+    local radius = agent:get("Circle").radius + attackProperties.range
+    local damage = createDamageArea(agent:get("Position"), radius, attackProperties.damage)
     engine:addEntity(damage)
     table.insert(garbage_list, damage)
     attackTimer:start()
@@ -31,7 +35,8 @@ Actions.RangedAttack = {
       target = "Player",
     },
     {
-      name = "AttackAvailable"
+      name = "AttackAvailable",
+      target = "RangedAttack"
     }
   },
   effects = {

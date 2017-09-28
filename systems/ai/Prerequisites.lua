@@ -14,11 +14,14 @@ function Prerequisites.InRange(prerequisite, agent, target, dt)
 end
 
 function Prerequisites.AttackAvailable(prerequisite, agent, target, dt)
-  local attackTimer = agent:get("Timer")
-  if (attackTimer.cooldown > 0) then
-    return false
+  local attack = getAttack(agent, prerequisite.target)
+  if attack then
+    local attackTimer = attack:get("Timer")
+    if (attackTimer.cooldown <= 0) then
+      return true
+    end
   end
-  return true
+  return false
 end
 
 return Prerequisites
