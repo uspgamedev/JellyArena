@@ -146,7 +146,7 @@ function CollisionSystem:PlayerAndDamageArea(pair)
   local damage = pair["DamageArea"]
 
   local hp = player:get("Hitpoints")
-  hp.cur = hp.cur - 1
+  hp.cur = hp.cur - damage:get("Damage").damage
   if(hp.cur <= 0) then
     changeGameState(GameStates.gameOver)
   end
