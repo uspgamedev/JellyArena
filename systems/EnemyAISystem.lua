@@ -23,6 +23,7 @@ function EnemyAISystem:update(dt)
     repeat
       accomplished = true
       for _, prerequisite in pairs(action.prerequisites) do
+        print(prerequisite.name)
         accomplished = Prerequisites[prerequisite.name](action.name, prerequisite, enemy, player, dt)
         if not accomplished then
           action = AI:getAction(prerequisite)

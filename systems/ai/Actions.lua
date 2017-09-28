@@ -33,7 +33,7 @@ Actions.RangedAttack = {
   name = "RangedAttack",
   prerequisites = {
     {
-      name = "InRange",
+      name = "InAttackRange",
       target = "Player",
     },
     {
@@ -47,11 +47,13 @@ Actions.RangedAttack = {
     }
   },
   perform = function(agent, target, dt)
-    local attackTimer = agent:get("Timer")
+    local attack = getAttack(agent, "RangedAttack")
+    local attackTimer = attack:get("Timer")
+    local attackProperties = attack:get("AttackProperties")
     local position = agent:get("Position")
     local direction = (target:get("Position"):toVector() - position:toVector())
     direction:normalizeInplace()
-    bullet = createEnemyBullet(position.x, position.y, direction, 1)
+    bullet = createEnemyBullet(position.x, position.y, direction, attackProperties.damage, attackProperties.range)
     engine:addEntity(bullet)
     attackTimer:start()
   end

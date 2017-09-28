@@ -16,3 +16,11 @@ function createMeleeAttack(parent)
   entity:add(AttackProperties(2, 2, 0))
   return entity
 end
+
+function createRangedAttack(parent)
+  local entity = Entity(parent)
+  entity:add(Label("RangedAttack"))
+  entity:add(Timer(0.5))
+  entity:add(AttackProperties(1, 500, 25))
+  return entity
+end

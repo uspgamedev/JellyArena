@@ -16,11 +16,11 @@ function createPlayerBullet(x, y, direction, damage, range)
   return entity
 end
 
-function createEnemyBullet (x, y, direction, damage)
+function createEnemyBullet (x, y, direction, damage, range)
   local entity = Entity()
   entity:add(Color(255, 255, 0))
   createBullet(entity, x, y, direction, damage)
-  entity:add(Projectile("Enemy", damage, distToPix(7)))
+  entity:add(Projectile("Enemy", damage, range))
   entity:add(Collider("EnemyBullet", true))
   return entity
 end
