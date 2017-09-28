@@ -20,6 +20,7 @@ require "components/Position"
 require "components/Projectile"
 require "components/Timer"
 require "components/Velocity"
+require "components/Label"
 
 
 --- Entities
@@ -28,6 +29,7 @@ require "entities/Bullet"
 require "entities/Enemy"
 require "entities/HpDrop"
 require "entities/Player"
+require "entities/Attack"
 
 --- systems
 DrawSystem                = require "systems/draw/DrawSystem"
