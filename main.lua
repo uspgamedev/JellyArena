@@ -7,6 +7,7 @@ lovetoys.initialize({
 
 require ("lib/Utils")
 require ("lib/SoundController")
+require ("lib/MenuController")
 
 --- components
 require "components/AttackProperties"
@@ -38,7 +39,7 @@ DrawMessageSystem         = require "systems/draw/DrawMessageSystem"
 TimerSystem               = require "systems/TimerSystem"
 
 PlayerInputSystem         = require "systems/input/PlayerInputSystem"
-TestMenuInputSystem       = require "systems/input/TestMenuInputSystem"
+MenuInputSystem       = require "systems/input/MenuInputSystem"
 GameOverInputSystem       = require "systems/input/GameOverInputSystem"
 
 EnemyAISystem             = require "systems/EnemyAISystem"
@@ -62,7 +63,7 @@ function love.load()
   engine:addSystem(TimerSystem(), "update")
   -- Process input
   engine:addSystem(PlayerInputSystem(), "update")
-  engine:addSystem(TestMenuInputSystem(), "update")
+  engine:addSystem(MenuInputSystem(), "update")
   engine:addSystem(GameOverInputSystem(), "update")
     -- Update player vars and state
     -- Go to menu

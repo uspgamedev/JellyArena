@@ -52,13 +52,13 @@ local function setTestMenuState()
   -- TODO: create menu
   debug_text = "DEBUG: Test Menu (press M to exit)"
 
-  engine:startSystem("TestMenuInputSystem")
+  engine:startSystem("MenuInputSystem")
   engine:startSystem("DrawMenuSystem")
 end
 
 local function setGameOverState()
   stopIngameSystems()
-
+  setMenu("gameOver")
   -- TODO: create menu
   debug_text = "Game Over! Press r to restart game"
   engine:startSystem("GameOverInputSystem")
