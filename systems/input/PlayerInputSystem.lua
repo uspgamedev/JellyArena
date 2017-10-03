@@ -61,9 +61,11 @@ function PlayerInputSystem:fire(entity, dt)
       local playerPosition = entity:get("Position")
       local position = playerPosition:toVector()
       local attackProperties = attack:get("AttackProperties")
+      local range = attack:get("AttackRange")
+      local attackDamage = attack:get("Damage").damage
 
       position = position + attackProperties.spawnDistance * fireDirection
-      bullet = createPlayerBullet(position.x, position.y, fireDirection, attackProperties.damage, attackProperties.range)
+      bullet = createPlayerBullet(position.x, position.y, fireDirection, attackDamage, range.max)
       engine:addEntity(bullet)
       hp.cur = hp.cur - 1;
       fireTimer.cooldown = fireTimer.waitTime
