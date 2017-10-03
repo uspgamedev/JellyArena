@@ -5,7 +5,7 @@ Actions.MeleeAttack = {
   score = 10,
   prerequisites = {
     {
-      name = "InAttackRange",
+      name = "InMaxAttackRange",
       target = "Player",
     },
     {
@@ -39,7 +39,11 @@ Actions.RangedAttack = {
   score = 8,
   prerequisites = {
     {
-      name = "InAttackRange",
+      name = "InMaxAttackRange",
+      target = "Player",
+    },
+    {
+      name = "InMinAttackRange",
       target = "Player",
     },
     {
@@ -76,7 +80,7 @@ Actions.FollowPlayer = {
   },
   effects = {
     {
-      name = "InAttackRange",
+      name = "InMaxAttackRange",
       target = "Player"
     }
   },
@@ -98,6 +102,32 @@ Actions.FollowPlayer = {
   end
 }
 
+Actions.GoToRange = {
+  name = "GotToRange",
+  score = 2,
+  prerequisites = {
+  },
+  effects = {
+    {
+      name = "InMinAttackRange",
+      target = "Player"
+    }
+  },
+  perform = function(agent, target, dt)
+    local agentVelocity = agent:get("Velocity")
+    local agentPosition = agent:get("Position")
+    local targetVelocity = target:get("Velocity")
+    local targetPosition = target:get("Position")
+
+
+    local distance = agentVelocity.maxSpeed * dt -- distance the agent can walk
+    local currentDistance = (agentPosition:toVector() - targetPosition:toVector()):len()
+    local direction = (agentPosition:toVector() - targetPosition:toVector())
+    direction:normalizeInplace()
+    agentVelocity:setDirection(direction)
+  end
+}
+
 Actions.Idle = {
   name = "Idle",
   score = 1,
@@ -106,18 +136,8 @@ Actions.Idle = {
   perform = function(agent, target, dt)
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")
+    agentVelocity:setDirection(Vector(0, 0))
 
-    local distance = agentVelocity.maxSpeed*dt -- distance the agent can walk
-    local direction = (target:get("Position"):toVector() - agentPosition:toVector())
-    local maxDistance = direction:len() - agent:get("Circle").radius - target:get("Circle").radius -- distance between agent and target
-    direction:normalizeInplace()
-    agentVelocity:setDirection(direction)
-
-    if(distance > maxDistance) then
-      agentVelocity.speed = maxDistance/dt
-    else
-      agentVelocity.speed = distance/dt
-    end
   end
 }
 

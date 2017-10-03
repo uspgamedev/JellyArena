@@ -7,7 +7,7 @@ function createPlayerAttack(parent)
   entity:add(Timer(0.3))
   entity:add(AttackProperties(25))
   entity:add(Damage(5))
-  entity:add(AttackRange(250, 0))
+  entity:add(AttackRange(250))
   return entity
 end
 
@@ -17,7 +17,7 @@ function createMeleeAttack(parent)
   entity:add(Timer(1))
   entity:add(AttackProperties(0))
   entity:add(Damage(2))
-  entity:add(AttackRange(2, 0))
+  entity:add(AttackRange(2))
   return entity
 end
 
@@ -27,6 +27,6 @@ function createRangedAttack(parent)
   entity:add(Timer(0.5))
   entity:add(AttackProperties(25))
   entity:add(Damage(1))
-  entity:add(AttackRange(500, 100))
+  entity:add(AttackRange(400, 250))
   return entity
 end
