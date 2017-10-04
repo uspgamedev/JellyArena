@@ -9,8 +9,21 @@ local menus = {
         end
       },
       {
+        name = "Restart",
+        action = function ()
+          for _, entity in pairs(engine.entities) do
+            engine:removeEntity(entity, true)
+          end
+
+          engine:addEntity(createPlayer(getCenter().x, getCenter().y))
+
+          changeGameState(GameStates.ingame)
+        end
+      },
+      {
         name = "Options",
         action = function ()
+          setMenu("options")
         end
       },
       {
@@ -43,6 +56,38 @@ local menus = {
         end
       }
     }
+  },
+  ["options"] = {
+    title = "Options",
+    items = {
+      {
+        name = "Music ON/OFF",
+        action = function ()
+          if play_track == true then
+            play_track = false
+            love.audio.stop()
+          else
+            play_track = true
+          end
+        end
+      },
+      {
+        name = "Sound Effects ON/OFF",
+        action = function ()
+          if play_effects == true then
+            play_effects = false
+          else
+            play_effects = true
+          end
+        end
+      },
+      {
+        name = "Back",
+        action = function ()
+          setMenu("pause")
+        end
+      }
+    }
   }
 }
 
@@ -51,6 +96,7 @@ local current_menu = menus["pause"]
 
 function setMenu(menu_type)
   current_menu = menus[menu_type]
+  selected_item = 1
 end
 
 function getMenu()

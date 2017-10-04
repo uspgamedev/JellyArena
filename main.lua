@@ -56,6 +56,8 @@ function love.load()
   engine = Engine()
   eventmanager = EventManager()
   debug_text = ""
+  play_track = true
+  play_effects = true
   curGameState = GameStates.newGame
   setTrack("sample1")
 

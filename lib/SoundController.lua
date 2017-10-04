@@ -18,14 +18,14 @@ function setTrack(trackName)
 end
 
 function playSound(soundName)
-  if ( sounds[soundName] ~= nil ) then
+  if ( play_effects == true and sounds[soundName] ~= nil ) then
     love.audio.rewind(sounds[soundName])
     love.audio.play(sounds[soundName])
   end
 end
 
 function playTrack()
-  if ( current_track ~= nil ) then
+  if ( play_track == true and current_track ~= nil ) then
     love.audio.play(current_track)
   end
 end
