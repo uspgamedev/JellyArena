@@ -13,7 +13,7 @@ function DrawMenuSystem:draw()
   for i, v in ipairs (menu.items) do
     love.graphics.printf(v.name, 0, 200 + i * 50, love.graphics.getWidth(), "center")
   end
-  love.graphics.rectangle("line", getCenter().x - 100, 200 + getSelectedItem() * 50, 200, 50)
+  love.graphics.rectangle("line", getCenter().x - 100, 185 + getSelectedItem() * 50, 200, 50)
 end
 
 
