@@ -1,6 +1,7 @@
 local menus = {
   ["pause"] = {
     title = "Pause",
+    align = "center",
     items = {
       {
         name = "Resume",
@@ -36,6 +37,7 @@ local menus = {
   },
   ["gameOver"] = {
     title = "Game Over",
+    align = "center",
     items = {
       {
         name = "Restart",
@@ -59,6 +61,7 @@ local menus = {
   },
   ["options"] = {
     title = "Options",
+    align = "center",
     items = {
       {
         name = "Music ON/OFF",
@@ -86,6 +89,32 @@ local menus = {
         action = function ()
           setMenu("pause")
         end
+      }
+    }
+  },
+  ["status"] = {
+    title = "Upgrade Stats",
+    align = "left",
+    items = {
+      {
+        name = "Damage:",
+        action = function () end
+      },
+      {
+        name = "Movement Speed:",
+        action = function () end
+      },
+      {
+        name = "Shot Speed:",
+        action = function () end
+      },
+      {
+        name = "Bullet Speed:",
+        action = function () end
+      },
+      {
+        name = "Back:",
+        action = function () end
       }
     }
   }
