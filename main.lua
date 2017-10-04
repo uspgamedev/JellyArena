@@ -114,7 +114,7 @@ function love.keypressed(key)
 
   elseif(key == "m") then
     if(curGameState == GameStates.ingame) then
-      changeGameState(GameStates.testMenu)
+      changeGameState(GameStates.pauseMenu)
 
     elseif(curGameState == GameStates.testMenu) then
       -- TODO: handle messaging properly
