@@ -39,8 +39,7 @@ DrawMessageSystem         = require "systems/draw/DrawMessageSystem"
 TimerSystem               = require "systems/TimerSystem"
 
 PlayerInputSystem         = require "systems/input/PlayerInputSystem"
-MenuInputSystem       = require "systems/input/MenuInputSystem"
-GameOverInputSystem       = require "systems/input/GameOverInputSystem"
+MenuInputSystem           = require "systems/input/MenuInputSystem"
 
 EnemyAISystem             = require "systems/EnemyAISystem"
 MovementSystem            = require "systems/MovementSystem"
@@ -66,7 +65,6 @@ function love.load()
   -- Process input
   engine:addSystem(PlayerInputSystem(), "update")
   engine:addSystem(MenuInputSystem(), "update")
-  engine:addSystem(GameOverInputSystem(), "update")
     -- Update player vars and state
     -- Go to menu
   -- process wave AI
@@ -118,8 +116,7 @@ function love.keypressed(key)
     if(curGameState == GameStates.ingame) then
       changeGameState(GameStates.pauseMenu)
 
-    elseif(curGameState == GameStates.testMenu) then
-      -- TODO: handle messaging properly
+    elseif(curGameState == GameStates.pauseMenu) then
       changeGameState(GameStates.ingame)
     end
   end
