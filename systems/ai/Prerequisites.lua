@@ -1,6 +1,6 @@
 local Prerequisites = {}
 
-function Prerequisites.InMaxAttackRange(action, prerequisite, agent, target, dt)
+function Prerequisites.InAttackRange(action, prerequisite, agent, target, dt)
   local attack = getAttack(agent, action)
   if attack then
     local range = attack:get("AttackRange")
@@ -16,7 +16,7 @@ function Prerequisites.InMaxAttackRange(action, prerequisite, agent, target, dt)
   return false
 end
 
-function Prerequisites.InMinAttackRange(action, prerequisite, agent, target, dt)
+function Prerequisites.InSafeRange(action, prerequisite, agent, target, dt)
   local attack = getAttack(agent, action)
   if attack then
     local range = attack:get("AttackRange")

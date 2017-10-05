@@ -5,8 +5,8 @@ Actions.MeleeAttack = {
   score = 10,
   prerequisites = {
     {
-      name = "InMaxAttackRange",
-      target = "Player",
+      name = "InAttackRange",
+      target = "Player"
     },
     {
       name = "AttackAvailable",
@@ -39,12 +39,12 @@ Actions.RangedAttack = {
   score = 8,
   prerequisites = {
     {
-      name = "InMaxAttackRange",
-      target = "Player",
+      name = "InAttackRange",
+      target = "Player"
     },
     {
-      name = "InMinAttackRange",
-      target = "Player",
+      name = "InSafeRange",
+      target = "Player"
     },
     {
       name = "AttackAvailable",
@@ -76,11 +76,10 @@ Actions.RangedAttack = {
 Actions.FollowPlayer = {
   name = "FollowPlayer",
   score = 2,
-  prerequisites = {
-  },
+  prerequisites = {},
   effects = {
     {
-      name = "InMaxAttackRange",
+      name = "InAttackRange",
       target = "Player"
     }
   },
@@ -88,28 +87,27 @@ Actions.FollowPlayer = {
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")
 
-    local distance = agentVelocity.maxSpeed*dt -- distance the agent can walk
+    local distance = agentVelocity.maxSpeed * dt -- distance the agent can walk
     local direction = (target:get("Position"):toVector() - agentPosition:toVector())
     local maxDistance = direction:len() - agent:get("Circle").radius - target:get("Circle").radius -- distance between agent and target
     direction:normalizeInplace()
     agentVelocity:setDirection(direction)
 
-    if(distance > maxDistance) then
-      agentVelocity.speed = maxDistance/dt
+    if (distance > maxDistance) then
+      agentVelocity.speed = maxDistance / dt
     else
-      agentVelocity.speed = distance/dt
+      agentVelocity.speed = distance / dt
     end
   end
 }
 
-Actions.GoToRange = {
-  name = "GotToRange",
+Actions.FleeFromPlayer = {
+  name = "FleeFromPlayer",
   score = 2,
-  prerequisites = {
-  },
+  prerequisites = {},
   effects = {
     {
-      name = "InMinAttackRange",
+      name = "InSafeRange",
       target = "Player"
     }
   },
@@ -118,7 +116,6 @@ Actions.GoToRange = {
     local agentPosition = agent:get("Position")
     local targetVelocity = target:get("Velocity")
     local targetPosition = target:get("Position")
-
 
     local distance = agentVelocity.maxSpeed * dt -- distance the agent can walk
     local currentDistance = (agentPosition:toVector() - targetPosition:toVector()):len()
@@ -137,7 +134,6 @@ Actions.Idle = {
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")
     agentVelocity:setDirection(Vector(0, 0))
-
   end
 }
 

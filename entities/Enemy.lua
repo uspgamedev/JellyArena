@@ -1,5 +1,10 @@
-local Position, Circle, AI, Velocity, Color, Collider, Timer =
-  Component.load({"Position", "Circle", "AI", "Velocity", "Color", "Collider", "Timer"})
+local Position,
+  Circle,
+  AI,
+  Velocity,
+  Color,
+  Collider,
+  Timer = Component.load({"Position", "Circle", "AI", "Velocity", "Color", "Collider", "Timer"})
 
 local Actions = require "systems/ai/Actions"
 
@@ -8,7 +13,9 @@ function createEnemy(x, y)
   entity:add(Position(x, y))
   entity:add(Circle(20))
   entity:add(Velocity(0, 0, 200))
-  entity:add(AI({ name = "Damage" }, { Actions.MeleeAttack, Actions.RangedAttack, Actions.FollowPlayer, Actions.GoToRange }))
+  entity:add(
+    AI({name = "Damage"}, {Actions.MeleeAttack, Actions.RangedAttack, Actions.FollowPlayer, Actions.FleeFromPlayer})
+  )
   entity:add(Color(0, 255, 255))
   entity:add(Collider("Enemy", true))
   entity:add(Timer(0.5))
@@ -20,7 +27,7 @@ function createMeleeEnemy(x, y)
   entity:add(Position(x, y))
   entity:add(Circle(20))
   entity:add(Velocity(0, 0, 200))
-  entity:add(AI({ name = "Damage" }, { Actions.MeleeAttack, Actions.FollowPlayer }))
+  entity:add(AI({name = "Damage"}, {Actions.MeleeAttack, Actions.FollowPlayer}))
   entity:add(Color(255, 0, 255))
   entity:add(Collider("Enemy", true))
   entity:add(Timer(0.5))
@@ -32,7 +39,7 @@ function createRangedEnemy(x, y)
   entity:add(Position(x, y))
   entity:add(Circle(20))
   entity:add(Velocity(0, 0, 200))
-  entity:add(AI({ name = "Damage" }, { Actions.RangedAttack, Actions.GoToRange, Actions.FollowPlayer }))
+  entity:add(AI({name = "Damage"}, {Actions.RangedAttack, Actions.FleeFromPlayer, Actions.FollowPlayer}))
   entity:add(Color(255, 255, 0))
   entity:add(Collider("Enemy", true))
   entity:add(Timer(0.5))
