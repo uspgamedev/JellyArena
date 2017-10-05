@@ -7,6 +7,7 @@ lovetoys.initialize({
 
 require ("lib/Utils")
 require ("lib/SoundController")
+require ("lib/MenuController")
 
 --- components
 require "components/AttackProperties"
@@ -38,8 +39,7 @@ DrawMessageSystem         = require "systems/draw/DrawMessageSystem"
 TimerSystem               = require "systems/TimerSystem"
 
 PlayerInputSystem         = require "systems/input/PlayerInputSystem"
-TestMenuInputSystem       = require "systems/input/TestMenuInputSystem"
-GameOverInputSystem       = require "systems/input/GameOverInputSystem"
+MenuInputSystem           = require "systems/input/MenuInputSystem"
 
 EnemyAISystem             = require "systems/EnemyAISystem"
 MovementSystem            = require "systems/MovementSystem"
@@ -55,6 +55,8 @@ function love.load()
   engine = Engine()
   eventmanager = EventManager()
   debug_text = ""
+  play_track = true
+  play_effects = true
   curGameState = GameStates.newGame
   setTrack("sample1")
 
@@ -62,8 +64,7 @@ function love.load()
   engine:addSystem(TimerSystem(), "update")
   -- Process input
   engine:addSystem(PlayerInputSystem(), "update")
-  engine:addSystem(TestMenuInputSystem(), "update")
-  engine:addSystem(GameOverInputSystem(), "update")
+  engine:addSystem(MenuInputSystem(), "update")
     -- Update player vars and state
     -- Go to menu
   -- process wave AI
@@ -113,10 +114,9 @@ function love.keypressed(key)
 
   elseif(key == "m") then
     if(curGameState == GameStates.ingame) then
-      changeGameState(GameStates.testMenu)
+      changeGameState(GameStates.pauseMenu)
 
-    elseif(curGameState == GameStates.testMenu) then
-      -- TODO: handle messaging properly
+    elseif(curGameState == GameStates.pauseMenu) then
       changeGameState(GameStates.ingame)
     end
   end
