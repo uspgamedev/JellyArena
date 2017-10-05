@@ -3,6 +3,8 @@ local AI = Component.create("AI")
 function AI:initialize(goal, actions)
   self.goal = goal
   self.actions = actions
+  self.currentState = {}
+  self.currentAction = nil
 end
 
 function AI:getAction(effect)

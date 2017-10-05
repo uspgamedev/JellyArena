@@ -31,6 +31,7 @@ Actions.MeleeAttack = {
     table.insert(garbage_list, damage)
     attackTimer:start()
     globalTimer:start()
+    return true
   end
 }
 
@@ -70,6 +71,33 @@ Actions.RangedAttack = {
     engine:addEntity(bullet)
     attackTimer:start()
     globalTimer:start()
+    return true
+  end
+}
+
+Actions.DashAttack = {
+  name = "DashAttack",
+  score = 10,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  perform = function(agent, target, dt)
+    local agentVelocity = agent:get("Velocity")
+    local agentPosition = agent:get("Position")
+
+    local direction = (target:get("Position"):toVector() - agentPosition:toVector())
+    direction:normalizeInplace()
+    agentVelocity:setDirection(direction)
+    agentVelocity.speed = 1000
+    return true
   end
 }
 
@@ -122,6 +150,7 @@ Actions.FleeFromPlayer = {
     local direction = (agentPosition:toVector() - targetPosition:toVector())
     direction:normalizeInplace()
     agentVelocity:setDirection(direction)
+    return true
   end
 }
 
@@ -134,6 +163,7 @@ Actions.Idle = {
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")
     agentVelocity:setDirection(Vector(0, 0))
+    return true
   end
 }
 

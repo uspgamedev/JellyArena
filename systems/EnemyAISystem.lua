@@ -21,22 +21,28 @@ function EnemyAISystem:update(dt)
     local nextAction = Actions.Idle
     local actionStack = Stack()
     local acomplished
-    actionStack:multiPush(actions)
-    repeat
-      action = actionStack:pop()
-      accomplished = true
-      for _, prerequisite in pairs(action.prerequisites) do
-        accomplished = accomplished and Prerequisites[prerequisite.name](action.name, prerequisite, enemy, player, dt)
-        if not accomplished then
-          actionStack:multiPush(AI:getActions(prerequisite))
-          break
+    if AI.currentAction then
+      nextAction = AI.currentAction
+    else
+      actionStack:multiPush(actions)
+      repeat
+        action = actionStack:pop()
+        accomplished = true
+        for _, prerequisite in pairs(action.prerequisites) do
+          accomplished = accomplished and Prerequisites[prerequisite.name](action.name, prerequisite, enemy, player, dt)
+          if not accomplished then
+            actionStack:multiPush(AI:getActions(prerequisite))
+            break
+          end
         end
-      end
-      if accomplished and action.score > nextAction.score then
-        nextAction = action
-      end
-    until actionStack:isEmpty()
-    nextAction.perform(enemy, player, dt)
+        if accomplished and action.score > nextAction.score then
+          nextAction = action
+        end
+      until actionStack:isEmpty()
+    end
+    if not nextAction.perform(enemy, player, dt) then
+      AI.currentAction = nextAction
+    end
   end
 end
 
