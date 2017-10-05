@@ -92,12 +92,26 @@ Actions.DashAttack = {
   perform = function(agent, target, dt)
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")
+    local state = agent:get("AI").currentState
 
-    local direction = (target:get("Position"):toVector() - agentPosition:toVector())
-    direction:normalizeInplace()
-    agentVelocity:setDirection(direction)
-    agentVelocity.speed = 1000
-    return true
+    if not state.travelledDistance then
+      print("Primeira vez")
+      local direction = (target:get("Position"):toVector() - agentPosition:toVector())
+      direction:normalizeInplace()
+      agentVelocity.speed = 1000
+      agentVelocity.direction = direction
+      state.travelledDistance = 0
+    end
+
+    if state.travelledDistance > 300 then
+    print("ultima vez")
+      agentVelocity.speed = agentVelocity.maxSpeed
+      return true
+    end
+
+    print(agentVelocity.speed)
+    state.travelledDistance = state.travelledDistance + dt * agentVelocity.speed
+    return false;
   end
 }
 
@@ -126,6 +140,7 @@ Actions.FollowPlayer = {
     else
       agentVelocity.speed = distance / dt
     end
+  return true
   end
 }
 
