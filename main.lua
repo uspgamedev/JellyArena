@@ -29,6 +29,7 @@ require "components/Velocity"
 
 --- Entities
 require "entities/Attack"
+require "entities/Invunerable"
 require "entities/Bullet"
 require "entities/DamageArea"
 require "entities/Enemy"

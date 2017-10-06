@@ -19,7 +19,7 @@ Actions.MeleeAttack = {
     }
   },
   perform = function(agent, target, dt)
-    local attack = getAttack(agent, "MeleeAttack")
+    local attack = getChild(agent, "MeleeAttack")
     local globalTimer = agent:get("Timer")
     local attackTimer = attack:get("Timer")
     local attackProperties = attack:get("AttackProperties")
@@ -59,11 +59,9 @@ Actions.RangedAttack = {
     }
   },
   perform = function(agent, target, dt)
-    local attack = getAttack(agent, "RangedAttack")
+    local attack = getChild(agent, "RangedAttack")
     local globalTimer = agent:get("Timer")
     local attackTimer = attack:get("Timer")
-    attackTimer:start()
-    globalTimer:start()
     local attackProperties = attack:get("AttackProperties")
     local range = attack:get("AttackRange")
     local attackDamage = attack:get("Damage").damage
@@ -100,7 +98,7 @@ Actions.DashAttack = {
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")
     local state = agent:get("AI").currentState
-    local attack = getAttack(agent, "DashAttack")
+    local attack = getChild(agent, "DashAttack")
     local globalTimer = agent:get("Timer")
     local attackTimer = attack:get("Timer")
     local range = attack:get("AttackRange")

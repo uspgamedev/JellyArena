@@ -11,7 +11,7 @@ function getSound(file_name)
   return "resources/sounds/"..file_name
 end
 
-function getAttack(entity, label)
+function getChild(entity, label)
   for _, child in pairs(entity.children) do
     if (child:has("Label") and child:get("Label").label == label) then
       return child

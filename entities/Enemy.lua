@@ -8,7 +8,7 @@ local Position,
 
 local Actions = require "systems/ai/Actions"
 
-function createEnemy(x, y)
+function createDashEnemy(x, y)
   local entity = Entity()
   entity:add(Position(x, y))
   entity:add(Circle(20))

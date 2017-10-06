@@ -10,6 +10,7 @@ function GameOverInputSystem:update(dt)
     local player = createPlayer(getCenter().x, getCenter().y)
     engine:addEntity(player)
     engine:addEntity(createPlayerAttack(player))
+    engine:addEntity(createInvunerable(player))
 
     changeGameState(GameStates.ingame)
   end
