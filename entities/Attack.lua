@@ -35,8 +35,8 @@ function createDashAttack(parent)
   local entity = Entity(parent)
   entity:add(Label("DashAttack"))
   entity:add(Timer(2))
-  entity:add(AttackProperties(0))
-  entity:add(Damage(5))
+  entity:add(AttackProperties(8))
+  entity:add(Damage(1))
   entity:add(AttackRange(200))
   return entity
 end

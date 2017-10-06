@@ -41,6 +41,7 @@ function EnemyAISystem:update(dt)
         end
       until actionStack:isEmpty()
     end
+
     if nextAction.perform(enemy, player, dt) then
       print("Acabou "..nextAction.name)
       AI.currentState = {}

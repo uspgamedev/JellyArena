@@ -31,6 +31,7 @@ Actions.MeleeAttack = {
     table.insert(garbage_list, damage)
     attackTimer:start()
     globalTimer:start()
+    print("oi passou aki")
     return true
   end
 }
@@ -61,6 +62,8 @@ Actions.RangedAttack = {
     local attack = getAttack(agent, "RangedAttack")
     local globalTimer = agent:get("Timer")
     local attackTimer = attack:get("Timer")
+    attackTimer:start()
+    globalTimer:start()
     local attackProperties = attack:get("AttackProperties")
     local range = attack:get("AttackRange")
     local attackDamage = attack:get("Damage").damage
@@ -82,6 +85,10 @@ Actions.DashAttack = {
     {
       name = "InAttackRange",
       target = "Player"
+    },
+    {
+      name = "AttackAvailable",
+      target = "DashAttack"
     }
   },
   effects = {
@@ -93,23 +100,36 @@ Actions.DashAttack = {
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")
     local state = agent:get("AI").currentState
+    local attack = getAttack(agent, "DashAttack")
+    local globalTimer = agent:get("Timer")
+    local attackTimer = attack:get("Timer")
+    local range = attack:get("AttackRange")
 
     if not state.travelledDistance then
-      print("Primeira vez")
+      -- lock target
       local direction = (target:get("Position"):toVector() - agentPosition:toVector())
       direction:normalizeInplace()
       agentVelocity.speed = 1000
-      agentVelocity.direction = direction
+      agentVelocity:setDirection(direction)
       state.travelledDistance = 0
+
+      -- damaging area around agent
+      local attackProperties = attack:get("AttackProperties")
+      local attackDamage = attack:get("Damage").damage
+      local radius = agent:get("Circle").radius
+      state.damage = createDamageArea(agentPosition, radius, attackDamage, agent, true)
+      engine:addEntity(state.damage)
     end
 
-    if state.travelledDistance > 300 then
-    print("ultima vez")
-      agentVelocity.speed = agentVelocity.maxSpeed
+    -- finish dash and enter cooldown
+    if state.travelledDistance > range.max then
+      table.insert(garbage_list, state.damage)
+      agentVelocity.speed = 0
+      attackTimer:start()
+      globalTimer:start()
       return true
     end
 
-    print(agentVelocity.speed)
     state.travelledDistance = state.travelledDistance + dt * agentVelocity.speed
     return false;
   end
