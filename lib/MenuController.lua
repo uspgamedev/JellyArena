@@ -1,3 +1,26 @@
+--TODO: read from player stats
+
+local stats = {damage = 2, movement_speed = 10, shot_speed = 20, bullet_speed = 10}
+local stats_points = 10
+function getStatsPoints() return stats_points end
+function getStats ()
+  return stats
+end
+function increaseStat(stat, value)
+  if (stats_points > 0) then
+    if (stat == 'damage') then
+      stats.damage = stats.damage + value
+    elseif (stat == 'movement_speed') then
+      stats.movement_speed = stats.movement_speed + value
+    elseif (stat == 'shot_speed') then
+      stats.shot_speed = stats.shot_speed + value
+    elseif (stat == 'bullet_speed') then
+      stats.bullet_speed = stats.bullet_speed + value
+    end
+    stats_points = stats_points - 1
+  end
+end
+
 local menus = {
   ["pause"] = {
     title = "Pause",
@@ -19,6 +42,12 @@ local menus = {
           engine:addEntity(createPlayer(getCenter().x, getCenter().y))
 
           changeGameState(GameStates.ingame)
+        end
+      },
+      {
+        name = "Upgrade Stats",
+        action = function ()
+          setMenu("stats")
         end
       },
       {
@@ -92,33 +121,56 @@ local menus = {
       }
     }
   },
-  ["status"] = {
+  ["stats"] = {
     title = "Upgrade Stats",
     align = "left",
+    info = "Points remaining: "..getStatsPoints(),
     items = {
       {
-        name = "Damage:",
-        action = function () end
+        name = "Damage: "..getStats().damage,
+        action = function ()
+          increaseStat('damage', 1)
+          updateStatsValues()
+        end
       },
       {
-        name = "Movement Speed:",
-        action = function () end
+        name = "Movement Speed: "..getStats().movement_speed,
+        action = function ()
+          increaseStat('movement_speed', 1)
+          updateStatsValues()
+        end
       },
       {
-        name = "Shot Speed:",
-        action = function () end
+        name = "Shot Speed: "..getStats().shot_speed,
+        action = function ()
+          increaseStat('shot_speed', 1)
+          updateStatsValues()
+        end
       },
       {
-        name = "Bullet Speed:",
-        action = function () end
+        name = "Bullet Speed: "..getStats().bullet_speed,
+        action = function ()
+          increaseStat('bullet_speed', 1)
+          updateStatsValues()
+        end
       },
       {
-        name = "Back:",
-        action = function () end
+        name = "Back",
+        action = function ()
+          setMenu("pause")
+        end
       }
     }
   }
 }
+
+function updateStatsValues()
+  menus["stats"].info = "Points remaining: "..getStatsPoints()
+  menus["stats"].items[1].name = "Damage: "..getStats().damage
+  menus["stats"].items[2].name = "Movement Speed: "..getStats().movement_speed
+  menus["stats"].items[3].name = "Shot Speed: "..getStats().shot_speed
+  menus["stats"].items[4].name = "Bullet Speed: "..getStats().bullet_speed
+end
 
 local selected_item = 1
 local current_menu = menus["pause"]
