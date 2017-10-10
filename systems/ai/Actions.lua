@@ -31,7 +31,6 @@ Actions.MeleeAttack = {
     table.insert(garbage_list, damage)
     attackTimer:start()
     globalTimer:start()
-    print("oi passou aki")
     return true
   end
 }

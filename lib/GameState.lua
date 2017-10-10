@@ -1,7 +1,7 @@
 GameStates = {
   ingame    = {},
   newGame   = {},
-  testMenu  = {},
+  pauseMenu  = {},
   gameOver  = {}
 }
 
@@ -30,8 +30,7 @@ local function stopIngameSystems()
 end
 
 local function stopMenuSystems()
-  engine:stopSystem("TestMenuInputSystem")
-  engine:stopSystem("GameOverInputSystem")
+  engine:stopSystem("MenuInputSystem")
   engine:stopSystem("DrawMenuSystem")
 end
 -----------------------------------------------
@@ -51,22 +50,17 @@ local function setNewGameState()
   curGameState = GameStates.ingame
 end
 
-local function setTestMenuState()
+local function setPauseMenuState()
   stopIngameSystems()
-
-  -- TODO: create menu
-  debug_text = "DEBUG: Test Menu (press M to exit)"
-
-  engine:startSystem("TestMenuInputSystem")
+  setMenu("pause")
+  engine:startSystem("MenuInputSystem")
   engine:startSystem("DrawMenuSystem")
 end
 
 local function setGameOverState()
   stopIngameSystems()
-
-  -- TODO: create menu
-  debug_text = "Game Over! Press r to restart game"
-  engine:startSystem("GameOverInputSystem")
+  setMenu("gameOver")
+  engine:startSystem("MenuInputSystem")
   engine:startSystem("DrawMenuSystem")
 end
 
@@ -75,7 +69,7 @@ function changeGameState(gameState)
 
   if(gameState == GameStates.ingame) then setIngameState()
   elseif(gameState == GameStates.newGame) then setNewGameState()
-  elseif(gameState == GameStates.testMenu) then setTestMenuState()
+  elseif(gameState == GameStates.pauseMenu) then setPauseMenuState()
   elseif(gameState == GameStates.gameOver) then setGameOverState()
   end
 end

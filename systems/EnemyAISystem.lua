@@ -22,7 +22,6 @@ function EnemyAISystem:update(dt)
     local actionStack = Stack()
     local acomplished
     if AI.currentAction then
-      print("Continuando "..AI.currentAction.name)
       nextAction = AI.currentAction
     else
       actionStack:multiPush(actions)
@@ -43,11 +42,9 @@ function EnemyAISystem:update(dt)
     end
 
     if nextAction.perform(enemy, player, dt) then
-      print("Acabou "..nextAction.name)
       AI.currentState = {}
       AI.currentAction = nil
     else
-      print("Executando "..nextAction.name)
       AI.currentAction = nextAction
     end
   end

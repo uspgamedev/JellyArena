@@ -5,7 +5,6 @@ function MovementSystem:update(dt)
     local velocity = v:get("Velocity")
     local position = v:get("Position")
 
-    print("MovementSystem "..(velocity:toVector() * dt):len())
     position:setVector(position:toVector() + velocity:toVector() * dt)
   end
 
