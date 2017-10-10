@@ -1,29 +1,59 @@
 local EnemyAISystem = class("EnemyAISystem", System)
 
-local MovementModes = require "systems/ai/MovementModes"
-local AttackModes = require "systems/ai/AttackModes"
+local Actions = require "systems/ai/Actions"
+local Prerequisites = require "systems/ai/Prerequisites"
 
 function EnemyAISystem:update(dt)
   local player = nil
   -- get first player
-  for _,p in pairs(self.targets.Player) do
+  for _, p in pairs(self.targets.Player) do
     player = p
     break
   end
   -- continue only if player exists
-  if player == nil then return end
+  if player == nil then
+    return
+  end
 
   for i, enemy in pairs(self.targets.Enemies) do
-    MovementModes[enemy:get("IsEnemy").movementMode](enemy, player, dt)
-    AttackModes[enemy:get("IsEnemy").attackMode](enemy, player, dt)
+    local AI = enemy:get("AI")
+    local actions = AI:getActions(AI.goal)
+    local nextAction = Actions.Idle
+    local actionStack = Stack()
+    local acomplished
+    if AI.currentAction then
+      nextAction = AI.currentAction
+    else
+      actionStack:multiPush(actions)
+      repeat
+        action = actionStack:pop()
+        accomplished = true
+        for _, prerequisite in pairs(action.prerequisites) do
+          accomplished = accomplished and Prerequisites[prerequisite.name](action.name, prerequisite, enemy, player, dt)
+          if not accomplished then
+            actionStack:multiPush(AI:getActions(prerequisite))
+            break
+          end
+        end
+        if accomplished and action.score > nextAction.score then
+          nextAction = action
+        end
+      until actionStack:isEmpty()
+    end
 
+    if nextAction.perform(enemy, player, dt) then
+      AI.currentState = {}
+      AI.currentAction = nil
+    else
+      AI.currentAction = nextAction
+    end
   end
 end
 
 function EnemyAISystem:requires()
   return {
-    Enemies = {"Position", "Velocity", "Circle", "IsEnemy" },
-    Player = {"Position", "Hitpoints", "Circle", "IsPlayer" }
+    Enemies = {"Position", "Velocity", "Circle", "AI"},
+    Player = {"Position", "Hitpoints", "Circle", "IsPlayer"}
   }
 end
 

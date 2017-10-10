@@ -1,3 +1,16 @@
+function restartGame()
+  for _, entity in pairs(engine.entities) do
+    engine:removeEntity(entity, true)
+  end
+
+  local player = createPlayer(getCenter().x, getCenter().y)
+  engine:addEntity(player)
+  engine:addEntity(createPlayerAttack(player))
+  engine:addEntity(createInvunerable(player))
+
+  changeGameState(GameStates.ingame)
+end
+
 local menus = {
   ["pause"] = {
     title = "Pause",
@@ -11,15 +24,7 @@ local menus = {
       },
       {
         name = "Restart",
-        action = function ()
-          for _, entity in pairs(engine.entities) do
-            engine:removeEntity(entity, true)
-          end
-
-          engine:addEntity(createPlayer(getCenter().x, getCenter().y))
-
-          changeGameState(GameStates.ingame)
-        end
+        action = restartGame
       },
       {
         name = "Options",
@@ -41,15 +46,7 @@ local menus = {
     items = {
       {
         name = "Restart",
-        action = function ()
-          for _, entity in pairs(engine.entities) do
-            engine:removeEntity(entity, true)
-          end
-
-          engine:addEntity(createPlayer(getCenter().x, getCenter().y))
-
-          changeGameState(GameStates.ingame)
-        end
+        action = restartGame
       },
       {
         name = "Exit",

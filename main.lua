@@ -4,19 +4,24 @@ lovetoys.initialize({
   debug = true,
   globals = true
 })
+Stack = require "lib/Stack"
 
 require ("lib/Utils")
 require ("lib/SoundController")
 require ("lib/MenuController")
 
 --- components
+require "components/AI"
 require "components/AttackProperties"
+require "components/AttackRange"
 require "components/Circle"
 require "components/Collider"
 require "components/Color"
+require "components/Damage"
+require "components/Follow"
 require "components/Hitpoints"
-require "components/IsEnemy"
 require "components/IsPlayer"
+require "components/Label"
 require "components/Position"
 require "components/Projectile"
 require "components/Timer"
@@ -24,8 +29,10 @@ require "components/Velocity"
 
 
 --- Entities
-require "entities/Damage"
+require "entities/Attack"
+require "entities/Invunerable"
 require "entities/Bullet"
+require "entities/DamageArea"
 require "entities/Enemy"
 require "entities/HpDrop"
 require "entities/Player"
@@ -46,6 +53,7 @@ MovementSystem            = require "systems/MovementSystem"
 CollisionSystem           = require "systems/CollisionSystem"
 WaveAISystem              = require "systems/WaveAISystem"
 ProjectileSystem          = require "systems/ProjectileSystem"
+CleanUpSystem             = require "systems/CleanUpSystem"
 
 
 --- Utils
@@ -55,6 +63,7 @@ function love.load()
   engine = Engine()
   eventmanager = EventManager()
   debug_text = ""
+  garbage_list = {}
   play_track = true
   play_effects = true
   curGameState = GameStates.newGame
@@ -95,6 +104,7 @@ function love.load()
   engine:addSystem(DrawHUDSystem(), "draw")
   engine:addSystem(DrawMessageSystem(), "draw")
   engine:addSystem(DrawMenuSystem(), "draw")
+  engine:addSystem(CleanUpSystem(), "update")
 
   changeGameState(curGameState)
 end

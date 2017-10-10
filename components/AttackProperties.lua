@@ -1,6 +1,5 @@
 local AttackProperties = Component.create("AttackProperties")
 
-function AttackProperties:initialize(damage, spawnDistance)
-  self.damage = damage
+function AttackProperties:initialize(spawnDistance)
   self.spawnDistance = spawnDistance
 end
