@@ -128,7 +128,7 @@ Actions.DashAttack = {
     end
 
     state.travelledDistance = state.travelledDistance + dt * agentVelocity.speed
-    return false;
+    return false
   end
 }
 
@@ -157,7 +157,7 @@ Actions.FollowPlayer = {
     else
       agentVelocity.speed = distance / dt
     end
-  return true
+    return true
   end
 }
 
@@ -198,5 +198,30 @@ Actions.Idle = {
     return true
   end
 }
+
+function addEffect(effects, action, effect)
+  for i, e in ipairs(effects) do
+    if effect.name == e.name and effect.target == e.target then
+      e.actions[action] = 0
+      e.size = e.size + 1
+      return
+    end
+  end
+  effect.actions = {}
+  effect.actions[action] = 0
+  effect.size = 1
+  table.insert(effects, effect)
+end
+
+-- creates a list of effects and actions with such effects
+function getEffects()
+  local effects = {}
+  for action, v in pairs(Actions) do
+    for _, effect in pairs(v.effects) do
+      addEffect(effects, action, effect)
+    end
+  end
+  return effects
+end
 
 return Actions
