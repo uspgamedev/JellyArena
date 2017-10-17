@@ -10,7 +10,7 @@ function WaveAISystem:update(dt)
     count = count + 1
   end
   if count == 0 then
-    createWave()
+    self:createWave()
   end
 end
 
@@ -18,7 +18,7 @@ function WaveAISystem:requires()
   return {"AI"}
 end
 
-function selectAction(effect, ai)
+function WaveAISystem:selectAction(effect, ai)
   local actions = getActionsWithEffect(effect)
   local random = math.random()
   for action, prob in pairs(actions) do
@@ -26,7 +26,7 @@ function selectAction(effect, ai)
       addCurrentActions(action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do
-        selectAction(prerequisite, ai)
+        self:selectAction(prerequisite, ai)
       end
       return
     else
@@ -35,18 +35,17 @@ function selectAction(effect, ai)
   end
 end
 
-function selectRandomAction(effect, ai)
+function WaveAISystem:selectRandomAction(effect, ai)
   local actions = getActionsWithEffect(effect)
   local random = math.random()
-  local size = getActionsWithEffectSize(effect)
-  prob = 1.0 / size
+  local prob = 1.0 / getActionsWithEffectSize(effect)
   for action, _ in pairs(actions) do
     if random <= prob then
       print(action, prob)
       addCurrentActions(action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do
-        selectRandomAction(prerequisite, ai)
+        self:selectRandomAction(prerequisite, ai)
       end
       return
     else
@@ -55,46 +54,26 @@ function selectRandomAction(effect, ai)
   end
 end
 
-function learningWave()
-  for i = 1, 4 do
-    local ai = {Actions.Idle}
-    local effect = {name = "Damage"}
-    selectRandomAction(effect, ai)
-    local enemy = createDumbEnemy(i * 100, i * 100)
-    enemy:add(AI(effect, ai))
-    engine:addEntity(enemy)
-    engine:addEntity(createDashAttack(enemy))
-    engine:addEntity(createMeleeAttack(enemy))
-    engine:addEntity(createRangedAttack(enemy))
-  end
-end
-
-function normalWave()
-  for i = 1, 4 do
-    local ai = {Actions.Idle}
-    local effect = {name = "Damage"}
-    selectAction(effect, ai)
-    local enemy = createDumbEnemy(i * 100, i * 100)
-    enemy:add(AI(effect, ai))
-    engine:addEntity(enemy)
-    engine:addEntity(createDashAttack(enemy))
-    engine:addEntity(createMeleeAttack(enemy))
-    engine:addEntity(createRangedAttack(enemy))
-  end
-end
-
-function createWave()
-  print('LEARNING')
+function WaveAISystem:createWave()
   updateLearning()
   waveNumber = waveNumber + 1
   waveType = math.random(1, 10)
-  if waveType > waveNumber then
-    print('LWAVE')
-    learningWave()
-  else
-    print('NWAVE')
-    normalWave()
+  for i = 1, 4 do
+    local ai = {Actions.Idle}
+    local effect = {name = "Damage"}
+    if waveType > waveNumber then
+      self:selectRandomAction(effect, ai)
+    else
+      self:selectAction(effect, ai)
+    end
+    local enemy = createDumbEnemy(i * 100, i * 100)
+    enemy:add(AI(effect, ai))
+    engine:addEntity(enemy)
+    engine:addEntity(createDashAttack(enemy))
+    engine:addEntity(createMeleeAttack(enemy))
+    engine:addEntity(createRangedAttack(enemy))
   end
+  
 end
 
 return WaveAISystem
