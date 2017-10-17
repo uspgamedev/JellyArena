@@ -7,7 +7,7 @@ local currentActions = {}
 local Actions = require "systems/ai/Actions"
 
 function wave.createLearningList()
-  learning = getEffects()
+  learning = ActionsController.getEffects()
   for k, v in pairs(learning) do
     for l, u in pairs(v) do
       -- print(l,u)

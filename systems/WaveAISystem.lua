@@ -41,7 +41,6 @@ function WaveAISystem:selectRandomAction(effect, ai)
   local prob = 1.0 / WaveController.getActionsWithEffectSize(effect)
   for action, _ in pairs(actions) do
     if random <= prob then
-      print(action, prob)
       WaveController.addCurrentActions(action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do

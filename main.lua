@@ -11,6 +11,7 @@ require ("lib/SoundController")
 require ("lib/MenuController")
 WaveController = require ("lib/WaveController")
 Statistic = require ("lib/StatisticController")
+ActionsController = require("lib/ActionsController")
 
 --- components
 require "components/AI"
