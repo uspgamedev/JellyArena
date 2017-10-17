@@ -54,8 +54,8 @@ end
 
 function WaveAISystem:createWave()
   WaveController.updateLearning()
-  waveNumber = waveNumber + 1
-  waveType = math.random(1, 10)
+  local waveNumber = waveNumber + 1
+  local waveType = math.random(1, 10)
   for i = 1, 4 do
     local ai = {Actions.Idle}
     local effect = {name = "Damage"}

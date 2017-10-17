@@ -26,7 +26,7 @@ Actions.MeleeAttack = {
     local range = attack:get("AttackRange")
     local attackDamage = attack:get("Damage").damage
     local radius = agent:get("Circle").radius + range.max
-    local damage = createDamageArea(agent:get("Position"), radius, attackDamage)
+    local damage = createDamageArea(agent:get("Position"), radius, attackDamage, agent)
     engine:addEntity(damage)
     table.insert(garbage_list, damage)
     attackTimer:start()
