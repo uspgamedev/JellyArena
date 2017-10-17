@@ -9,7 +9,7 @@ Stack = require "lib/Stack"
 require ("lib/Utils")
 require ("lib/SoundController")
 require ("lib/MenuController")
-require ("lib/WaveController")
+WaveController = require ("lib/WaveController")
 Statistic = require ("lib/StatisticController")
 
 --- components
@@ -69,7 +69,7 @@ function love.load()
   play_track = true
   play_effects = true
   curGameState = GameStates.newGame
-  createLearningList()
+  WaveController.createLearningList()
   setTrack("sample1")
 
   -- Update timers

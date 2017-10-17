@@ -1,10 +1,12 @@
+local wave = {}
 local learning = {}
 
 local currentActions = {}
 
+
 local Actions = require "systems/ai/Actions"
 
-function createLearningList()
+function wave.createLearningList()
   learning = getEffects()
   for k, v in pairs(learning) do
     for l, u in pairs(v) do
@@ -18,22 +20,22 @@ function createLearningList()
   end
 end
 
-function updateLearning()
+function wave.updateLearning()
   local score = Statistic.getScore()
   print("SCORE:", score)
   Statistic.reset()
   for _, effect in pairs(learning) do
     for action, prob in pairs(effect.actions) do
-      if inCurrentActions(action) then
+      if WaveController.inCurrentActions(action) then
         effect.actions[action] = prob + score
       end
     end
   end
   currentActions = {}
-  normalizeProbabilities()
+  WaveController.normalizeProbabilities()
 end
 
-function normalizeProbabilities()
+function wave.normalizeProbabilities()
   for _, effect in pairs(learning) do
     sum = 0
     for _, prob in pairs(effect.actions) do
@@ -46,7 +48,7 @@ function normalizeProbabilities()
   end
 end
 
-function getActionsWithEffect(effect)
+function wave.getActionsWithEffect(effect)
   for k, v in pairs(learning) do
     if v.name == effect.name and v.target == effect.target then
       return v.actions
@@ -55,7 +57,7 @@ function getActionsWithEffect(effect)
   return {}
 end
 
-function getActionsWithEffectSize(effect)
+function wave.getActionsWithEffectSize(effect)
   for k, v in pairs(learning) do
     if v.name == effect.name and v.target == effect.target then
       return v.size
@@ -64,11 +66,11 @@ function getActionsWithEffectSize(effect)
   return 0
 end
 
-function addCurrentActions(action)
+function wave.addCurrentActions(action)
   table.insert(currentActions, action)
 end
 
-function inCurrentActions(action)
+function wave.inCurrentActions(action)
   for _,a in pairs(currentActions) do
     if a == action then
       return true
@@ -76,3 +78,5 @@ function inCurrentActions(action)
   end
   return false
 end
+
+return wave

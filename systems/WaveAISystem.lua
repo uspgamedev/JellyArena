@@ -19,11 +19,11 @@ function WaveAISystem:requires()
 end
 
 function WaveAISystem:selectAction(effect, ai)
-  local actions = getActionsWithEffect(effect)
+  local actions = WaveController.getActionsWithEffect(effect)
   local random = math.random()
   for action, prob in pairs(actions) do
     if random <= prob then
-      addCurrentActions(action)
+      WaveController.addCurrentActions(action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do
         self:selectAction(prerequisite, ai)
@@ -36,13 +36,13 @@ function WaveAISystem:selectAction(effect, ai)
 end
 
 function WaveAISystem:selectRandomAction(effect, ai)
-  local actions = getActionsWithEffect(effect)
+  local actions = WaveController.getActionsWithEffect(effect)
   local random = math.random()
-  local prob = 1.0 / getActionsWithEffectSize(effect)
+  local prob = 1.0 / WaveController.getActionsWithEffectSize(effect)
   for action, _ in pairs(actions) do
     if random <= prob then
       print(action, prob)
-      addCurrentActions(action)
+      WaveController.addCurrentActions(action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do
         self:selectRandomAction(prerequisite, ai)
@@ -55,7 +55,7 @@ function WaveAISystem:selectRandomAction(effect, ai)
 end
 
 function WaveAISystem:createWave()
-  updateLearning()
+  WaveController.updateLearning()
   waveNumber = waveNumber + 1
   waveType = math.random(1, 10)
   for i = 1, 4 do
