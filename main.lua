@@ -71,6 +71,7 @@ function love.load()
   play_effects = true
   curGameState = GameStates.newGame
   WaveController.createLearningList()
+  Statistic.reset()  
   setTrack("sample1")
 
   -- Update timers

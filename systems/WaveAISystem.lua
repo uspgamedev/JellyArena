@@ -19,10 +19,10 @@ function WaveAISystem:requires()
 end
 
 function WaveAISystem:selectAction(effect, ai)
-  local actions = WaveController.getActionsWithEffect(effect)
-  local random = math.random()
-  for action, prob in pairs(actions) do
-    if random <= prob then
+  local tuple = WaveController.getActionsWithEffect(effect)
+  local random = math.random(1, tuple.total)
+  for action, score in pairs(tuple.actions) do
+    if random <= score then
       WaveController.addCurrentActions(action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do
@@ -30,17 +30,16 @@ function WaveAISystem:selectAction(effect, ai)
       end
       return
     else
-      random = random - prob
+      random = random - score
     end
   end
 end
 
 function WaveAISystem:selectRandomAction(effect, ai)
-  local actions = WaveController.getActionsWithEffect(effect)
-  local random = math.random()
-  local prob = 1.0 / WaveController.getActionsWithEffectSize(effect)
-  for action, _ in pairs(actions) do
-    if random <= prob then
+  local tuple = WaveController.getActionsWithEffect(effect)
+  local random = math.random(1, tuple.size)
+  for action, _ in pairs(tuple.actions) do
+    if random <= 1 then
       WaveController.addCurrentActions(action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do
@@ -48,7 +47,7 @@ function WaveAISystem:selectRandomAction(effect, ai)
       end
       return
     else
-      random = random - prob
+      random = random - 1
     end
   end
 end

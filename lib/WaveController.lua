@@ -6,17 +6,20 @@ local currentActions = {}
 
 local Actions = require "systems/ai/Actions"
 
+
+-- create a list of effects with a list of (action, score)
 function wave.createLearningList()
   learning = ActionsController.getEffects()
   for k, v in pairs(learning) do
+    for l, u in pairs(v.actions) do
+      v.actions[l] = 1
+      -- print(l,v.actions[l])
+    end
+    v.total = v.size
     for l, u in pairs(v) do
       -- print(l,u)
     end
-    for l, u in pairs(v.actions) do
-      v.actions[l] = 1.0 / v.size
-      -- print(l,v.actions[l])
-    end
-    -- print()
+    -- print('-----')
   end
 end
 
@@ -25,45 +28,24 @@ function wave.updateLearning()
   print("SCORE:", score)
   Statistic.reset()
   for _, effect in pairs(learning) do
-    for action, prob in pairs(effect.actions) do
+    for action, s in pairs(effect.actions) do
       if WaveController.inCurrentActions(action) then
-        effect.actions[action] = prob + score
+        effect.actions[action] = s + score
+        effect.total = effect.total + score
       end
+      print(action, effect.actions[action])
     end
   end
   currentActions = {}
-  WaveController.normalizeProbabilities()
-end
-
-function wave.normalizeProbabilities()
-  for _, effect in pairs(learning) do
-    sum = 0
-    for _, prob in pairs(effect.actions) do
-      sum = sum + prob
-    end
-    for action, prob in pairs(effect.actions) do
-      effect.actions[action] = prob / sum
-      print (action, prob / sum)
-    end
-  end
 end
 
 function wave.getActionsWithEffect(effect)
   for k, v in pairs(learning) do
     if v.name == effect.name and v.target == effect.target then
-      return v.actions
+      return {actions = v.actions, total = v.total, size = v.size}
     end
   end
-  return {}
-end
-
-function wave.getActionsWithEffectSize(effect)
-  for k, v in pairs(learning) do
-    if v.name == effect.name and v.target == effect.target then
-      return v.size
-    end
-  end
-  return 0
+  return {actions = {}, total = 0, size = 0}
 end
 
 function wave.addCurrentActions(action)
