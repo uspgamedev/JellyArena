@@ -21,6 +21,7 @@ function selectAction(effect, ai)
   local random = math.random()
   for action, prob in pairs(actions) do
     if random <= prob then
+      addCurrentActions(action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do
         selectAction(prerequisite, ai)
@@ -33,13 +34,14 @@ function selectAction(effect, ai)
 end
 
 function createWave()
+  updateLearning()
   for i = 1, 4 do
     local ai = {Actions.Idle}
     local effect = {name = "Damage"}
     selectAction(effect, ai)
-    for k,v in pairs(ai) do
-      print(k,v)
-    end
+    -- for k,v in pairs(ai) do
+    --   print(k,v)
+    -- end
     local enemy = createDumbEnemy(i * 100, i * 100)
     enemy:add(AI(effect, ai))
     engine:addEntity(enemy)

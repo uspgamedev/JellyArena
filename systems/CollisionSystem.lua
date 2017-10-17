@@ -161,6 +161,7 @@ end
 function CollisionSystem:DamagePlayer(player, damage)
   invunerable = getChild(player, "Invunerable")
   if(invunerable:get("Timer").cooldown <= 0) then
+    Statistic.add(damage)
     local hp = player:get("Hitpoints")
     hp.cur = hp.cur - damage
     if(hp.cur <= 0) then

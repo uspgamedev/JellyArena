@@ -10,6 +10,7 @@ require ("lib/Utils")
 require ("lib/SoundController")
 require ("lib/MenuController")
 require ("lib/WaveController")
+Statistic = require ("lib/StatisticController")
 
 --- components
 require "components/AI"

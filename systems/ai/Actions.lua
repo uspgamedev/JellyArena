@@ -214,6 +214,7 @@ function addEffect(effects, action, effect)
 end
 
 -- creates a list of effects and actions with such effects
+-- example: {{name=Damage, actions={Dash: 0, Ranged: 0, Melee: 0}}, ...}
 function getEffects()
   local effects = {}
   for action, v in pairs(Actions) do
