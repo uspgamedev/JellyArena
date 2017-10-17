@@ -19,9 +19,15 @@ function WaveAISystem:update(dt)
     engine:addEntity(enemy)
     engine:addEntity(createMeleeAttack(enemy))
 
-    enemy = createMeleeEnemy(1000000, 1000000)
+    -- enemy = createMeleeEnemy(1000000, 1000000)
+    -- engine:addEntity(enemy)
+    -- engine:addEntity(createMeleeAttack(enemy))
+
+    enemy = createHybridEnemy(1000000, 1000000)
     engine:addEntity(enemy)
+    engine:addEntity(createRangedAttack(enemy))
     engine:addEntity(createMeleeAttack(enemy))
+    engine:addEntity(createDashAttack(enemy))
   end
 end
 

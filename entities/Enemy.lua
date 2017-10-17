@@ -45,3 +45,15 @@ function createRangedEnemy(x, y)
   entity:add(Timer(0.5))
   return entity
 end
+
+function createHybridEnemy(x, y)
+  local entity = Entity()
+  entity:add(Position(x, y))
+  entity:add(Circle(20))
+  entity:add(Velocity(0, 0, 200))
+  entity:add(AI({name = "Damage"}, {Actions.RangedAttack, Actions.FollowPlayer, Actions.MeleeAttack, Actions.FleeFromPlayer, Actions.DashAttack}))
+  entity:add(Color(255, 255, 127))
+  entity:add(Collider("Enemy", true))
+  entity:add(Timer(0.5))
+  return entity
+end

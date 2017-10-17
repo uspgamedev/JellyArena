@@ -2,7 +2,9 @@ local Actions = {}
 
 Actions.MeleeAttack = {
   name = "MeleeAttack",
-  score = 10,
+  cost = function(agent, target, dt)
+    return 0
+  end,
   prerequisites = {
     {
       name = "InAttackRange",
@@ -37,7 +39,9 @@ Actions.MeleeAttack = {
 
 Actions.RangedAttack = {
   name = "RangedAttack",
-  score = 8,
+  cost = function(agent, target, dt)
+    return 0
+  end,
   prerequisites = {
     {
       name = "InAttackRange",
@@ -77,7 +81,9 @@ Actions.RangedAttack = {
 
 Actions.DashAttack = {
   name = "DashAttack",
-  score = 10,
+  cost = function(agent, target, dt)
+    return 0
+  end,
   prerequisites = {
     {
       name = "InAttackRange",
@@ -134,7 +140,14 @@ Actions.DashAttack = {
 
 Actions.FollowPlayer = {
   name = "FollowPlayer",
-  score = 2,
+  cost = function(agent, target, dt)
+    local agentPosition = agent:get("Position")
+    local targetPosition = target:get("Position")
+
+    local distance = (agentPosition:toVector() - targetPosition:toVector()):len()
+
+    return distance
+  end,
   prerequisites = {},
   effects = {
     {
@@ -163,7 +176,14 @@ Actions.FollowPlayer = {
 
 Actions.FleeFromPlayer = {
   name = "FleeFromPlayer",
-  score = 2,
+  cost = function(agent, target, dt)
+    local agentPosition = agent:get("Position")
+    local targetPosition = target:get("Position")
+
+    local distance = (agentPosition:toVector() - targetPosition:toVector()):len()
+
+    return 400-distance
+  end,
   prerequisites = {},
   effects = {
     {
