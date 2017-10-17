@@ -55,6 +55,15 @@ function getActionsWithEffect(effect)
   return {}
 end
 
+function getActionsWithEffectSize(effect)
+  for k, v in pairs(learning) do
+    if v.name == effect.name and v.target == effect.target then
+      return v.size
+    end
+  end
+  return 0
+end
+
 function addCurrentActions(action)
   table.insert(currentActions, action)
 end
