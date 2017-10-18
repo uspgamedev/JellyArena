@@ -73,6 +73,8 @@ function CollisionSystem:update(dt)
         self:PlayerAndDamageArea(pair)
       elseif (pair["Player"] and pair["EnemyBullet"]) then
         self:PlayerAndEnemyBullet(pair)
+      elseif (pair["Player"] and pair["Trap"]) then
+        self:PlayerAndTrap(pair)
       end
     end
 
@@ -135,6 +137,55 @@ function CollisionSystem:PlayerAndHpDrop(pair)
   self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
   self.entitiesToRemove[self.entitiesToRemoveCount] = drop
 end
+
+function CollisionSystem:PlayerAndTrap(pair)
+  local player = pair["Player"]
+  local trap = pair["Trap"]
+  local trap_type = trap:get("Label").label
+
+  if (trap_type == "DamageTrap") then
+    if (player:get("Hitpoints").cur >= 10) then
+      player:get("Hitpoints").cur = player:get("Hitpoints").cur - 10
+    else
+      player:get("Hitpoints").cur = 0
+      changeGameState(GameStates.gameOver)
+    end
+  elseif (trap_type == "HealingTrap") then
+    player:get("Hitpoints"):add(10)
+  else
+    math.randomseed(os.time())
+    self:PushPlayer(player, math.random(4), 200)
+  end
+
+  self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
+  self.entitiesToRemove[self.entitiesToRemoveCount] = trap
+end
+
+function CollisionSystem:PushPlayer(player, direction, displacement)
+  if (direction == 1) then
+    player:get("Position").y = player:get("Position").y - displacement
+  elseif (direction == 2) then
+    player:get("Position").x = player:get("Position").x + displacement
+  elseif (direction == 3) then
+    player:get("Position").y = player:get("Position").y + displacement
+  elseif (direction == 4) then
+    player:get("Position").x = player:get("Position").x - displacement
+  end
+  if (player:get("Position").x < 0) then
+    player:get("Position").x = 0
+  end
+  if (player:get("Position").y < 0) then
+    player:get("Position").y = 0
+  end
+  if (player:get("Position").x > love.graphics.getWidth()) then
+    player:get("Position").x = love.graphics.getWidth() - player:get("Circle").radius
+  end
+  if (player:get("Position").y > love.graphics.getHeight()) then
+    player:get("Position").y = love.graphics.getHeight() - player:get("Circle").radius
+  end
+
+end
+
 
 function CollisionSystem:PlayerBulletAndEnemy(pair)
   local bullet = pair["PlayerBullet"]

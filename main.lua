@@ -26,6 +26,7 @@ require "components/Position"
 require "components/Projectile"
 require "components/Timer"
 require "components/Velocity"
+require "components/Visibility"
 
 
 --- Entities
@@ -36,6 +37,7 @@ require "entities/DamageArea"
 require "entities/Enemy"
 require "entities/HpDrop"
 require "entities/Player"
+require "entities/Trap"
 
 --- systems
 DrawSystem                = require "systems/draw/DrawSystem"
@@ -54,6 +56,7 @@ CollisionSystem           = require "systems/CollisionSystem"
 WaveAISystem              = require "systems/WaveAISystem"
 ProjectileSystem          = require "systems/ProjectileSystem"
 CleanUpSystem             = require "systems/CleanUpSystem"
+TrapSpawnSystem           = require "systems/TrapSpawnSystem"
 
 
 --- Utils
@@ -105,6 +108,7 @@ function love.load()
   engine:addSystem(DrawMessageSystem(), "draw")
   engine:addSystem(DrawMenuSystem(), "draw")
   engine:addSystem(CleanUpSystem(), "update")
+  engine:addSystem(TrapSpawnSystem(), "update")
 
   changeGameState(curGameState)
 end
