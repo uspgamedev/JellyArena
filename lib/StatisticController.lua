@@ -15,7 +15,6 @@ function statistic.add(i)
 end
 
 function statistic.addToAction(i, action)
-  statistic.add(i)
   for a,s in pairs(score) do
     if a == action then
       score[a] = s + i
@@ -26,6 +25,7 @@ function statistic.addToAction(i, action)
 end
 
 function statistic.addToActions(i, actions)
+  statistic.add(i)
   for _,action in pairs(actions) do
     statistic.addToAction(i, action.name)
   end

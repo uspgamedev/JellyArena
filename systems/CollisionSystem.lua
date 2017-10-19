@@ -156,7 +156,7 @@ function CollisionSystem:PlayerAndEnemyBullet(pair)
   local player = pair["Player"]
   local bullet = pair["EnemyBullet"]
   
-  Statistic.add(bullet:get("Projectile").damage, bullet:getParent():get("AI").actions)
+  Statistic.addToActions(bullet:get("Projectile").damage, bullet:getParent():get("AI").actions)
 
   self:DamagePlayer(player, bullet:get("Projectile").damage)
 end
