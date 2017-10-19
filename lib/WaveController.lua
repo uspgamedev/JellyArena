@@ -35,7 +35,7 @@ function wave.updateLearning()
       end
       Log.write("wave", action..":\t"..effect.actions[action])
     end
-    Log.write("wave", "-")
+    Log.write("wave", "^-"..effect.name..": "..effect.total)
   end
   Log.write("wave", "----------")
   currentActions = {}

@@ -20,7 +20,7 @@ end
 
 function WaveAISystem:selectAction(effect, ai)
   local tuple = WaveController.getActionsWithEffect(effect)
-  local random = math.random(1, tuple.total)
+  local random = math.random(1, math.floor(tuple.total))
   for action, score in pairs(tuple.actions) do
     if random <= score then
       WaveController.addCurrentActions(action)
@@ -57,8 +57,8 @@ end
 function WaveAISystem:createWave()
   WaveController.updateLearning()
   waveNumber = waveNumber + 1
-  Log.write("wave", "\nWAVE "..waveNumber..":")
   local waveType = math.random(1, 10)
+  Log.write("wave", "\nWAVE "..waveNumber.."("..waveType.."):")
   for i = 1, 4 do
     Log.write("wave", "Enemy "..i..":")
     local ai = {Actions.Idle}

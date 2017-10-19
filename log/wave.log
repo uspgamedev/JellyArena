@@ -2,55 +2,54 @@
 -------
 -LEARNING-
 FollowPlayer:	1
--
+^-InAttackRange: 1
 MeleeAttack:	1
 DashAttack:	1
 RangedAttack:	1
--
+^-Damage: 3
 FleeFromPlayer:	1
--
+^-InSafeRange: 1
 ----------
 
-WAVE 1:
+WAVE 1(8):
 Enemy 1:
-RangedAttack
+DashAttack
 FollowPlayer
-FleeFromPlayer
 Enemy 2:
 DashAttack
 FollowPlayer
 Enemy 3:
-DashAttack
-FollowPlayer
-Enemy 4:
-MeleeAttack
-FollowPlayer
--SCORE-
-FollowPlayer:	8
-RangedAttack:	2
-FleeFromPlayer:	2
-Idle:	8
-DashAttack:	6
-Wave:	8
--------
--LEARNING-
-FollowPlayer:	9
--
-MeleeAttack:	2.6
-DashAttack:	7.4
-RangedAttack:	4.2
--
-FleeFromPlayer:	4.2
--
-----------
-
-WAVE 2:
-Enemy 1:
 RangedAttack
 FollowPlayer
 FleeFromPlayer
-Enemy 2:
+Enemy 4:
 DashAttack
+FollowPlayer
+-SCORE-
+FollowPlayer:	4
+Wave:	4
+FleeFromPlayer:	2
+Idle:	4
+DashAttack:	2
+RangedAttack:	2
+-------
+-LEARNING-
+FollowPlayer:	5
+^-InAttackRange: 5
+MeleeAttack:	1
+DashAttack:	3.4
+RangedAttack:	3.4
+^-Damage: 7.8
+FleeFromPlayer:	3.4
+^-InSafeRange: 3.4
+----------
+
+WAVE 2(4):
+Enemy 1:
+MeleeAttack
+FollowPlayer
+Enemy 2:
+MeleeAttack
 FollowPlayer
 Enemy 3:
 DashAttack
