@@ -1,0 +1,55 @@
+-SCORE-
+-------
+-LEARNING-
+FollowPlayer:	1
+-
+MeleeAttack:	1
+DashAttack:	1
+RangedAttack:	1
+-
+FleeFromPlayer:	1
+-
+----------
+
+WAVE 1:
+Enemy 1:
+RangedAttack
+FollowPlayer
+FleeFromPlayer
+Enemy 2:
+DashAttack
+FollowPlayer
+Enemy 3:
+DashAttack
+FollowPlayer
+Enemy 4:
+MeleeAttack
+FollowPlayer
+-SCORE-
+-------
+-LEARNING-
+FollowPlayer:	1
+-
+MeleeAttack:	1
+DashAttack:	1
+RangedAttack:	1
+-
+FleeFromPlayer:	1
+-
+----------
+
+WAVE 2:
+Enemy 1:
+RangedAttack
+FollowPlayer
+FleeFromPlayer
+Enemy 2:
+RangedAttack
+FollowPlayer
+FleeFromPlayer
+Enemy 3:
+MeleeAttack
+FollowPlayer
+Enemy 4:
+DashAttack
+FollowPlayer

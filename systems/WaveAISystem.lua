@@ -24,6 +24,7 @@ function WaveAISystem:selectAction(effect, ai)
   for action, score in pairs(tuple.actions) do
     if random <= score then
       WaveController.addCurrentActions(action)
+      Log.write("wave.log", action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do
         self:selectAction(prerequisite, ai)
@@ -40,6 +41,7 @@ function WaveAISystem:selectRandomAction(effect, ai)
   local random = math.random(1, tuple.size)
   for action, _ in pairs(tuple.actions) do
     if random <= 1 then
+      Log.write("wave.log", action)
       WaveController.addCurrentActions(action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do
@@ -54,9 +56,11 @@ end
 
 function WaveAISystem:createWave()
   WaveController.updateLearning()
-  local waveNumber = waveNumber + 1
+  waveNumber = waveNumber + 1
+  Log.write("wave.log", "\nWAVE "..waveNumber..":")
   local waveType = math.random(1, 10)
   for i = 1, 4 do
+    Log.write("wave.log", "Enemy "..i..":")
     local ai = {Actions.Idle}
     local effect = {name = "Damage"}
     if waveType > waveNumber then
@@ -64,6 +68,7 @@ function WaveAISystem:createWave()
     else
       self:selectAction(effect, ai)
     end
+    
     local enemy = createDumbEnemy(i * 100, i * 100)
     enemy:add(AI(effect, ai))
     engine:addEntity(enemy)

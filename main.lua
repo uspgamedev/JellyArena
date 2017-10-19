@@ -12,6 +12,7 @@ require ("lib/MenuController")
 WaveController = require ("lib/WaveController")
 Statistic = require ("lib/StatisticController")
 ActionsController = require("lib/ActionsController")
+Log = require("lib/LogController")
 
 --- components
 require "components/AI"
@@ -72,6 +73,7 @@ function love.load()
   curGameState = GameStates.newGame
   WaveController.createLearningList()
   Statistic.reset()  
+  Log.init({"wave.log"})
   setTrack("sample1")
 
   -- Update timers

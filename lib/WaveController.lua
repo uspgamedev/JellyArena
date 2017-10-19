@@ -25,6 +25,7 @@ end
 
 function wave.updateLearning()
   Statistic.getScore()
+  Log.write("wave.log", "-LEARNING-")
   for _, effect in pairs(learning) do
     for action, s in pairs(effect.actions) do
       if WaveController.inCurrentActions(action) then
@@ -32,9 +33,11 @@ function wave.updateLearning()
         effect.actions[action] = s + score
         effect.total = effect.total + score
       end
-      print(action, effect.actions[action])
+      Log.write("wave.log", action..":\t"..effect.actions[action])
     end
+    Log.write("wave.log", "-")
   end
+  Log.write("wave.log", "----------")
   currentActions = {}
   Statistic.reset()
 end
