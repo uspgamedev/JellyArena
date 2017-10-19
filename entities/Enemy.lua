@@ -14,7 +14,7 @@ function createDashEnemy(x, y)
   entity:add(Circle(20))
   entity:add(Velocity(0, 0, 200))
   entity:add(
-    AI({name = "Damage"}, {Actions.MeleeAttack, Actions.DashAttack, Actions.FollowPlayer})
+    AI({name = "Damage"}, {Actions.RangedAttack, Actions.DashAttack, Actions.DashFollow})
   )
   entity:add(Color(0, 255, 255))
   entity:add(Collider("Enemy", true))

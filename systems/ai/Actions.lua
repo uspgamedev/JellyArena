@@ -47,10 +47,7 @@ Actions.RangedAttack = {
       name = "InAttackRange",
       target = "Player"
     },
-    {
-      name = "InSafeRange",
-      target = "Player"
-    },
+
     {
       name = "AttackAvailable",
       target = "RangedAttack"
@@ -126,11 +123,69 @@ Actions.DashAttack = {
 
     -- finish dash and enter cooldown
     if state.travelledDistance > range.max then
-      table.insert(garbage_list, state.damage)
       agentVelocity.speed = 0
-      attackTimer:start()
-      globalTimer:start()
-      return true
+
+      if not state.waitTime then
+        table.insert(garbage_list, state.damage)
+        attackTimer:start()
+        globalTimer:start()
+        state.waitTime = 0
+      end
+
+      state.waitTime = state.waitTime + dt
+      if state.waitTime > 1 then
+        return true
+      else
+        return false
+      end
+    end
+
+    state.travelledDistance = state.travelledDistance + dt * agentVelocity.speed
+    return false;
+  end
+}
+
+Actions.DashFollow = {
+  name = "DashFollow",
+  cost = function(agent, target, dt)
+    local agentPosition = agent:get("Position")
+    local targetPosition = target:get("Position")
+    local distance = (agentPosition:toVector() - targetPosition:toVector()):len()
+    return distance
+  end,
+  prerequisites = {},
+  effects = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    }
+  },
+  perform = function(agent, target, dt)
+    local agentVelocity = agent:get("Velocity")
+    local agentPosition = agent:get("Position")
+    local state = agent:get("AI").currentState
+    local range = 200
+
+    if not state.travelledDistance then
+      -- lock target
+      local direction = (target:get("Position"):toVector() - agentPosition:toVector())
+      direction:normalizeInplace()
+      agentVelocity.speed = 1000
+      agentVelocity:setDirection(direction)
+      state.travelledDistance = 0
+    end
+
+    -- finish dash and enter cooldown
+    if state.travelledDistance > range then
+      agentVelocity.speed = 0
+
+      state.waitTime = state.waitTime or 0
+      state.waitTime = state.waitTime + dt
+      if state.waitTime > 0.5 then
+        return true
+      else
+        return false
+      end
     end
 
     state.travelledDistance = state.travelledDistance + dt * agentVelocity.speed
@@ -143,9 +198,7 @@ Actions.FollowPlayer = {
   cost = function(agent, target, dt)
     local agentPosition = agent:get("Position")
     local targetPosition = target:get("Position")
-
     local distance = (agentPosition:toVector() - targetPosition:toVector()):len()
-
     return distance
   end,
   prerequisites = {},

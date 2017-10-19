@@ -9,7 +9,7 @@ function WaveAISystem:update(dt)
     local enemy = createDashEnemy(10, 10)
     engine:addEntity(enemy)
     engine:addEntity(createDashAttack(enemy))
-    engine:addEntity(createMeleeAttack(enemy))
+    engine:addEntity(createRangedAttack(enemy))
 
     enemy = createRangedEnemy(10, 1000000)
     engine:addEntity(enemy)
