@@ -73,7 +73,7 @@ function love.load()
   curGameState = GameStates.newGame
   WaveController.createLearningList()
   Statistic.reset()  
-  Log.init({"wave.log"})
+  Log.init({"wave"})
   setTrack("sample1")
 
   -- Update timers

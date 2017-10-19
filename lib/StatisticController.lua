@@ -32,11 +32,11 @@ function statistic.addToActions(i, actions)
 end
 
 function statistic.getScore()
-  Log.write("wave.log", "-SCORE-")
+  Log.write("wave", "-SCORE-")
   for k,v in pairs(score) do
-    Log.write("wave.log", k..":\t"..v)
+    Log.write("wave", k..":\t"..v)
   end
-  Log.write("wave.log", "-------")
+  Log.write("wave", "-------")
   return score
 end
 
