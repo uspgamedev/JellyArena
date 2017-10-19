@@ -72,7 +72,9 @@ function love.load()
   play_effects = true
   curGameState = GameStates.newGame
   WaveController.createLearningList()
-  Statistic.reset()  
+  Statistic.reset()
+  -- TODO: random seed
+  -- math.randomseed(os.time())
   Log.init({"wave"})
   setTrack("sample1")
 
