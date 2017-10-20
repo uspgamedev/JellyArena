@@ -28,7 +28,7 @@ Actions.MeleeAttack = {
     local range = attack:get("AttackRange")
     local attackDamage = attack:get("Damage").damage
     local radius = agent:get("Circle").radius + range.max
-    local damage = createDamageArea(agent:get("Position"), radius, attackDamage)
+    local damage = createDamageArea(agent:get("Position"), radius, attackDamage, agent)
     engine:addEntity(damage)
     table.insert(garbage_list, damage)
     attackTimer:start()
@@ -68,7 +68,7 @@ Actions.RangedAttack = {
     local position = agent:get("Position")
     local direction = (target:get("Position"):toVector() - position:toVector())
     direction:normalizeInplace()
-    bullet = createEnemyBullet(position.x, position.y, direction, attackDamage, range.max)
+    bullet = createEnemyBullet(agent, position.x, position.y, direction, attackDamage, range.max)
     engine:addEntity(bullet)
     attackTimer:start()
     globalTimer:start()
@@ -189,7 +189,7 @@ Actions.DashFollow = {
     end
 
     state.travelledDistance = state.travelledDistance + dt * agentVelocity.speed
-    return false;
+    return false
   end
 }
 
@@ -223,7 +223,7 @@ Actions.FollowPlayer = {
     else
       agentVelocity.speed = distance / dt
     end
-  return true
+    return true
   end
 }
 

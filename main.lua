@@ -9,6 +9,10 @@ Stack = require "lib/Stack"
 require ("lib/Utils")
 require ("lib/SoundController")
 require ("lib/MenuController")
+WaveController = require ("lib/WaveController")
+Statistic = require ("lib/StatisticController")
+ActionsController = require("lib/ActionsController")
+Log = require("lib/LogController")
 
 --- components
 require "components/AI"
@@ -67,6 +71,11 @@ function love.load()
   play_track = true
   play_effects = true
   curGameState = GameStates.newGame
+  WaveController.createLearningList()
+  Statistic.reset()
+  -- TODO: random seed
+  -- math.randomseed(os.time())
+  Log.init({"wave"})
   setTrack("sample1")
 
   -- Update timers
