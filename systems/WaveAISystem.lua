@@ -1,5 +1,6 @@
 local WaveAISystem = class("WaveAISystem", System)
 local Actions = require "systems/ai/Actions"
+local Goals = require "systems/ai/Goals"
 local AI = Component.load({"AI"})
 local waveNumber = 0
 
@@ -62,15 +63,18 @@ function WaveAISystem:createWave()
   for i = 1, 4 do
     Log.write("wave", "Enemy "..i..":")
     local ai = {Actions.Idle}
-    local effect = {name = "Damage"}
-    if waveType > waveNumber then
-      self:selectRandomAction(effect, ai)
-    else
-      self:selectAction(effect, ai)
+
+    for _, effect in pairs(Goals) do
+      print(effect.name)
+      if waveType > waveNumber then
+        self:selectRandomAction(effect, ai)
+      else
+        self:selectAction(effect, ai)
+      end
     end
 
     local enemy = createDumbEnemy(i * 100, i * 100)
-    enemy:add(AI(effect, ai))
+    enemy:add(AI(Goals, ai))
     engine:addEntity(enemy)
     engine:addEntity(createDashAttack(enemy))
     engine:addEntity(createMeleeAttack(enemy))

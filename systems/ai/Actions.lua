@@ -235,13 +235,17 @@ Actions.FleeFromPlayer = {
 
     local distance = (agentPosition:toVector() - targetPosition:toVector()):len()
 
-    return 400-distance
+    return 200-distance
   end,
-  prerequisites = {},
+  prerequisites = {
+    {
+      name = "InDangerRange",
+      target = "Player"
+    }
+  },
   effects = {
     {
-      name = "InSafeRange",
-      target = "Player"
+      name = "Safety"
     }
   },
   perform = function(agent, target, dt)

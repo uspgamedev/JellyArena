@@ -17,29 +17,42 @@ function EnemyAISystem:update(dt)
 
   for i, enemy in pairs(self.targets.Enemies) do
     local AI = enemy:get("AI")
-    local actions = AI:getActions(AI.goal)
-    local nextActionData =  {action = Actions.Idle, cost = math.huge }
-    local actionStack = Stack()
-    local acomplished
+    local priorityGoal = { weight = function() return -1 end }
+    local nextActionData
     if AI.currentAction then
       nextActionData = { action = AI.currentAction }
     else
-      actionStack:multiPush(map(actions, function(a) return {action = a, cost = a.cost(enemy, player, dt)} end))
-      repeat
-        actionData = actionStack:pop()
-        action = actionData.action
-        accomplished = true
-        for _, prerequisite in pairs(action.prerequisites) do
-          accomplished = accomplished and Prerequisites[prerequisite.name](action.name, prerequisite, enemy, player, dt)
-          if not accomplished then
-            actionStack:multiPush(map(AI:getActions(prerequisite), function(a) return {action = a, cost = actionData.cost + a.cost(enemy, player, dt)} end))
-            break
+      nextActionData =  {action = Actions.Idle, cost = math.huge }
+      for _, goal in pairs(AI.goals) do
+        local actions = AI:getActions(goal)
+        local actionStack = Stack()
+        local acomplished
+
+        actionStack:multiPush(map(actions, function(a) return {action = a, cost = a.cost(enemy, player, dt)} end))
+        repeat
+          actionData = actionStack:pop()
+          action = actionData.action
+          accomplished = true
+          for _, prerequisite in pairs(action.prerequisites) do
+            accomplished = accomplished and Prerequisites[prerequisite.name](action.name, prerequisite, enemy, player, dt)
+            if not accomplished then
+              actionStack:multiPush(map(AI:getActions(prerequisite), function(a) return {action = a, cost = actionData.cost + a.cost(enemy, player, dt)} end))
+              break
+            end
+          end
+          if  accomplished then
+            if goal.weight(enemy, player, dt) > priorityGoal.weight(enemy, player, dt) then
+              nextActionData = actionData
+              priorityGoal = goal
+            else if goal.weight(enemy, player, dt) == priorityGoal.weight(enemy, player, dt)
+                and actionData.cost < nextActionData.cost then
+              nextActionData = actionData
+              priorityGoal = goal
+            end
           end
         end
-        if accomplished and actionData.cost < nextActionData.cost then
-          nextActionData = actionData
-        end
-      until actionStack:isEmpty()
+        until actionStack:isEmpty()
+      end
     end
 
     nextAction = nextActionData.action
