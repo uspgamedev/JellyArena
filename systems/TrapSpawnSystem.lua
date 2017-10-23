@@ -1,19 +1,27 @@
 local TrapSpawnSystem = class("TrapSpawnSystem", System)
 
 function TrapSpawnSystem:update(dt)
-  if trapTest1 == nil then
-    trapTest1 = createDamageTrap(20, 100)
-    engine:addEntity(trapTest1)
+  local count = 0
+  for _,p in pairs(self.targets) do
+    count = count + 1
   end
 
-  if trapTest2 == nil then
-    trapTest2 = createPushTrap(200, 300)
-    engine:addEntity(trapTest2)
-  end
+  if count == 0 then
 
-  if trapTest3 == nil then
-    trapTest3 = createHealingTrap(500, 100)
-    engine:addEntity(trapTest3)
+    for i = 1, 2, 1 do
+      trapTest = createDamageTrap(math.random(0, love.graphics.getWidth() - 100), math.random(0, love.graphics.getHeight() - 100))
+      engine:addEntity(trapTest)
+    end
+
+    for i = 1, 2, 1 do
+      trapTest = createHealingTrap(math.random(0, love.graphics.getWidth() - 100), math.random(0, love.graphics.getHeight() - 100))
+      engine:addEntity(trapTest)
+    end
+
+    for i = 1, 5, 1 do
+      trapTest = createPushTrap(math.random(0, love.graphics.getWidth() - 100), math.random(0, love.graphics.getHeight() - 100))
+      engine:addEntity(trapTest)
+    end
   end
 end
 
