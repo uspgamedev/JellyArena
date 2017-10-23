@@ -1,11 +1,11 @@
---TODO: read from player stats
-
-local stats = {damage = 2, movement_speed = 10, shot_speed = 20, bullet_speed = 10}
 local stats_points = 10
+
 function getStatsPoints() return stats_points end
-function getStats ()
-  return stats
-end
+
+stats = {damage  = 10, movement_speed = 20, shot_speed = 10, bullet_speed = 10, shot_range = 10}
+
+function getStats() return stats end
+
 function increaseStat(stat, value)
   if (stats_points > 0) then
     if (stat == 'damage') then
@@ -16,6 +16,8 @@ function increaseStat(stat, value)
       stats.shot_speed = stats.shot_speed + value
     elseif (stat == 'bullet_speed') then
       stats.bullet_speed = stats.bullet_speed + value
+    elseif (stat == 'shot_range') then
+      stats.shot_range = stats.shot_range + value
     end
     stats_points = stats_points - 1
   end
@@ -76,7 +78,6 @@ local menus = {
           end
 
           engine:addEntity(createPlayer(getCenter().x, getCenter().y))
-
           changeGameState(GameStates.ingame)
         end
       },
@@ -155,6 +156,13 @@ local menus = {
         end
       },
       {
+        name = "Shot Range: "..getStats().shot_range,
+        action = function ()
+          increaseStat('shot_range', 1)
+          updateStatsValues()
+        end
+      },
+      {
         name = "Back",
         action = function ()
           setMenu("pause")
@@ -164,12 +172,14 @@ local menus = {
   }
 }
 
+
 function updateStatsValues()
   menus["stats"].info = "Points remaining: "..getStatsPoints()
   menus["stats"].items[1].name = "Damage: "..getStats().damage
   menus["stats"].items[2].name = "Movement Speed: "..getStats().movement_speed
   menus["stats"].items[3].name = "Shot Speed: "..getStats().shot_speed
   menus["stats"].items[4].name = "Bullet Speed: "..getStats().bullet_speed
+  menus["stats"].items[5].name = "Shot Range: "..getStats().shot_range
 end
 
 local selected_item = 1

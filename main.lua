@@ -21,6 +21,7 @@ require "components/Position"
 require "components/Projectile"
 require "components/Timer"
 require "components/Velocity"
+require "components/Stats"
 
 
 --- Entities
