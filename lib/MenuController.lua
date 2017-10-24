@@ -39,7 +39,7 @@ function restartGame()
     getEngine():removeEntity(entity, true)
   end
 
-  local player = createPlayer(getCenter().x, getCenter().y)
+  local player = createPlayer(500, 500)
   local pos = player:get("Position")
   camera = Camera(pos.x, pos.y)
   getEngine():addEntity(player)
