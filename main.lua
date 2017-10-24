@@ -1,4 +1,5 @@
 Vector = require("lib/hump/vector")
+Camera = require("lib/hump/camera")
 lovetoys = require("lib/lovetoys/lovetoys")
 lovetoys.initialize({
   debug = true,
