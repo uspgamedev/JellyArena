@@ -129,9 +129,7 @@ function love.update(dt)
 end
 
 function love.draw()
-  camera:attach()
   engine:draw()
-  camera:detach()
 end
 
 function love.keypressed(key)
