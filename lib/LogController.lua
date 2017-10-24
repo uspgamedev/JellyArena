@@ -1,7 +1,7 @@
 local LogController = class("LogController")
 local files = {}
 local function fileName(file)
-  return string.format("log/%s.log", dir, file)
+  return string.format("log/%s.log", file)
 end
 
 function LogController.init(filenames)
@@ -16,12 +16,12 @@ function LogController.init(filenames)
 end
 
 function LogController.write(file, text)
-  files[file]:write(text.."\n")
+  files[file]:write(text .. "\n")
 end
 
 function LogController.close()
-  for _,v in pairs(files) do
-    v:close()
+  for _, f in pairs(files) do
+    f:close()
   end
 end
 
