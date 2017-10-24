@@ -106,7 +106,7 @@ end
 
 function CollisionSystem:checkStageBounds(position, radius)
   -- TODO: change to stage bounds instead of window bounds
-  local size = {["x"] = 1000, ["y"] = 1000}
+  local size = {["x"] = 1000 - radius, ["y"] = 1000 - radius}
   local check = false
   if position.x < radius then
     check = true
