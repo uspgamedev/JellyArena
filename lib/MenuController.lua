@@ -4,6 +4,8 @@ function restartGame()
   end
 
   local player = createPlayer(getCenter().x, getCenter().y)
+  local pos = player:get("Position")
+  camera = Camera(pos.x, pos.y)
   engine:addEntity(player)
   engine:addEntity(createPlayerAttack(player))
   engine:addEntity(createInvunerable(player))
