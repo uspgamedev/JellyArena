@@ -2,9 +2,6 @@ local stats_points = 10
 
 function getStatsPoints() return stats_points end
 
---stats = {damage  = 10, movement_speed = 20, shot_speed = 10, bullet_speed = 10, shot_range = 10}
-
-
 function getPlayer()
   p = getEngine():getEntitiesWithComponent("IsPlayer")
   for _,player in pairs(p) do
@@ -16,7 +13,7 @@ function getStats()
   if getPlayer() ~= nil then
     return getPlayer():get("Stats")
   end
-  return {damage  = 20, movement_speed = 20, shot_speed = 10, bullet_speed = 10, shot_range = 10}
+  return {damage  = 2, movement_speed = 10, shot_speed = 20, bullet_speed = 10, shot_range = 10}
 end
 
 function increaseStat(stat, value)
@@ -153,7 +150,6 @@ local menus = {
         name = "Movement Speed: "..getStats().movement_speed,
         action = function ()
           increaseStat('movement_speed', 1)
-          getPlayer():get("Velocity").speed = getPlayer():get("Velocity").speed + 20
           updateStatsValues()
         end
       },
@@ -189,13 +185,22 @@ local menus = {
 }
 
 
-function updateStatsValues()
+function updateMenuStats()
   menus["stats"].info = "Points remaining: "..getStatsPoints()
   menus["stats"].items[1].name = "Damage: "..getStats().damage
   menus["stats"].items[2].name = "Movement Speed: "..getStats().movement_speed
   menus["stats"].items[3].name = "Shot Speed: "..getStats().shot_speed
   menus["stats"].items[4].name = "Bullet Speed: "..getStats().bullet_speed
   menus["stats"].items[5].name = "Shot Range: "..getStats().shot_range
+end
+
+function updatePlayerStats()
+  getPlayer():get("Velocity").speed = 300 + 20 * getStats().movement_speed
+end
+
+function updateStatsValues()
+  updateMenuStats()
+  updatePlayerStats()
 end
 
 local selected_item = 1
