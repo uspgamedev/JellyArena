@@ -153,6 +153,7 @@ local menus = {
         name = "Movement Speed: "..getStats().movement_speed,
         action = function ()
           increaseStat('movement_speed', 1)
+          getPlayer():get("Velocity").speed = getPlayer():get("Velocity").speed + 20
           updateStatsValues()
         end
       },
