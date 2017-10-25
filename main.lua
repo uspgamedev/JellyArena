@@ -133,6 +133,7 @@ end
 
 function love.keypressed(key)
   if(key == "escape") then
+    Log.close()
     love.event.quit(0)
 
   elseif(key == "m") then
