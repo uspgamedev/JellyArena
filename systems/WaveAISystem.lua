@@ -6,10 +6,10 @@ function WaveAISystem:update(dt)
     count = count + 1
   end
   if count == 0 then
-    engine:addEntity(createEnemy(10, 10))
-    engine:addEntity(createEnemy(10, 10000))
-    engine:addEntity(createEnemy(10000, 10))
-    engine:addEntity(createEnemy(10000, 100000))
+    getEngine():addEntity(createEnemy(10, 10))
+    getEngine():addEntity(createEnemy(10, 10000))
+    getEngine():addEntity(createEnemy(10000, 10))
+    getEngine():addEntity(createEnemy(10000, 100000))
   end
 end
 

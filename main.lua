@@ -53,7 +53,6 @@ ProjectileSystem          = require "systems/ProjectileSystem"
 require "lib/GameState"
 
 function love.load()
-  engine = Engine()
   eventmanager = EventManager()
   debug_text = ""
   play_track = true
@@ -62,28 +61,28 @@ function love.load()
   setTrack("sample1")
 
   -- Update timers
-  engine:addSystem(TimerSystem(), "update")
+  getEngine():addSystem(TimerSystem(), "update")
   -- Process input
-  engine:addSystem(PlayerInputSystem(), "update")
-  engine:addSystem(MenuInputSystem(), "update")
+  getEngine():addSystem(PlayerInputSystem(), "update")
+  getEngine():addSystem(MenuInputSystem(), "update")
     -- Update player vars and state
     -- Go to menu
   -- process wave AI
-  engine:addSystem(WaveAISystem(), "update")
+  getEngine():addSystem(WaveAISystem(), "update")
     -- select group of enemies to spawn
     -- process group AI
   -- process individual enemy AI
-  engine:addSystem(EnemyAISystem(), "update")
+  getEngine():addSystem(EnemyAISystem(), "update")
     -- Based on current game state
     -- Based on player current input <-- cheating AI
   -- Process movement
-  engine:addSystem(MovementSystem(), "update")
-  engine:addSystem(ProjectileSystem(), "update")
+  getEngine():addSystem(MovementSystem(), "update")
+  getEngine():addSystem(ProjectileSystem(), "update")
     -- Update velocity
     -- Update position
     -- Update collision groups
   -- Process collisions
-  engine:addSystem(CollisionSystem(), "update")
+  getEngine():addSystem(CollisionSystem(), "update")
     -- Find all colliding pairs
     -- Process each pair (maybe use callbacks for collision response, like play sound, die, etc)
       -- If we 'delete' something, invalidade all remaining collisions for that body
@@ -92,21 +91,21 @@ function love.load()
   -- Update animations & visual effects
   -- Do clean up
   -- Display
-  engine:addSystem(DrawSystem(), "draw")
-  engine:addSystem(DrawHUDSystem(), "draw")
-  engine:addSystem(DrawMessageSystem(), "draw")
-  engine:addSystem(DrawMenuSystem(), "draw")
+  getEngine():addSystem(DrawSystem(), "draw")
+  getEngine():addSystem(DrawHUDSystem(), "draw")
+  getEngine():addSystem(DrawMessageSystem(), "draw")
+  getEngine():addSystem(DrawMenuSystem(), "draw")
 
   changeGameState(curGameState)
 end
 
 function love.update(dt)
-    engine:update(dt)
+    getEngine():update(dt)
     playTrack()
 end
 
 function love.draw()
-    engine:draw()
+    getEngine():draw()
 end
 
 function love.keypressed(key)

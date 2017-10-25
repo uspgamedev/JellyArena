@@ -16,7 +16,7 @@ function StatusUpgradeSystem:update(dt)
     player_stats.shot_speed = upgrade_stats.shot_speed
     player_stats.bullet_speed = upgrade_stats.bullet_speed
     player_stats.shot_range = upgrade_stats.shot_range
-    engine:removeEntity(upgrade)
+    getEngine():removeEntity(upgrade)
   end
 end
 

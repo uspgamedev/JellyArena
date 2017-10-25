@@ -2,11 +2,25 @@ local stats_points = 10
 
 function getStatsPoints() return stats_points end
 
-stats = {damage  = 10, movement_speed = 20, shot_speed = 10, bullet_speed = 10, shot_range = 10}
+--stats = {damage  = 10, movement_speed = 20, shot_speed = 10, bullet_speed = 10, shot_range = 10}
 
-function getStats() return stats end
+
+function getPlayer()
+  p = getEngine():getEntitiesWithComponent("IsPlayer")
+  for _,player in pairs(p) do
+    return player
+  end
+end
+
+function getStats()
+  if getPlayer() ~= nil then
+    return getPlayer():get("Stats")
+  end
+  return {damage  = 20, movement_speed = 20, shot_speed = 10, bullet_speed = 10, shot_range = 10}
+end
 
 function increaseStat(stat, value)
+  local stats = getStats()
   if (stats_points > 0) then
     if (stat == 'damage') then
       stats.damage = stats.damage + value
@@ -38,10 +52,10 @@ local menus = {
         name = "Restart",
         action = function ()
           for _, entity in pairs(engine.entities) do
-            engine:removeEntity(entity, true)
+            getEngine():removeEntity(entity, true)
           end
 
-          engine:addEntity(createPlayer(getCenter().x, getCenter().y))
+          getEngine():addEntity(createPlayer(getCenter().x, getCenter().y))
 
           changeGameState(GameStates.ingame)
         end
@@ -49,6 +63,7 @@ local menus = {
       {
         name = "Upgrade Stats",
         action = function ()
+          updateStatsValues()
           setMenu("stats")
         end
       },
@@ -74,10 +89,10 @@ local menus = {
         name = "Restart",
         action = function ()
           for _, entity in pairs(engine.entities) do
-            engine:removeEntity(entity, true)
+            getEngine():removeEntity(entity, true)
           end
 
-          engine:addEntity(createPlayer(getCenter().x, getCenter().y))
+          getEngine():addEntity(createPlayer(getCenter().x, getCenter().y))
           changeGameState(GameStates.ingame)
         end
       },
@@ -156,7 +171,7 @@ local menus = {
         end
       },
       {
-        name = "Shot Range: "..getStats().shot_range,
+        name = "Shot Range{damage  = 10, movement_speed = 20, shot_speed = 10, bullet_speed = 10, shot_range = 10}: "..getStats().shot_range,
         action = function ()
           increaseStat('shot_range', 1)
           updateStatsValues()

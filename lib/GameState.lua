@@ -8,28 +8,28 @@ GameStates = {
 
 ------------- Auxiliary functions -------------
 local function startIngameSystems()
-  engine:startSystem("TimerSystem")
-  engine:startSystem("EnemyAISystem")
-  engine:startSystem("MovementSystem")
-  engine:startSystem("CollisionSystem")
-  engine:startSystem("PlayerInputSystem")
-  engine:startSystem("WaveAISystem")
-  engine:startSystem("ProjectileSystem")
+  getEngine():startSystem("TimerSystem")
+  getEngine():startSystem("EnemyAISystem")
+  getEngine():startSystem("MovementSystem")
+  getEngine():startSystem("CollisionSystem")
+  getEngine():startSystem("PlayerInputSystem")
+  getEngine():startSystem("WaveAISystem")
+  getEngine():startSystem("ProjectileSystem")
 end
 
 local function stopIngameSystems()
-  engine:stopSystem("TimerSystem")
-  engine:stopSystem("EnemyAISystem")
-  engine:stopSystem("MovementSystem")
-  engine:stopSystem("CollisionSystem")
-  engine:stopSystem("PlayerInputSystem")
-  engine:stopSystem("WaveAISystem")
-  engine:stopSystem("ProjectileSystem")
+  getEngine():stopSystem("TimerSystem")
+  getEngine():stopSystem("EnemyAISystem")
+  getEngine():stopSystem("MovementSystem")
+  getEngine():stopSystem("CollisionSystem")
+  getEngine():stopSystem("PlayerInputSystem")
+  getEngine():stopSystem("WaveAISystem")
+  getEngine():stopSystem("ProjectileSystem")
 end
 
 local function stopMenuSystems()
-  engine:stopSystem("MenuInputSystem")
-  engine:stopSystem("DrawMenuSystem")
+  getEngine():stopSystem("MenuInputSystem")
+  getEngine():stopSystem("DrawMenuSystem")
 end
 -----------------------------------------------
 ---------- State creation funcitons -----------
@@ -39,7 +39,7 @@ local function setIngameState()
 end
 
 local function setNewGameState()
-  engine:addEntity(createPlayer(getCenter().x, getCenter().y))
+  getEngine():addEntity(createPlayer(getCenter().x, getCenter().y))
 
   setIngameState()
   curGameState = GameStates.ingame
@@ -48,15 +48,15 @@ end
 local function setPauseMenuState()
   stopIngameSystems()
   setMenu("pause")
-  engine:startSystem("MenuInputSystem")
-  engine:startSystem("DrawMenuSystem")
+  getEngine():startSystem("MenuInputSystem")
+  getEngine():startSystem("DrawMenuSystem")
 end
 
 local function setGameOverState()
   stopIngameSystems()
   setMenu("gameOver")
-  engine:startSystem("MenuInputSystem")
-  engine:startSystem("DrawMenuSystem")
+  getEngine():startSystem("MenuInputSystem")
+  getEngine():startSystem("DrawMenuSystem")
 end
 
 function changeGameState(gameState)

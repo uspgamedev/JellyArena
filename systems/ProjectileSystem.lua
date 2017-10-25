@@ -9,8 +9,8 @@ function ProjectileSystem:update(dt)
       velocity:setDirection(Vector(0, 0))
       local position = v:get("Position")
       drop = createHpDrop(position.x, position.y)
-      engine:addEntity(drop)
-      engine:removeEntity(v)
+      getEngine():addEntity(drop)
+      getEngine():removeEntity(v)
     end
   end
 end

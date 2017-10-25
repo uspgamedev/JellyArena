@@ -13,8 +13,9 @@ function DrawMenuSystem:draw()
   love.graphics.setNewFont(20)
   local text_width
   local text_x
-
+  love.graphics.setColor(255, 255, 0, 255)
   if ( menu.info ~= nil ) then love.graphics.printf(menu.info, 100 , 200, 300, "left") end
+  love.graphics.setColor(255, 255, 255, 255)
   for i, v in ipairs (menu.items) do
     text_width = love.graphics.getFont():getWidth(v.name)
     if ( getMenu().align == "center" ) then

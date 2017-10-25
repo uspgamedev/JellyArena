@@ -10,3 +10,12 @@ end
 function getSound(file_name)
   return "resources/sounds/"..file_name
 end
+
+local engine
+
+function getEngine()
+  if engine == nil then
+    engine = Engine()
+  end
+  return engine
+end
