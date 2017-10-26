@@ -17,7 +17,7 @@ function CollisionSystem:update(dt)
     local position = v:get("Position")
     local radius = v:get("Circle").radius
     -- Delete entities that have gone outside stage bounds
-    if (self:checkWindowLimit(position, radius) and not collider.clampToStageBounds) then
+    if (self:checkStageBounds(position, radius) and not collider.clampToStageBounds) then
       collider.active = false
       self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
       self.entitiesToRemove[self.entitiesToRemoveCount] = v
@@ -104,25 +104,24 @@ function CollisionSystem:requires()
   return {"Collider"}
 end
 
-function CollisionSystem:checkWindowLimit(position, radius)
+function CollisionSystem:checkStageBounds(position, radius)
   -- TODO: change to stage bounds instead of window bounds
-  local window_width = love.graphics.getWidth() - radius
-  local window_height = love.graphics.getHeight() - radius
+  local size = {["x"] = 1000 - radius, ["y"] = 1000 - radius}
   local check = false
   if position.x < radius then
     check = true
     position.x = radius
-  elseif position.x > window_width then
+  elseif position.x > size.x then
     check = true
-    position.x = window_width
+    position.x = size.x
   end
 
   if position.y < radius then
     check = true
     position.y = radius
-  elseif position.y > window_height then
+  elseif position.y > size.y then
     check = true
-    position.y = window_height
+    position.y = size.y
   end
 
   return check

@@ -13,10 +13,15 @@ function MovementSystem:update(dt)
     local follow = v:get("Follow")
     position:setVector(follow.target:get("Position"):toVector())
   end
+  for _,p in ipairs(self.targets.player) do
+    local pos = p:get("Position")
+    local dx,dy = pos.x - camera.x, pos.y - camera.y
+    camera:move(dx/2, dy/2)
+  end
 end
 
 function MovementSystem:requires()
-  return { movables = { "Position", "Velocity" }, followers = {"Position", "Follow"} }
+  return { movables = { "Position", "Velocity" }, followers = {"Position", "Follow"}, player = {"IsPlayer"} }
 end
 
 return MovementSystem
