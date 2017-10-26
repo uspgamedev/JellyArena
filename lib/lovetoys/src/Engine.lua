@@ -98,6 +98,10 @@ function Engine:removeEntity(entity, removeChildren, newParent)
         else
             lovetoys.debug("Engine: Entity has not been added to any engine yet. (No entity.id)")
         end
+        lovetoys.debug("Engine: Entity's components:")
+        for index, component in pairs(entity.components) do
+            lovetoys.debug(index, component)
+        end
     end
 end
 

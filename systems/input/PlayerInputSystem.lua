@@ -2,16 +2,13 @@ local PlayerInputSystem = class("PlayerInputSystem", System)
 
 function PlayerInputSystem:update(dt)
   for i, entity in pairs(self.targets) do
-    if curGameState == GameStates.ingame then
-      self:movement(entity)
-      self:fire(entity, dt)
-      self:testTrack() --remove after track test
-    end
+    self:movement(entity)
+    self:fire(entity, dt)
   end
 end
 
 function PlayerInputSystem:requires()
-  return {"IsPlayer"}
+  return {"Position", "Velocity", "AttackProperties", "Hitpoints", "IsPlayer"}
 end
 
 function PlayerInputSystem:movement(entity)
@@ -31,14 +28,8 @@ local fireDirections = {
 }
 function PlayerInputSystem:fire(entity, dt)
   -- Reset attack direction
-  local attack
-  for _, child in pairs(entity.children) do
-    if child:has("AttackProperties") then
-      attack = child
-    end
-  end
   local fireDirection = Vector(0, 0)
-  local fireTimer = attack:get("Timer");
+  local fireTimer = entity:get("Timer");
 
   -- Continue only if we can shoot
   if fireTimer.isActive and fireTimer.cooldown > 0 then
@@ -62,28 +53,15 @@ function PlayerInputSystem:fire(entity, dt)
     if hp.cur > 1 then
       local playerPosition = entity:get("Position")
       local position = playerPosition:toVector()
-      local attackProperties = attack:get("AttackProperties")
-      local range = attack:get("AttackRange")
-      local attackDamage = attack:get("Damage").damage
+      local attack = entity:get("AttackProperties")
 
-      position = position + attackProperties.spawnDistance * fireDirection
-      bullet = createPlayerBullet(position.x, position.y, fireDirection, attackDamage, range.max)
+      position = position + attack.spawnDistance * fireDirection
+      bullet = createBullet(position.x, position.y, fireDirection, attack.damage)
       getEngine():addEntity(bullet)
       hp.cur = hp.cur - 1;
       fireTimer.cooldown = fireTimer.waitTime
       playSound("teste")
     end
-  end
-end
-
---remove after track test
-function PlayerInputSystem:testTrack()
-  if love.keyboard.isDown("1") then
-    setTrack("sample1")
-  elseif love.keyboard.isDown("2") then
-    setTrack("sample2")
-  elseif love.keyboard.isDown("3") then
-    setTrack("sample3")
   end
 end
 

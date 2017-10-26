@@ -1,26 +1,13 @@
 local Position, Circle, Velocity, Projectile, Color, Collider
   = Component.load({"Position", "Circle", "Velocity", "Projectile", "Color", "Collider"})
 
-function createBullet(entity, x, y, direction, damage)
+function createBullet(x, y, direction, damage)
+  local entity = Entity()
   entity:add(Position(x, y))
   entity:add(Circle(5))
   entity:add(Velocity(direction.x, direction.y, 1000))
-end
-
-function createPlayerBullet(x, y, direction, damage, range)
-  local entity = Entity()
+  entity:add(Projectile(damage, distToPix(7)))
   entity:add(Color(255, 255, 255))
-  createBullet(entity, x, y, direction, damage)
-  entity:add(Projectile("Player", damage, range))
-  entity:add(Collider("PlayerBullet", true))
-  return entity
-end
-
-function createEnemyBullet (parent, x, y, direction, damage, range)
-  local entity = Entity(parent)
-  entity:add(Color(255, 255, 0))
-  createBullet(entity, x, y, direction, damage)
-  entity:add(Projectile("Enemy", damage, range))
-  entity:add(Collider("EnemyBullet", false))
+  entity:add(Collider("Bullet", true))
   return entity
 end

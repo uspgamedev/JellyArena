@@ -4,45 +4,32 @@ lovetoys.initialize({
   debug = true,
   globals = true
 })
-Stack = require "lib/Stack"
 
 require ("lib/Utils")
 require ("lib/SoundController")
 require ("lib/MenuController")
-WaveController = require ("lib/WaveController")
-Statistic = require ("lib/StatisticController")
-ActionsController = require("lib/ActionsController")
-Log = require("lib/LogController")
 
 --- components
-require "components/AI"
 require "components/AttackProperties"
-require "components/AttackRange"
 require "components/Circle"
 require "components/Collider"
 require "components/Color"
-require "components/Damage"
-require "components/Follow"
 require "components/Hitpoints"
+require "components/IsEnemy"
 require "components/IsPlayer"
-require "components/Label"
 require "components/Position"
 require "components/Projectile"
 require "components/Timer"
 require "components/Velocity"
-require "components/Visibility"
 require "components/Stats"
 
 
 --- Entities
-require "entities/Attack"
-require "entities/Invunerable"
+require "entities/Damage"
 require "entities/Bullet"
-require "entities/DamageArea"
 require "entities/Enemy"
 require "entities/HpDrop"
 require "entities/Player"
-require "entities/Trap"
 
 --- systems
 DrawSystem                = require "systems/draw/DrawSystem"
@@ -60,8 +47,6 @@ MovementSystem            = require "systems/MovementSystem"
 CollisionSystem           = require "systems/CollisionSystem"
 WaveAISystem              = require "systems/WaveAISystem"
 ProjectileSystem          = require "systems/ProjectileSystem"
-CleanUpSystem             = require "systems/CleanUpSystem"
-TrapSpawnSystem           = require "systems/TrapSpawnSystem"
 
 
 --- Utils
@@ -70,15 +55,9 @@ require "lib/GameState"
 function love.load()
   eventmanager = EventManager()
   debug_text = ""
-  garbage_list = {}
   play_track = true
   play_effects = true
   curGameState = GameStates.newGame
-  WaveController.createLearningList()
-  Statistic.reset()
-  -- TODO: random seed
-  -- math.randomseed(os.time())
-  Log.init({"wave"})
   setTrack("sample1")
 
   -- Update timers
@@ -116,8 +95,6 @@ function love.load()
   getEngine():addSystem(DrawHUDSystem(), "draw")
   getEngine():addSystem(DrawMessageSystem(), "draw")
   getEngine():addSystem(DrawMenuSystem(), "draw")
-  getEngine():addSystem(CleanUpSystem(), "update")
-  getEngine():addSystem(TrapSpawnSystem(), "update")
 
   changeGameState(curGameState)
 end
@@ -133,7 +110,6 @@ end
 
 function love.keypressed(key)
   if(key == "escape") then
-    Log.close()
     love.event.quit(0)
 
   elseif(key == "m") then

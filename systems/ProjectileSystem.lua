@@ -5,16 +5,12 @@ function ProjectileSystem:update(dt)
     local projectile = v:get("Projectile")
     local velocity = v:get("Velocity")
     projectile:addDisplacement((velocity:toVector() * dt):len())
-    if (not projectile:moving()) then
+    if ( not projectile:moving() ) then
       velocity:setDirection(Vector(0, 0))
-      if projectile.owner == "Player" then
-        local position = v:get("Position")
-        drop = createHpDrop(position.x, position.y)
-        getEngine():addEntity(drop)
-        getEngine():removeEntity(v)
-      else
-        table.insert(garbage_list, v)
-      end
+      local position = v:get("Position")
+      drop = createHpDrop(position.x, position.y)
+      getEngine():addEntity(drop)
+      getEngine():removeEntity(v)
     end
   end
 end
