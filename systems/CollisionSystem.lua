@@ -216,12 +216,11 @@ function CollisionSystem:PlayerAndEnemy(pair)
   local enemy = pair["Enemy"]
 
   local playerPos = player:get("Position")
-  local playerVel = player:get("Velocity")
   local playerRadius = player:get("Circle").radius
 
   local enemyPos = enemy:get("Position")
   local enemyRadius = player:get("Circle").radius
-  local dist = (playerPos:toVector() - enemyPos:toVector()):len()
+  local dist = (enemyRadius + playerRadius) - (playerPos:toVector() - enemyPos:toVector()):len()
   local dir = (playerPos:toVector() - enemyPos:toVector()):normalizeInplace()
   local step = dir * dist
   playerPos:setVector(playerPos:toVector() + step)
