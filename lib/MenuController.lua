@@ -34,6 +34,19 @@ function increaseStat(stat, value)
   end
 end
 
+function restartGame()
+  for _, entity in pairs(getEngine().entities) do
+    getEngine():removeEntity(entity, true)
+  end
+
+  local player = createPlayer(getCenter().x, getCenter().y)
+  getEngine():addEntity(player)
+  getEngine():addEntity(createPlayerAttack(player))
+  getEngine():addEntity(createInvunerable(player))
+
+  changeGameState(GameStates.ingame)
+end
+
 local menus = {
   ["pause"] = {
     title = "Pause",
@@ -47,15 +60,7 @@ local menus = {
       },
       {
         name = "Restart",
-        action = function ()
-          for _, entity in pairs(engine.entities) do
-            getEngine():removeEntity(entity, true)
-          end
-
-          getEngine():addEntity(createPlayer(getCenter().x, getCenter().y))
-
-          changeGameState(GameStates.ingame)
-        end
+        action = restartGame
       },
       {
         name = "Upgrade Stats",
@@ -84,14 +89,7 @@ local menus = {
     items = {
       {
         name = "Restart",
-        action = function ()
-          for _, entity in pairs(engine.entities) do
-            getEngine():removeEntity(entity, true)
-          end
-
-          getEngine():addEntity(createPlayer(getCenter().x, getCenter().y))
-          changeGameState(GameStates.ingame)
-        end
+        action = restartGame
       },
       {
         name = "Exit",

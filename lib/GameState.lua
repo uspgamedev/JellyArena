@@ -15,6 +15,7 @@ local function startIngameSystems()
   getEngine():startSystem("PlayerInputSystem")
   getEngine():startSystem("WaveAISystem")
   getEngine():startSystem("ProjectileSystem")
+  getEngine():startSystem("CleanUpSystem")
 end
 
 local function stopIngameSystems()
@@ -25,6 +26,8 @@ local function stopIngameSystems()
   getEngine():stopSystem("PlayerInputSystem")
   getEngine():stopSystem("WaveAISystem")
   getEngine():stopSystem("ProjectileSystem")
+  getEngine():stopSystem("ProjectileSystem")
+  getEngine():stopSystem("CleanUpSystem")
 end
 
 local function stopMenuSystems()
@@ -39,7 +42,10 @@ local function setIngameState()
 end
 
 local function setNewGameState()
-  getEngine():addEntity(createPlayer(getCenter().x, getCenter().y))
+  local player = createPlayer(getCenter().x, getCenter().y)
+  getEngine():addEntity(player)
+  getEngine():addEntity(createPlayerAttack(player))
+  getEngine():addEntity(createInvunerable(player))
 
   setIngameState()
   curGameState = GameStates.ingame
