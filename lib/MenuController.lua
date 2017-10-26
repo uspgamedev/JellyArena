@@ -48,7 +48,7 @@ function restartGame()
   getEngine():addEntity(createPlayerAttack(player))
   getEngine():addEntity(createInvunerable(player))
 
-  changeGameState(GameStates.ingame)
+  changeGameState("ingame")
 end
 
 local menus = {
@@ -59,7 +59,7 @@ local menus = {
       {
         name = "Resume",
         action = function()
-          changeGameState(GameStates.ingame)
+          changeGameState("ingame")
         end
       },
       {

@@ -147,7 +147,7 @@ function CollisionSystem:PlayerAndTrap(pair)
       player:get("Hitpoints").cur = player:get("Hitpoints").cur - 10
     else
       player:get("Hitpoints").cur = 0
-      changeGameState(GameStates.gameOver)
+      changeGameState("gameOver")
     end
   elseif (trap_type == "HealingTrap") then
     player:get("Hitpoints"):add(10)
@@ -205,7 +205,7 @@ end
 function CollisionSystem:PlayerAndEnemyBullet(pair)
   local player = pair["Player"]
   local bullet = pair["EnemyBullet"]
-  
+
   Statistic.addToActions(bullet:get("Projectile").damage, bullet:getParent():get("AI").actions)
 
   self:DamagePlayer(player, bullet:get("Projectile").damage)
@@ -217,7 +217,7 @@ function CollisionSystem:DamagePlayer(player, damage)
     local hp = player:get("Hitpoints")
     hp.cur = hp.cur - damage
     if (hp.cur <= 0) then
-      changeGameState(GameStates.gameOver)
+      changeGameState("gameOver")
     else
       getChild(player, "Invunerable"):get("Timer"):start()
     end

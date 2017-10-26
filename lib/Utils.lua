@@ -28,3 +28,13 @@ function getChild(entity, label)
   end
   return nil
 end
+
+function containsValue(table, data)
+  for key, value in pairs(table) do
+    if (value == data) then
+      return true
+    end
+  end
+  
+  return false
+end

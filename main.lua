@@ -74,7 +74,7 @@ function love.load()
   garbage_list = {}
   play_track = true
   play_effects = true
-  curGameState = GameStates.newGame
+  curGameState = "gameOver"
   WaveController.createLearningList()
   Statistic.reset()
   -- TODO: random seed
@@ -137,10 +137,10 @@ function love.keypressed(key)
     Log.close()
     love.event.quit(0)
   elseif (key == "m") then
-    if (curGameState == GameStates.ingame) then
-      changeGameState(GameStates.pauseMenu)
-    elseif (curGameState == GameStates.pauseMenu) then
-      changeGameState(GameStates.ingame)
+    if (curGameState == "ingame") then
+      changeGameState("pauseMenu")
+    elseif (curGameState == "pauseMenu") then
+      changeGameState("ingame")
     end
   end
 end
