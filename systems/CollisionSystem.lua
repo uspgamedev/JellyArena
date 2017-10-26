@@ -75,6 +75,8 @@ function CollisionSystem:update(dt)
         self:PlayerAndEnemyBullet(pair)
       elseif (pair["Player"] and pair["Trap"]) then
         self:PlayerAndTrap(pair)
+      elseif (pair["Player"] and pair["Enemy"]) then
+        self:PlayerAndEnemy(pair)
       end
     end
 
@@ -182,9 +184,7 @@ function CollisionSystem:PushPlayer(player, direction, displacement)
   if (player:get("Position").y > love.graphics.getHeight()) then
     player:get("Position").y = love.graphics.getHeight() - player:get("Circle").radius
   end
-
 end
-
 
 function CollisionSystem:PlayerBulletAndEnemy(pair)
   local bullet = pair["PlayerBullet"]
@@ -205,10 +205,27 @@ end
 function CollisionSystem:PlayerAndEnemyBullet(pair)
   local player = pair["Player"]
   local bullet = pair["EnemyBullet"]
-  
+
   Statistic.addToActions(bullet:get("Projectile").damage, bullet:getParent():get("AI").actions)
 
   self:DamagePlayer(player, bullet:get("Projectile").damage)
+end
+
+function CollisionSystem:PlayerAndEnemy(pair)
+  local player = pair["Player"]
+  local enemy = pair["Enemy"]
+
+  local playerPos = player:get("Position")
+  local playerRadius = player:get("Circle").radius
+
+  local enemyPos = enemy:get("Position")
+  local enemyRadius = player:get("Circle").radius
+  local dist = (enemyRadius + playerRadius) - (playerPos:toVector() - enemyPos:toVector()):len()
+  local dir = (playerPos:toVector() - enemyPos:toVector()):normalizeInplace()
+  local step = dir * dist
+  playerPos:setVector(playerPos:toVector() + step)
+
+  self:checkStageBounds(playerPos, playerRadius)
 end
 
 function CollisionSystem:DamagePlayer(player, damage)
