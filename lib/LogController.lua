@@ -1,23 +1,28 @@
 local LogController = class("LogController")
-
+local files = {}
 local function fileName(file)
   return string.format("log/%s.log", file)
 end
 
-function LogController.init(files)
-  for _, file in pairs(files) do
-    local f, e = io.open(fileName(file), "w")
-    if f == nil then
-      print("Couldn't open file: " .. e)
-    end
+function LogController.init(filenames)
+  love.filesystem.createDirectory("log")
+  for _, file in pairs(filenames) do
+    f = love.filesystem.newFile(fileName(file))
+    assert(f:open("w"))
     f:close()
+    assert(f:open("a"))
+    files[file] = f
   end
 end
 
 function LogController.write(file, text)
-  local f = io.open(fileName(file), "a")
-  f:write(text .. "\n")
-  f:close()
+  files[file]:write(text .. "\n")
+end
+
+function LogController.close()
+  for _, f in pairs(files) do
+    f:close()
+  end
 end
 
 return LogController
