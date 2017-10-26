@@ -94,7 +94,7 @@ function CollisionSystem:update(dt)
 
   -- Remove flagged entities
   for i = 1, self.entitiesToRemoveCount, 1 do
-    engine:removeEntity(self.entitiesToRemove[i], true)
+    getEngine():removeEntity(self.entitiesToRemove[i], true)
     self.entitiesToRemove[i] = nil
   end
   self.entitiesToRemoveCount = 0
@@ -227,7 +227,7 @@ end
 
 function CollisionSystem:killAndDrop(entity)
   local position = entity:get("Position")
-  engine:addEntity(createHpDrop(position.x, position.y))
+  getEngine():addEntity(createHpDrop(position.x, position.y))
   self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
   self.entitiesToRemove[self.entitiesToRemoveCount] = entity
 end

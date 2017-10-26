@@ -68,7 +68,7 @@ function PlayerInputSystem:fire(entity, dt)
 
       position = position + attackProperties.spawnDistance * fireDirection
       bullet = createPlayerBullet(position.x, position.y, fireDirection, attackDamage, range.max)
-      engine:addEntity(bullet)
+      getEngine():addEntity(bullet)
       hp.cur = hp.cur - 1;
       fireTimer.cooldown = fireTimer.waitTime
       playSound("teste")

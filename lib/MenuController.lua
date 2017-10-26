@@ -1,12 +1,48 @@
+local stats_points = 10
+
+function getStatsPoints() return stats_points end
+
+function getPlayer()
+  p = getEngine():getEntitiesWithComponent("IsPlayer")
+  for _,player in pairs(p) do
+    return player
+  end
+end
+
+function getStats()
+  if getPlayer() ~= nil then
+    return getPlayer():get("Stats")
+  end
+  return {damage  = 2, movement_speed = 10, shot_speed = 20, bullet_speed = 10, shot_range = 10}
+end
+
+function increaseStat(stat, value)
+  local stats = getStats()
+  if (stats_points > 0) then
+    if (stat == 'damage') then
+      stats.damage = stats.damage + value
+    elseif (stat == 'movement_speed') then
+      stats.movement_speed = stats.movement_speed + value
+    elseif (stat == 'shot_speed') then
+      stats.shot_speed = stats.shot_speed + value
+    elseif (stat == 'bullet_speed') then
+      stats.bullet_speed = stats.bullet_speed + value
+    elseif (stat == 'shot_range') then
+      stats.shot_range = stats.shot_range + value
+    end
+    stats_points = stats_points - 1
+  end
+end
+
 function restartGame()
-  for _, entity in pairs(engine.entities) do
-    engine:removeEntity(entity, true)
+  for _, entity in pairs(getEngine().entities) do
+    getEngine():removeEntity(entity, true)
   end
 
   local player = createPlayer(getCenter().x, getCenter().y)
-  engine:addEntity(player)
-  engine:addEntity(createPlayerAttack(player))
-  engine:addEntity(createInvunerable(player))
+  getEngine():addEntity(player)
+  getEngine():addEntity(createPlayerAttack(player))
+  getEngine():addEntity(createInvunerable(player))
 
   changeGameState(GameStates.ingame)
 end
@@ -25,6 +61,13 @@ local menus = {
       {
         name = "Restart",
         action = restartGame
+      },
+      {
+        name = "Upgrade Stats",
+        action = function ()
+          updateStatsValues()
+          setMenu("stats")
+        end
       },
       {
         name = "Options",
@@ -89,33 +132,74 @@ local menus = {
       }
     }
   },
-  ["status"] = {
+  ["stats"] = {
     title = "Upgrade Stats",
     align = "left",
+    info = "Points remaining: "..getStatsPoints(),
     items = {
       {
-        name = "Damage:",
-        action = function () end
+        name = "Damage: "..getStats().damage,
+        action = function ()
+          increaseStat('damage', 1)
+          updateStatsValues()
+        end
       },
       {
-        name = "Movement Speed:",
-        action = function () end
+        name = "Movement Speed: "..getStats().movement_speed,
+        action = function ()
+          increaseStat('movement_speed', 1)
+          updateStatsValues()
+        end
       },
       {
-        name = "Shot Speed:",
-        action = function () end
+        name = "Shot Speed: "..getStats().shot_speed,
+        action = function ()
+          increaseStat('shot_speed', 1)
+          updateStatsValues()
+        end
       },
       {
-        name = "Bullet Speed:",
-        action = function () end
+        name = "Bullet Speed: "..getStats().bullet_speed,
+        action = function ()
+          increaseStat('bullet_speed', 1)
+          updateStatsValues()
+        end
       },
       {
-        name = "Back:",
-        action = function () end
+        name = "Shot Range{damage  = 10, movement_speed = 20, shot_speed = 10, bullet_speed = 10, shot_range = 10}: "..getStats().shot_range,
+        action = function ()
+          increaseStat('shot_range', 1)
+          updateStatsValues()
+        end
+      },
+      {
+        name = "Back",
+        action = function ()
+          setMenu("pause")
+        end
       }
     }
   }
 }
+
+
+function updateMenuStats()
+  menus["stats"].info = "Points remaining: "..getStatsPoints()
+  menus["stats"].items[1].name = "Damage: "..getStats().damage
+  menus["stats"].items[2].name = "Movement Speed: "..getStats().movement_speed
+  menus["stats"].items[3].name = "Shot Speed: "..getStats().shot_speed
+  menus["stats"].items[4].name = "Bullet Speed: "..getStats().bullet_speed
+  menus["stats"].items[5].name = "Shot Range: "..getStats().shot_range
+end
+
+function updatePlayerStats()
+  getPlayer():get("Velocity").speed = 300 + 20 * getStats().movement_speed
+end
+
+function updateStatsValues()
+  updateMenuStats()
+  updatePlayerStats()
+end
 
 local selected_item = 1
 local current_menu = menus["pause"]

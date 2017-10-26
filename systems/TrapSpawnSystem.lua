@@ -10,17 +10,17 @@ function TrapSpawnSystem:update(dt)
 
     for i = 1, 2, 1 do
       trapTest = createDamageTrap(math.random(0, love.graphics.getWidth() - 100), math.random(0, love.graphics.getHeight() - 100))
-      engine:addEntity(trapTest)
+      getEngine():addEntity(trapTest)
     end
 
     for i = 1, 2, 1 do
       trapTest = createHealingTrap(math.random(0, love.graphics.getWidth() - 100), math.random(0, love.graphics.getHeight() - 100))
-      engine:addEntity(trapTest)
+      getEngine():addEntity(trapTest)
     end
 
     for i = 1, 5, 1 do
       trapTest = createPushTrap(math.random(0, love.graphics.getWidth() - 100), math.random(0, love.graphics.getHeight() - 100))
-      engine:addEntity(trapTest)
+      getEngine():addEntity(trapTest)
     end
   end
 end

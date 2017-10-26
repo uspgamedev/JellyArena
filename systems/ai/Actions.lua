@@ -29,7 +29,7 @@ Actions.MeleeAttack = {
     local attackDamage = attack:get("Damage").damage
     local radius = agent:get("Circle").radius + range.max
     local damage = createDamageArea(agent:get("Position"), radius, attackDamage, agent)
-    engine:addEntity(damage)
+    getEngine():addEntity(damage)
     table.insert(garbage_list, damage)
     attackTimer:start()
     globalTimer:start()
@@ -69,7 +69,7 @@ Actions.RangedAttack = {
     local direction = (target:get("Position"):toVector() - position:toVector())
     direction:normalizeInplace()
     bullet = createEnemyBullet(agent, position.x, position.y, direction, attackDamage, range.max)
-    engine:addEntity(bullet)
+    getEngine():addEntity(bullet)
     attackTimer:start()
     globalTimer:start()
     return true
@@ -118,7 +118,7 @@ Actions.DashAttack = {
       local attackDamage = attack:get("Damage").damage
       local radius = agent:get("Circle").radius
       state.damage = createDamageArea(agentPosition, radius, attackDamage, agent, true)
-      engine:addEntity(state.damage)
+      getEngine():addEntity(state.damage)
     end
 
     -- finish dash and enter cooldown

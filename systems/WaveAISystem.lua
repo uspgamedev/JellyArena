@@ -75,10 +75,10 @@ function WaveAISystem:createWave()
 
     local enemy = createDumbEnemy(i * 100, i * 100)
     enemy:add(AI(Goals, ai))
-    engine:addEntity(enemy)
-    engine:addEntity(createDashAttack(enemy))
-    engine:addEntity(createMeleeAttack(enemy))
-    engine:addEntity(createRangedAttack(enemy))
+    getEngine():addEntity(enemy)
+    getEngine():addEntity(createDashAttack(enemy))
+    getEngine():addEntity(createMeleeAttack(enemy))
+    getEngine():addEntity(createRangedAttack(enemy))
   end
 
 end
