@@ -224,6 +224,8 @@ function CollisionSystem:PlayerAndEnemy(pair)
   local dir = (playerPos:toVector() - enemyPos:toVector()):normalizeInplace()
   local step = dir * dist
   playerPos:setVector(playerPos:toVector() + step)
+
+  self:checkStageBounds(playerPos, playerRadius)
 end
 
 function CollisionSystem:DamagePlayer(player, damage)
