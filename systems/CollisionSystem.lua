@@ -16,7 +16,6 @@ function CollisionSystem:update(dt)
     local collider = v:get("Collider")
     local position = v:get("Position")
     local radius = v:get("Circle").radius
-
     -- Delete entities that have gone outside stage bounds
     if (self:checkWindowLimit(position, radius) and not collider.clampToStageBounds) then
       collider.active = false
@@ -29,7 +28,7 @@ function CollisionSystem:update(dt)
   for i, v in pairs(self.targets) do
     local vCollider = v:get("Collider")
 
-    if(vCollider.active) then
+    if (vCollider.active) then
       local vPos = v:get("Position"):toVector()
       local vRad = v:get("Circle").radius
 
@@ -37,7 +36,7 @@ function CollisionSystem:update(dt)
         if (j > i) then
           local wCollider = w:get("Collider")
 
-          if(wCollider.active) then
+          if (wCollider.active) then
             -- TODO: change to a shape intersection test
 
             local wPos = w:get("Position"):toVector()
@@ -49,7 +48,7 @@ function CollisionSystem:update(dt)
             if (dist < minDist) then
               self.collisionPairsCount = self.collisionPairsCount + 1
               self.collisionPairs[self.collisionPairsCount] = {[vCollider.type] = v, [wCollider.type] = w}
-                 end
+            end
           end
         end
       end
@@ -68,10 +67,14 @@ function CollisionSystem:update(dt)
     if not resolved then
       if (pair["Player"] and pair["HpDrop"]) then
         self:PlayerAndHpDrop(pair)
-      elseif (pair["Enemy"] and pair["Bullet"]) then
-        self:BulletAndEnemy(pair)
-      elseif (pair["Player"] and pair["Damage"]) then
-        self:PlayerAndDamage(pair)
+      elseif (pair["Enemy"] and pair["PlayerBullet"]) then
+        self:PlayerBulletAndEnemy(pair)
+      elseif (pair["Player"] and pair["DamageArea"]) then
+        self:PlayerAndDamageArea(pair)
+      elseif (pair["Player"] and pair["EnemyBullet"]) then
+        self:PlayerAndEnemyBullet(pair)
+      elseif (pair["Player"] and pair["Trap"]) then
+        self:PlayerAndTrap(pair)
       end
     end
 
@@ -82,7 +85,7 @@ function CollisionSystem:update(dt)
   -- Clean collisionPairs array
   for i = 1, self.collisionPairsCount, 1 do
     local pair = self.collisionPairs[i]
-    for _,entity in pairs(pair) do
+    for _, entity in pairs(pair) do
       entity:get("Collider").resolved = false
     end
     self.collisionPairs[i] = nil
@@ -98,7 +101,7 @@ function CollisionSystem:update(dt)
 end
 
 function CollisionSystem:requires()
-  return { "Collider" }
+  return {"Collider"}
 end
 
 function CollisionSystem:checkWindowLimit(position, radius)
@@ -129,32 +132,100 @@ function CollisionSystem:PlayerAndHpDrop(pair)
   local player = pair["Player"]
   local drop = pair["HpDrop"]
   local hp = player:get("Hitpoints")
+
   hp:add(1)
   self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
   self.entitiesToRemove[self.entitiesToRemoveCount] = drop
 end
 
-function CollisionSystem:BulletAndEnemy(pair)
-  local bullet = pair["Bullet"]
+function CollisionSystem:PlayerAndTrap(pair)
+  local player = pair["Player"]
+  local trap = pair["Trap"]
+  local trap_type = trap:get("Label").label
+
+  if (trap_type == "DamageTrap") then
+    if (player:get("Hitpoints").cur >= 10) then
+      player:get("Hitpoints").cur = player:get("Hitpoints").cur - 10
+    else
+      player:get("Hitpoints").cur = 0
+      changeGameState(GameStates.gameOver)
+    end
+  elseif (trap_type == "HealingTrap") then
+    player:get("Hitpoints"):add(10)
+  else
+    math.randomseed(os.time())
+    self:PushPlayer(player, math.random(4), 200)
+  end
+
+  self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
+  self.entitiesToRemove[self.entitiesToRemoveCount] = trap
+end
+
+function CollisionSystem:PushPlayer(player, direction, displacement)
+  if (direction == 1) then
+    player:get("Position").y = player:get("Position").y - displacement
+  elseif (direction == 2) then
+    player:get("Position").x = player:get("Position").x + displacement
+  elseif (direction == 3) then
+    player:get("Position").y = player:get("Position").y + displacement
+  elseif (direction == 4) then
+    player:get("Position").x = player:get("Position").x - displacement
+  end
+  if (player:get("Position").x < 0) then
+    player:get("Position").x = 0
+  end
+  if (player:get("Position").y < 0) then
+    player:get("Position").y = 0
+  end
+  if (player:get("Position").x > love.graphics.getWidth()) then
+    player:get("Position").x = love.graphics.getWidth() - player:get("Circle").radius
+  end
+  if (player:get("Position").y > love.graphics.getHeight()) then
+    player:get("Position").y = love.graphics.getHeight() - player:get("Circle").radius
+  end
+
+end
+
+
+function CollisionSystem:PlayerBulletAndEnemy(pair)
+  local bullet = pair["PlayerBullet"]
   local enemy = pair["Enemy"]
   self:killAndDrop(bullet)
   bullet:get("Collider").resolved = true
   self:killAndDrop(enemy)
 end
 
-function CollisionSystem:PlayerAndDamage(pair)
+function CollisionSystem:PlayerAndDamageArea(pair)
   local player = pair["Player"]
-  local damage = pair["Damage"]
+  local damage = pair["DamageArea"]
+  Statistic.addToActions(damage:get("Damage").damage, damage:getParent():get("AI").actions)
 
-  local hp = player:get("Hitpoints")
-  hp.cur = hp.cur - 1
+  self:DamagePlayer(player, damage:get("Damage").damage)
+end
 
-  if(hp.cur <= 0) then
-    changeGameState(GameStates.gameOver)
+function CollisionSystem:PlayerAndEnemyBullet(pair)
+  local player = pair["Player"]
+  local bullet = pair["EnemyBullet"]
+  
+  Statistic.addToActions(bullet:get("Projectile").damage, bullet:getParent():get("AI").actions)
+
+  self:DamagePlayer(player, bullet:get("Projectile").damage)
+end
+
+function CollisionSystem:DamagePlayer(player, damage)
+  invunerable = getChild(player, "Invunerable")
+  if (invunerable:get("Timer").cooldown <= 0) then
+    local hp = player:get("Hitpoints")
+    hp.cur = hp.cur - damage
+    if (hp.cur <= 0) then
+      changeGameState(GameStates.gameOver)
+    else
+      getChild(player, "Invunerable"):get("Timer"):start()
+    end
   end
 end
 
-function CollisionSystem:killAndDrop (entity)
+function CollisionSystem:killAndDrop(entity)
   local position = entity:get("Position")
   getEngine():addEntity(createHpDrop(position.x, position.y))
   self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
