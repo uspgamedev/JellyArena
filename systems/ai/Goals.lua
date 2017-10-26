@@ -3,7 +3,7 @@ local Goals = {}
 Goals.Damage = {
   name = "Damage",
   weight = function(agent, target, dt)
-    return 1
+    return 10
   end
 }
 

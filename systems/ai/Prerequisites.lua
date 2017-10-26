@@ -9,6 +9,10 @@ function Prerequisites.InAttackRange(action, prerequisite, agent, target, dt)
 
     local distance = (agentPosition:toVector() - targetPosition:toVector()):len()
     local distance = distance - agent:get("Circle").radius - target:get("Circle").radius
+    if(distance < 0) then
+      distance = 0
+    end
+
     if (distance < range.max and distance > range.min) then
       return true
     end
