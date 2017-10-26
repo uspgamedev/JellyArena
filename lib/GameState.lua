@@ -1,4 +1,26 @@
-GameStates = {
+local GameStates = {
+  startingGame = {
+    systems = {},
+    onResume = function()
+      garbage_list = {}
+      WaveController.createLearningList()
+      Statistic.reset()
+
+      for _, entity in pairs(getEngine().entities) do
+        getEngine():removeEntity(entity, true)
+      end
+
+      local player = createPlayer(500, 500)
+      local pos = player:get("Position")
+      camera = Camera(pos.x, pos.y)
+      getEngine():addEntity(player)
+      getEngine():addEntity(createPlayerAttack(player))
+      getEngine():addEntity(createInvunerable(player))
+
+      changeGameState("ingame")
+    end,
+    onPause = function() end
+  },
   waitingWave = {
     systems = {
       "TimerSystem",
@@ -6,7 +28,9 @@ GameStates = {
       "CollisionSystem",
       "PlayerInputSystem",
       "ProjectileSystem",
-      "CleanUpSystem"
+      "CleanUpSystem",
+      "DrawSystem",
+      "DrawHUDSystem"
     },
     onResume = function() end,
     onPause = function() end
@@ -20,7 +44,9 @@ GameStates = {
       "PlayerInputSystem",
       "WaveAISystem",
       "ProjectileSystem",
-      "CleanUpSystem"
+      "CleanUpSystem",
+      "DrawSystem",
+      "DrawHUDSystem"
     },
     onResume = function() end,
     onPause = function() end
@@ -28,26 +54,56 @@ GameStates = {
   pauseMenu = {
     systems = {
       "MenuInputSystem",
-      "DrawMenuSystem"
+      "DrawMenuSystem",
+      "DrawSystem",
+      "DrawHUDSystem"
     },
-    onResume = function() setMenu("pause") end,
+    onResume = function(previousState)
+      pushGameState(previousState)
+      setMenu("pause")
+    end,
     onPause = function() end
   },
   gameOver = {
     systems = {
       "MenuInputSystem",
-      "DrawMenuSystem"
+      "DrawMenuSystem",
+      "DrawSystem",
+      "DrawHUDSystem"
     },
     onResume = function() setMenu("gameOver") end,
     onPause = function() end
   }
 }
 
+local StateStackSize = 0
+local StateStack = {}
+
+function pushGameState(state)
+  StateStack[StateStackSize] = state
+  StateStackSize = StateStackSize + 1
+end
+
+function popGameState()
+  if(StateStackSize == 0) then
+    return nil
+  end
+  local state = StateStack[StateStackSize-1]
+  StateStack[StateStackSize-1] = nil
+  StateStackSize = StateStackSize - 1
+  return state
+end
+
 function changeGameState(state)
-  curStateData = GameStates[curGameState]
-  newStateData = GameStates[state]
+  local curStateData = GameStates[curGameState] or {
+    systems = {},
+    onResume = function() end,
+    onPause = function() end
+  }
+
+  local newStateData = GameStates[state]
   if not newStateData then
-    print "Invalid State, aborting"
+    error("Invalid State")
     return
   end
 
@@ -63,7 +119,9 @@ function changeGameState(state)
     end
   end
 
+  previousState = curGameState
   curGameState = state
-  curStateData.onPause()
-  newStateData.onResume()
+  curStateData.onPause(curGameState)
+  newStateData.onResume(previousState)
+
 end

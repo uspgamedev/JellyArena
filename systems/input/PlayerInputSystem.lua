@@ -2,11 +2,11 @@ local PlayerInputSystem = class("PlayerInputSystem", System)
 
 function PlayerInputSystem:update(dt)
   for i, entity in pairs(self.targets) do
-    if curGameState == "ingame" then
+    -- if curGameState == "ingame" then
       self:movement(entity)
       self:fire(entity, dt)
       self:testTrack() --remove after track test
-    end
+    -- end
   end
 end
 

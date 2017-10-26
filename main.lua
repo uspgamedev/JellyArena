@@ -71,12 +71,10 @@ require "lib/GameState"
 function love.load()
   eventmanager = EventManager()
   debug_text = ""
-  garbage_list = {}
+
   play_track = true
   play_effects = true
-  curGameState = "gameOver"
-  WaveController.createLearningList()
-  Statistic.reset()
+
   -- TODO: random seed
   -- math.randomseed(os.time())
   Log.init({"wave"})
@@ -120,7 +118,7 @@ function love.load()
   getEngine():addSystem(CleanUpSystem(), "update")
   getEngine():addSystem(TrapSpawnSystem(), "update")
 
-  changeGameState(curGameState)
+  changeGameState("startingGame")
 end
 
 function love.update(dt)

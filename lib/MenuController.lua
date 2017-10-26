@@ -37,18 +37,7 @@ function increaseStat(stat, value)
 end
 
 function restartGame()
-  for _, entity in pairs(getEngine().entities) do
-    getEngine():removeEntity(entity, true)
-  end
-
-  local player = createPlayer(500, 500)
-  local pos = player:get("Position")
-  camera = Camera(pos.x, pos.y)
-  getEngine():addEntity(player)
-  getEngine():addEntity(createPlayerAttack(player))
-  getEngine():addEntity(createInvunerable(player))
-
-  changeGameState("ingame")
+  changeGameState("startingGame")
 end
 
 local menus = {
@@ -59,7 +48,7 @@ local menus = {
       {
         name = "Resume",
         action = function()
-          changeGameState("ingame")
+          changeGameState(popGameState())
         end
       },
       {
