@@ -1,7 +1,7 @@
 local AI = Component.create("AI")
 
-function AI:initialize(goal, actions)
-  self.goal = goal
+function AI:initialize(goals, actions)
+  self.goals = goals
   self.actions = actions
   self.currentState = {}
   self.currentAction = nil

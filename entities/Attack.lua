@@ -27,7 +27,7 @@ function createRangedAttack(parent)
   entity:add(Timer(0.5))
   entity:add(AttackProperties(25))
   entity:add(Damage(1))
-  entity:add(AttackRange(400, 250))
+  entity:add(AttackRange(400))
   return entity
 end
 
