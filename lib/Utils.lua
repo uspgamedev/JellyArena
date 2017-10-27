@@ -36,3 +36,7 @@ end
 function getShotRange(shot_range)
   return 150 + 10 * shot_range
 end
+
+function getShotDelay(shot_speed)
+  return 0.4 - 0.01 * shot_speed
+end
