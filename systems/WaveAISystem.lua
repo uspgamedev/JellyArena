@@ -74,7 +74,7 @@ function WaveAISystem:createWave()
 
     local enemy = createDumbEnemy(i * 100, i * 100)
     enemy:add(AI(Goals, ai))
-    setColor(enemy)
+    self:setColor(enemy)
     getEngine():addEntity(enemy)
     getEngine():addEntity(createDashAttack(enemy))
     getEngine():addEntity(createMeleeAttack(enemy))
@@ -82,7 +82,7 @@ function WaveAISystem:createWave()
   end
 end
 
-function setColor(enemy)
+function WaveAISystem:setColor(enemy)
   local color = enemy:get("Color")
   local hash = {0, 0, 0}
   local actions = enemy:get("AI").actions
