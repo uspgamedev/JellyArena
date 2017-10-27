@@ -83,15 +83,17 @@ function WaveAISystem:createWave()
 end
 
 function setColor(enemy)
-  local action = enemy:get("AI"):getAction(Goals.Damage).name
-  print(action)
   local color = enemy:get("Color")
   local hash = {0, 0, 0}
-  for c in action:gmatch(".") do
-    local b = c:byte()
-    hash[1] = (hash[1] + b) % 256
-    hash[2] = (hash[2] - b) % 256
-    hash[3] = (hash[3] * b) % 256
+  local actions = enemy:get("AI").actions
+  for _,a in ipairs(actions) do
+    local action = a.name
+    for c in action:gmatch(".") do
+      local b = c:byte()
+      hash[1] = (hash[1] + b + 15) % 256
+      hash[2] = (3 * hash[2] - b) % 256
+      hash[3] = ((50 + hash[3]) * b) % 256
+    end
   end
   color:set(hash[1], hash[2], hash[3])
 end
