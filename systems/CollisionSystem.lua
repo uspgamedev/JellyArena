@@ -205,16 +205,16 @@ function CollisionSystem:PlayerAndDamageArea(pair)
   local damage = pair["DamageArea"]
   Statistic.addToActions(damage:get("Damage").damage, damage:getParent():get("AI").actions)
 
-  self:DamagePlayer(player, damage:get("Damage").damage)
+  self:DamagePlayer(player, damage:get("Damage").damage * damage:getParent():get("Stats").damage)
 end
 
 function CollisionSystem:PlayerAndEnemyBullet(pair)
   local player = pair["Player"]
   local bullet = pair["EnemyBullet"]
+  local enemy = bullet:getParent()
+  Statistic.addToActions(bullet:get("Projectile").damage * enemy:get("Stats").damage, enemy:get("AI").actions)
 
-  Statistic.addToActions(bullet:get("Projectile").damage, bullet:getParent():get("AI").actions)
-
-  self:DamagePlayer(player, bullet:get("Projectile").damage)
+  self:DamagePlayer(player, bullet:get("Projectile").damage * enemy:get("Stats").damage)
 end
 
 function CollisionSystem:PlayerAndEnemy(pair)
