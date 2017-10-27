@@ -64,10 +64,10 @@ function PlayerInputSystem:fire(entity, dt)
       local position = playerPosition:toVector()
       local attackProperties = attack:get("AttackProperties")
       local range = attack:get("AttackRange")
-      local attackDamage = attack:get("Damage").damage
-
+      local attackDamage = attack:get("Damage").damage * entity:get("Stats").damage
+      local bullet_speed = getBulletSpeed(entity:get("Stats").bullet_speed)
       position = position + attackProperties.spawnDistance * fireDirection
-      bullet = createPlayerBullet(position.x, position.y, fireDirection, attackDamage, range.max)
+      bullet = createPlayerBullet(position.x, position.y, fireDirection, attackDamage, range.max, bullet_speed)
       getEngine():addEntity(bullet)
       hp.cur = hp.cur - 1;
       fireTimer.cooldown = fireTimer.waitTime

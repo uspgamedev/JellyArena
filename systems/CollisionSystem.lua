@@ -189,26 +189,33 @@ end
 function CollisionSystem:PlayerBulletAndEnemy(pair)
   local bullet = pair["PlayerBullet"]
   local enemy = pair["Enemy"]
+  local enemy_hp = enemy:get("Hitpoints")
+  local bullet_damage = bullet:get("Projectile").damage
   self:killAndDrop(bullet)
   bullet:get("Collider").resolved = true
-  self:killAndDrop(enemy)
+  if (enemy_hp.cur - bullet_damage > 0) then
+    enemy_hp.cur = enemy_hp.cur - bullet_damage
+  else
+    self:killAndDrop(enemy)
+  end
 end
 
 function CollisionSystem:PlayerAndDamageArea(pair)
   local player = pair["Player"]
   local damage = pair["DamageArea"]
-  Statistic.addToActions(damage:get("Damage").damage, damage:getParent():get("AI").actions)
+  local parent = damage:getParent()
+  Statistic.addToActions(damage:get("Damage").damage * parent:get("Stats").damage, parent:get("AI").actions)
 
-  self:DamagePlayer(player, damage:get("Damage").damage)
+  self:DamagePlayer(player, damage:get("Damage").damage * parent:get("Stats").damage)
 end
 
 function CollisionSystem:PlayerAndEnemyBullet(pair)
   local player = pair["Player"]
   local bullet = pair["EnemyBullet"]
+  local enemy = bullet:getParent()
+  Statistic.addToActions(bullet:get("Projectile").damage * enemy:get("Stats").damage, enemy:get("AI").actions)
 
-  Statistic.addToActions(bullet:get("Projectile").damage, bullet:getParent():get("AI").actions)
-
-  self:DamagePlayer(player, bullet:get("Projectile").damage)
+  self:DamagePlayer(player, bullet:get("Projectile").damage * enemy:get("Stats").damage)
 end
 
 function CollisionSystem:PlayerAndEnemy(pair)
