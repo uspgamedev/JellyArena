@@ -203,9 +203,10 @@ end
 function CollisionSystem:PlayerAndDamageArea(pair)
   local player = pair["Player"]
   local damage = pair["DamageArea"]
-  Statistic.addToActions(damage:get("Damage").damage, damage:getParent():get("AI").actions)
+  local parent = damage:getParent()
+  Statistic.addToActions(damage:get("Damage").damage * parent:get("Stats").damage, parent:get("AI").actions)
 
-  self:DamagePlayer(player, damage:get("Damage").damage * damage:getParent():get("Stats").damage)
+  self:DamagePlayer(player, damage:get("Damage").damage * parent:get("Stats").damage)
 end
 
 function CollisionSystem:PlayerAndEnemyBullet(pair)
