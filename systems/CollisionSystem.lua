@@ -189,9 +189,15 @@ end
 function CollisionSystem:PlayerBulletAndEnemy(pair)
   local bullet = pair["PlayerBullet"]
   local enemy = pair["Enemy"]
+  local enemy_hp = enemy:get("Hitpoints")
+  local bullet_damage = bullet:get("Projectile").damage
   self:killAndDrop(bullet)
   bullet:get("Collider").resolved = true
-  self:killAndDrop(enemy)
+  if (enemy_hp.cur - bullet_damage > 0) then
+    enemy_hp.cur = enemy_hp.cur - bullet_damage
+  else
+    self:killAndDrop(enemy)
+  end
 end
 
 function CollisionSystem:PlayerAndDamageArea(pair)

@@ -28,3 +28,11 @@ function getChild(entity, label)
   end
   return nil
 end
+
+function getSpeed(movement_speed)
+  return 200 + movement_speed * 20
+end
+
+function getShotRange(shot_range)
+  return 150 + 10 * shot_range
+end
