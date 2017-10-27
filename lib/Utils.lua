@@ -40,3 +40,7 @@ end
 function getShotDelay(shot_speed)
   return 0.4 - 0.01 * shot_speed
 end
+
+function getBulletSpeed(bullet_speed)
+  return 700 + 40 * bullet_speed
+end
