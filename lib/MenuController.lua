@@ -199,7 +199,16 @@ function updateMenuStats()
 end
 
 function updatePlayerStats()
+  -- update Movement Speed
   getPlayer():get("Velocity").speed = getSpeed(getStats().movement_speed)
+  -- update Shot Speed
+  local attack
+  for _, child in pairs(getPlayer().children) do
+    if child:has("AttackProperties") then
+      attack = child
+    end
+  end
+  attack:get("Timer"):setTime(getShotDelay(getStats().shot_speed))
 end
 
 function updateStatsValues()
