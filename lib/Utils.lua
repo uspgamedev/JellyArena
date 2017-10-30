@@ -30,7 +30,7 @@ function getChild(entity, label)
 end
 
 function getSpeed(movement_speed)
-  return 160 + movement_speed * 30
+  return 300 + movement_speed * 20
 end
 
 function getShotRange(shot_range)

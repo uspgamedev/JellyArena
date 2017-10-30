@@ -199,7 +199,7 @@ function updateMenuStats()
 end
 
 function updatePlayerStats()
-  getPlayer():get("Velocity").speed = 300 + 20 * getStats().movement_speed
+  getPlayer():get("Velocity").speed = getSpeed(getStats().movement_speed)
 end
 
 function updateStatsValues()
