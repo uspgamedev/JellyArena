@@ -65,7 +65,6 @@ function WaveAISystem:createWave()
     local ai = {Actions.Idle}
 
     for _, effect in pairs(Goals) do
-      print(effect.name)
       if waveType > waveNumber then
         self:selectRandomAction(effect, ai)
       else
@@ -75,12 +74,28 @@ function WaveAISystem:createWave()
 
     local enemy = createDumbEnemy(i * 100, i * 100)
     enemy:add(AI(Goals, ai))
+    self:setColor(enemy)
     getEngine():addEntity(enemy)
     getEngine():addEntity(createDashAttack(enemy))
     getEngine():addEntity(createMeleeAttack(enemy))
     getEngine():addEntity(createRangedAttack(enemy))
   end
+end
 
+function WaveAISystem:setColor(enemy)
+  local color = enemy:get("Color")
+  local hash = {0, 0, 0}
+  local actions = enemy:get("AI").actions
+  for _,a in ipairs(actions) do
+    local action = a.name
+    for c in action:gmatch(".") do
+      local b = c:byte()
+      hash[1] = (hash[1] + b + 15) % 256
+      hash[2] = (3 * hash[2] - b) % 256
+      hash[3] = ((50 + hash[3]) * b) % 256
+    end
+  end
+  color:set(hash[1], hash[2], hash[3])
 end
 
 return WaveAISystem
