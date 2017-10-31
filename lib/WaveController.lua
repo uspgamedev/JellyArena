@@ -24,22 +24,22 @@ function wave.createLearningList()
 end
 
 function wave.updateLearning()
-  Statistic.getScore()
-  Log.write("wave", "-LEARNING-")
+  StatisticController.getScore()
+  LogController.write("wave", "-LEARNING-")
   for _, effect in pairs(learning) do
     for action, s in pairs(effect.actions) do
       if WaveController.inCurrentActions(action) then
-        local score = 0.8 * Statistic.getActionScore(action) + 0.2 * Statistic.getWaveScore()
+        local score = 0.8 * StatisticController.getActionScore(action) + 0.2 * StatisticController.getWaveScore()
         effect.actions[action] = s + score
         effect.total = effect.total + score
       end
-      Log.write("wave", action..":\t"..effect.actions[action])
+      LogController.write("wave", action..":\t"..effect.actions[action])
     end
-    Log.write("wave", "^-"..effect.name..": "..effect.total)
+    LogController.write("wave", "^-"..effect.name..": "..effect.total)
   end
-  Log.write("wave", "----------")
+  LogController.write("wave", "----------")
   currentActions = {}
-  Statistic.reset()
+  StatisticController.reset()
 end
 
 function wave.getActionsWithEffect(effect)

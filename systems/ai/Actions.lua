@@ -21,7 +21,7 @@ Actions.MeleeAttack = {
     }
   },
   perform = function(agent, target, dt)
-    local attack = getChild(agent, "MeleeAttack")
+    local attack = Utils.getChild(agent, "MeleeAttack")
     local globalTimer = agent:get("Timer")
     local attackTimer = attack:get("Timer")
     local attackProperties = attack:get("AttackProperties")
@@ -29,8 +29,8 @@ Actions.MeleeAttack = {
     local attackDamage = attack:get("Damage").damage
     local radius = agent:get("Circle").radius + range.max
     local damage = createDamageArea(agent:get("Position"), radius, attackDamage, agent)
-    getEngine():addEntity(damage)
-    table.insert(garbage_list, damage)
+    Utils.getEngine():addEntity(damage)
+    table.insert(garbageList, damage)
     attackTimer:start()
     globalTimer:start()
     return true
@@ -59,7 +59,7 @@ Actions.RangedAttack = {
     }
   },
   perform = function(agent, target, dt)
-    local attack = getChild(agent, "RangedAttack")
+    local attack = Utils.getChild(agent, "RangedAttack")
     local globalTimer = agent:get("Timer")
     local attackTimer = attack:get("Timer")
     local attackProperties = attack:get("AttackProperties")
@@ -67,10 +67,10 @@ Actions.RangedAttack = {
     local attackDamage = attack:get("Damage").damage
     local position = agent:get("Position")
     local direction = (target:get("Position"):toVector() - position:toVector())
-    local bullet_speed = getBulletSpeed(agent:get("Stats").bullet_speed)
+    local bulletSpeed = Utils.getBulletSpeed(agent:get("Stats").bulletSpeed)
     direction:normalizeInplace()
-    bullet = createEnemyBullet(agent, position.x, position.y, direction, attackDamage, range.max, bullet_speed)
-    getEngine():addEntity(bullet)
+    bullet = createEnemyBullet(agent, position.x, position.y, direction, attackDamage, range.max, bulletSpeed)
+    Utils.getEngine():addEntity(bullet)
     attackTimer:start()
     globalTimer:start()
     return true
@@ -101,7 +101,7 @@ Actions.DashAttack = {
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")
     local state = agent:get("AI").currentState
-    local attack = getChild(agent, "DashAttack")
+    local attack = Utils.getChild(agent, "DashAttack")
     local globalTimer = agent:get("Timer")
     local attackTimer = attack:get("Timer")
     local range = attack:get("AttackRange")
@@ -119,7 +119,7 @@ Actions.DashAttack = {
       local attackDamage = attack:get("Damage").damage
       local radius = agent:get("Circle").radius
       state.damage = createDamageArea(agentPosition, radius, attackDamage, agent, true)
-      getEngine():addEntity(state.damage)
+      Utils.getEngine():addEntity(state.damage)
     end
 
     -- finish dash and enter cooldown
@@ -127,7 +127,7 @@ Actions.DashAttack = {
       agentVelocity.speed = 0
 
       if not state.waitTime then
-        table.insert(garbage_list, state.damage)
+        table.insert(garbageList, state.damage)
         attackTimer:start()
         globalTimer:start()
         state.waitTime = 0

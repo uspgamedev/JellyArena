@@ -2,7 +2,7 @@ local Modes = {}
 
 function Modes.Melee(enemy, player, dt)
   for _, damage in pairs(enemy.children) do
-    getEngine():removeEntity(damage)
+    Utils.getEngine():removeEntity(damage)
   end
 
   local attackTimer = enemy:get("Timer")
@@ -17,7 +17,7 @@ function Modes.Melee(enemy, player, dt)
   local distance = distance - enemy:get("Circle").radius - player:get("Circle").radius
 
   if(distance <= 1) then -- distance <= enemy.range-1
-    getEngine():addEntity(createDamage(enemy))
+    Utils.getEngine():addEntity(createDamage(enemy))
     attackTimer:start()
   end
 
