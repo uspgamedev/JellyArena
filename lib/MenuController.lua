@@ -1,9 +1,3 @@
-local stats_points = 10
-
-function getStatsPoints()
-  return stats_points
-end
-
 function getPlayer()
   p = getEngine():getEntitiesWithComponent("IsPlayer")
   for _, player in pairs(p) do
@@ -18,9 +12,17 @@ function getStats()
   return {damage = 2, movement_speed = 10, shot_speed = 20, bullet_speed = 10, shot_range = 10}
 end
 
+function getStatsPoints()
+  if getPlayer() ~= nil then
+    return getPlayer():get("RemainingPoints").remaining
+  end
+  return 0
+end
+
 function increaseStat(stat, value)
   local stats = getStats()
-  if (stats_points > 0) then
+  local stats_points = getPlayer():get("RemainingPoints")
+  if (stats_points.remaining - value >= 0) then
     if (stat == "damage") then
       stats.damage = stats.damage + value
     elseif (stat == "movement_speed") then
@@ -32,7 +34,7 @@ function increaseStat(stat, value)
     elseif (stat == "shot_range") then
       stats.shot_range = stats.shot_range + value
     end
-    stats_points = stats_points - 1
+    stats_points.remaining = stats_points.remaining - value
   end
 end
 
@@ -197,7 +199,19 @@ function updateMenuStats()
 end
 
 function updatePlayerStats()
-  getPlayer():get("Velocity").speed = 300 + 20 * getStats().movement_speed
+  -- update Movement Speed
+  getPlayer():get("Velocity").speed = getSpeed(getStats().movement_speed)
+
+  local attack
+  for _, child in pairs(getPlayer().children) do
+    if child:has("AttackProperties") then
+      attack = child
+    end
+  end
+  -- update Shot Speed
+  attack:get("Timer"):setTime(getShotDelay(getStats().shot_speed))
+  -- update Shot Range
+  attack:get("AttackRange"):setRange(getShotRange(getStats().shot_range))
 end
 
 function updateStatsValues()

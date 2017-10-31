@@ -4,3 +4,8 @@ function AttackRange:initialize(max, min)
   self.max = max
   self.min = min or -1
 end
+
+function AttackRange:setRange(max, min)
+  self.max = max
+  self.min = min or -1
+end

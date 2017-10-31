@@ -1,5 +1,5 @@
 local MenuInputSystem = class("MenuInputSystem", System)
-local COOLDOWN = 0.2
+local COOLDOWN = 0.18
 local timer = COOLDOWN
 
 function MenuInputSystem:update(dt)

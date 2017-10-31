@@ -10,3 +10,7 @@ function Timer:start ()
   self.cooldown = self.waitTime
   self.isActive = true
 end
+
+function Timer:setTime(waitTime)
+  self.waitTime = waitTime
+end
