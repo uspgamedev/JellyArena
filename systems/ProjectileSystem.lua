@@ -10,10 +10,10 @@ function ProjectileSystem:update(dt)
       if projectile.owner == "Player" then
         local position = v:get("Position")
         drop = createHpDrop(position.x, position.y)
-        getEngine():addEntity(drop)
-        getEngine():removeEntity(v)
+        Utils.getEngine():addEntity(drop)
+        Utils.getEngine():removeEntity(v)
       else
-        table.insert(garbage_list, v)
+        table.insert(garbageList, v)
       end
     end
   end

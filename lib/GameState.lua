@@ -8,31 +8,31 @@ GameStates = {
 
 ------------- Auxiliary functions -------------
 local function startIngameSystems()
-  getEngine():startSystem("TimerSystem")
-  getEngine():startSystem("EnemyAISystem")
-  getEngine():startSystem("MovementSystem")
-  getEngine():startSystem("CollisionSystem")
-  getEngine():startSystem("PlayerInputSystem")
-  getEngine():startSystem("WaveAISystem")
-  getEngine():startSystem("ProjectileSystem")
-  getEngine():startSystem("CleanUpSystem")
+  Utils.getEngine():startSystem("TimerSystem")
+  Utils.getEngine():startSystem("EnemyAISystem")
+  Utils.getEngine():startSystem("MovementSystem")
+  Utils.getEngine():startSystem("CollisionSystem")
+  Utils.getEngine():startSystem("PlayerInputSystem")
+  Utils.getEngine():startSystem("WaveAISystem")
+  Utils.getEngine():startSystem("ProjectileSystem")
+  Utils.getEngine():startSystem("CleanUpSystem")
 end
 
 local function stopIngameSystems()
-  getEngine():stopSystem("TimerSystem")
-  getEngine():stopSystem("EnemyAISystem")
-  getEngine():stopSystem("MovementSystem")
-  getEngine():stopSystem("CollisionSystem")
-  getEngine():stopSystem("PlayerInputSystem")
-  getEngine():stopSystem("WaveAISystem")
-  getEngine():stopSystem("ProjectileSystem")
-  getEngine():stopSystem("ProjectileSystem")
-  getEngine():stopSystem("CleanUpSystem")
+  Utils.getEngine():stopSystem("TimerSystem")
+  Utils.getEngine():stopSystem("EnemyAISystem")
+  Utils.getEngine():stopSystem("MovementSystem")
+  Utils.getEngine():stopSystem("CollisionSystem")
+  Utils.getEngine():stopSystem("PlayerInputSystem")
+  Utils.getEngine():stopSystem("WaveAISystem")
+  Utils.getEngine():stopSystem("ProjectileSystem")
+  Utils.getEngine():stopSystem("ProjectileSystem")
+  Utils.getEngine():stopSystem("CleanUpSystem")
 end
 
 local function stopMenuSystems()
-  getEngine():stopSystem("MenuInputSystem")
-  getEngine():stopSystem("DrawMenuSystem")
+  Utils.getEngine():stopSystem("MenuInputSystem")
+  Utils.getEngine():stopSystem("DrawMenuSystem")
 end
 -----------------------------------------------
 ---------- State creation funcitons -----------
@@ -42,10 +42,10 @@ local function setIngameState()
 end
 
 local function setNewGameState()
-  local player = createPlayer(getCenter().x, getCenter().y)
-  getEngine():addEntity(player)
-  getEngine():addEntity(createPlayerAttack(player))
-  getEngine():addEntity(createInvunerable(player))
+  local player = createPlayer(Utils.getCenter().x, Utils.getCenter().y)
+  Utils.getEngine():addEntity(player)
+  Utils.getEngine():addEntity(createPlayerAttack(player))
+  Utils.getEngine():addEntity(createInvunerable(player))
 
   setIngameState()
   curGameState = GameStates.ingame
@@ -53,16 +53,16 @@ end
 
 local function setPauseMenuState()
   stopIngameSystems()
-  setMenu("pause")
-  getEngine():startSystem("MenuInputSystem")
-  getEngine():startSystem("DrawMenuSystem")
+  MenuController.setMenu("pause")
+  Utils.getEngine():startSystem("MenuInputSystem")
+  Utils.getEngine():startSystem("DrawMenuSystem")
 end
 
 local function setGameOverState()
   stopIngameSystems()
-  setMenu("gameOver")
-  getEngine():startSystem("MenuInputSystem")
-  getEngine():startSystem("DrawMenuSystem")
+  MenuController.setMenu("gameOver")
+  Utils.getEngine():startSystem("MenuInputSystem")
+  Utils.getEngine():startSystem("DrawMenuSystem")
 end
 
 function changeGameState(gameState)

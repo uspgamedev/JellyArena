@@ -81,7 +81,7 @@ function CollisionSystem:update(dt)
     end
 
     -- lovetoys.debug("BATEU: "..v.id..":"..w.id)
-    -- debug_text = "BATEU: "..v.id..":"..w.id
+    -- debugText = "BATEU: "..v.id..":"..w.id
   end
 
   -- Clean collisionPairs array
@@ -96,7 +96,7 @@ function CollisionSystem:update(dt)
 
   -- Remove flagged entities
   for i = 1, self.entitiesToRemoveCount, 1 do
-    getEngine():removeEntity(self.entitiesToRemove[i], true)
+    Utils.getEngine():removeEntity(self.entitiesToRemove[i], true)
     self.entitiesToRemove[i] = nil
   end
   self.entitiesToRemoveCount = 0
@@ -142,16 +142,16 @@ end
 function CollisionSystem:PlayerAndTrap(pair)
   local player = pair["Player"]
   local trap = pair["Trap"]
-  local trap_type = trap:get("Label").label
+  local trapType = trap:get("Label").label
 
-  if (trap_type == "DamageTrap") then
+  if (trapType == "DamageTrap") then
     if (player:get("Hitpoints").cur >= 10) then
       player:get("Hitpoints").cur = player:get("Hitpoints").cur - 10
     else
       player:get("Hitpoints").cur = 0
       changeGameState(GameStates.gameOver)
     end
-  elseif (trap_type == "HealingTrap") then
+  elseif (trapType == "HealingTrap") then
     player:get("Hitpoints"):add(10)
   else
     math.randomseed(os.time())
@@ -189,12 +189,12 @@ end
 function CollisionSystem:PlayerBulletAndEnemy(pair)
   local bullet = pair["PlayerBullet"]
   local enemy = pair["Enemy"]
-  local enemy_hp = enemy:get("Hitpoints")
-  local bullet_damage = bullet:get("Projectile").damage
+  local enemyHp = enemy:get("Hitpoints")
+  local bulletDamage = bullet:get("Projectile").damage
   self:killAndDrop(bullet)
   bullet:get("Collider").resolved = true
-  if (enemy_hp.cur - bullet_damage > 0) then
-    enemy_hp.cur = enemy_hp.cur - bullet_damage
+  if (enemyHp.cur - bulletDamage > 0) then
+    enemyHp.cur = enemyHp.cur - bulletDamage
   else
     self:killAndDrop(enemy)
   end
@@ -204,7 +204,7 @@ function CollisionSystem:PlayerAndDamageArea(pair)
   local player = pair["Player"]
   local damage = pair["DamageArea"]
   local parent = damage:getParent()
-  Statistic.addToActions(damage:get("Damage").damage * parent:get("Stats").damage, parent:get("AI").actions)
+  StatisticController.addToActions(damage:get("Damage").damage * parent:get("Stats").damage, parent:get("AI").actions)
 
   self:DamagePlayer(player, damage:get("Damage").damage * parent:get("Stats").damage)
 end
@@ -213,7 +213,7 @@ function CollisionSystem:PlayerAndEnemyBullet(pair)
   local player = pair["Player"]
   local bullet = pair["EnemyBullet"]
   local enemy = bullet:getParent()
-  Statistic.addToActions(bullet:get("Projectile").damage * enemy:get("Stats").damage, enemy:get("AI").actions)
+  StatisticController.addToActions(bullet:get("Projectile").damage * enemy:get("Stats").damage, enemy:get("AI").actions)
 
   self:DamagePlayer(player, bullet:get("Projectile").damage * enemy:get("Stats").damage)
 end
@@ -236,21 +236,21 @@ function CollisionSystem:PlayerAndEnemy(pair)
 end
 
 function CollisionSystem:DamagePlayer(player, damage)
-  invunerable = getChild(player, "Invunerable")
+  invunerable = Utils.getChild(player, "Invunerable")
   if (invunerable:get("Timer").cooldown <= 0) then
     local hp = player:get("Hitpoints")
     hp.cur = hp.cur - damage
     if (hp.cur <= 0) then
       changeGameState(GameStates.gameOver)
     else
-      getChild(player, "Invunerable"):get("Timer"):start()
+      Utils.getChild(player, "Invunerable"):get("Timer"):start()
     end
   end
 end
 
 function CollisionSystem:killAndDrop(entity)
   local position = entity:get("Position")
-  getEngine():addEntity(createHpDrop(position.x, position.y))
+  Utils.getEngine():addEntity(createHpDrop(position.x, position.y))
   self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
   self.entitiesToRemove[self.entitiesToRemoveCount] = entity
 end

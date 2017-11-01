@@ -25,7 +25,7 @@ function WaveAISystem:selectAction(effect, ai)
   for action, score in pairs(tuple.actions) do
     if random <= score then
       WaveController.addCurrentActions(action)
-      Log.write("wave", action)
+      LogController.write("wave", action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do
         self:selectAction(prerequisite, ai)
@@ -42,7 +42,7 @@ function WaveAISystem:selectRandomAction(effect, ai)
   local random = math.random(1, tuple.size)
   for action, _ in pairs(tuple.actions) do
     if random <= 1 then
-      Log.write("wave", action)
+      LogController.write("wave", action)
       WaveController.addCurrentActions(action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do
@@ -59,9 +59,9 @@ function WaveAISystem:createWave()
   WaveController.updateLearning()
   waveNumber = waveNumber + 1
   local waveType = math.random(1, 10)
-  Log.write("wave", "\nWAVE "..waveNumber.."("..waveType.."):")
+  LogController.write("wave", "\nWAVE "..waveNumber.."("..waveType.."):")
   for i = 1, 4 do
-    Log.write("wave", "Enemy "..i..":")
+    LogController.write("wave", "Enemy "..i..":")
     local ai = {Actions.Idle}
 
     for _, effect in pairs(Goals) do
@@ -75,10 +75,10 @@ function WaveAISystem:createWave()
     local enemy = createDumbEnemy(i * 100, i * 100)
     enemy:add(AI(Goals, ai))
     self:setColor(enemy)
-    getEngine():addEntity(enemy)
-    getEngine():addEntity(createDashAttack(enemy))
-    getEngine():addEntity(createMeleeAttack(enemy))
-    getEngine():addEntity(createRangedAttack(enemy))
+    Utils.getEngine():addEntity(enemy)
+    Utils.getEngine():addEntity(createDashAttack(enemy))
+    Utils.getEngine():addEntity(createMeleeAttack(enemy))
+    Utils.getEngine():addEntity(createRangedAttack(enemy))
   end
 end
 

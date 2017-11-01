@@ -9,13 +9,13 @@ lovetoys.initialize(
 )
 Stack = require "lib/Stack"
 
-require("lib/Utils")
-require("lib/SoundController")
-require("lib/MenuController")
+Utils = require("lib/Utils")
+SoundController = require("lib/SoundController")
+MenuController = require("lib/MenuController")
 WaveController = require("lib/WaveController")
-Statistic = require("lib/StatisticController")
+StatisticController = require("lib/StatisticController")
 ActionsController = require("lib/ActionsController")
-Log = require("lib/LogController")
+LogController = require("lib/LogController")
 
 --- components
 require "components/AI"
@@ -71,41 +71,41 @@ require "lib/GameState"
 
 function love.load()
   eventmanager = EventManager()
-  debug_text = ""
-  garbage_list = {}
-  play_track = true
-  play_effects = true
+  debugText = ""
+  garbageList = {}
+  SoundController.isMusicOn = true
+  playEffects = true
   curGameState = GameStates.newGame
   WaveController.createLearningList()
-  Statistic.reset()
+  StatisticController.reset()
   -- TODO: random seed
   -- math.randomseed(os.time())
-  Log.init({"wave"})
-  setTrack("sample1")
+  LogController.init({"wave"})
+  SoundController.setTrack("sample1")
   camera = Camera()
   -- Update timers
-  getEngine():addSystem(TimerSystem(), "update")
+  Utils.getEngine():addSystem(TimerSystem(), "update")
   -- Process input
-  getEngine():addSystem(PlayerInputSystem(), "update")
-  getEngine():addSystem(MenuInputSystem(), "update")
+  Utils.getEngine():addSystem(PlayerInputSystem(), "update")
+  Utils.getEngine():addSystem(MenuInputSystem(), "update")
   -- Update player vars and state
   -- Go to menu
   -- process wave AI
-  getEngine():addSystem(WaveAISystem(), "update")
+  Utils.getEngine():addSystem(WaveAISystem(), "update")
   -- select group of enemies to spawn
   -- process group AI
   -- process individual enemy AI
-  getEngine():addSystem(EnemyAISystem(), "update")
+  Utils.getEngine():addSystem(EnemyAISystem(), "update")
   -- Based on current game state
   -- Based on player current input <-- cheating AI
   -- Process movement
-  getEngine():addSystem(MovementSystem(), "update")
-  getEngine():addSystem(ProjectileSystem(), "update")
+  Utils.getEngine():addSystem(MovementSystem(), "update")
+  Utils.getEngine():addSystem(ProjectileSystem(), "update")
   -- Update velocity
   -- Update position
   -- Update collision groups
   -- Process collisions
-  getEngine():addSystem(CollisionSystem(), "update")
+  Utils.getEngine():addSystem(CollisionSystem(), "update")
   -- Find all colliding pairs
   -- Process each pair (maybe use callbacks for collision response, like play sound, die, etc)
   -- If we 'delete' something, invalidade all remaining collisions for that body
@@ -114,28 +114,28 @@ function love.load()
   -- Update animations & visual effects
   -- Do clean up
   -- Display
-  getEngine():addSystem(DrawSystem(), "draw")
-  getEngine():addSystem(DrawHUDSystem(), "draw")
-  getEngine():addSystem(DrawMessageSystem(), "draw")
-  getEngine():addSystem(DrawMenuSystem(), "draw")
-  getEngine():addSystem(CleanUpSystem(), "update")
-  getEngine():addSystem(TrapSpawnSystem(), "update")
+  Utils.getEngine():addSystem(DrawSystem(), "draw")
+  Utils.getEngine():addSystem(DrawHUDSystem(), "draw")
+  Utils.getEngine():addSystem(DrawMessageSystem(), "draw")
+  Utils.getEngine():addSystem(DrawMenuSystem(), "draw")
+  Utils.getEngine():addSystem(CleanUpSystem(), "update")
+  Utils.getEngine():addSystem(TrapSpawnSystem(), "update")
 
   changeGameState(curGameState)
 end
 
 function love.update(dt)
-  getEngine():update(dt)
-  playTrack()
+  Utils.getEngine():update(dt)
+  SoundController.playTrack()
 end
 
 function love.draw()
-  getEngine():draw()
+  Utils.getEngine():draw()
 end
 
 function love.keypressed(key)
   if (key == "escape") then
-    Log.close()
+    LogController.close()
     love.event.quit(0)
   elseif (key == "m") then
     if (curGameState == GameStates.ingame) then

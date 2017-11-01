@@ -1,9 +1,9 @@
 local Stats = Component.create("Stats")
 
-function Stats:initialize(damage, movement_speed, shot_speed, bullet_speed, shot_range)
+function Stats:initialize(damage, movementSpeed, shotSpeed, bulletSpeed, shotRange)
   self.damage = damage
-  self.movement_speed = movement_speed
-  self.shot_speed = shot_speed
-  self.bullet_speed = bullet_speed
-  self.shot_range = shot_range
+  self.movementSpeed = movementSpeed
+  self.shotSpeed = shotSpeed
+  self.bulletSpeed = bulletSpeed
+  self.shotRange = shotRange
 end

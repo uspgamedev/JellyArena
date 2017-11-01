@@ -9,14 +9,14 @@ function StatusUpgradeSystem:update(dt)
   end
 
   for i, upgrade in pairs(self.targets.Upgrades) do
-    player_stats = player:get("Stats")
-    upgrade_stats = upgrade:get("Stats")
-    player_stats.damage = upgrade_stats.damage
-    player_stats.movement_speed = upgrade_stats.movement_speed
-    player_stats.shot_speed = upgrade_stats.shot_speed
-    player_stats.bullet_speed = upgrade_stats.bullet_speed
-    player_stats.shot_range = upgrade_stats.shot_range
-    getEngine():removeEntity(upgrade)
+    playerStats = player:get("Stats")
+    upgradeStats = upgrade:get("Stats")
+    playerStats.damage = upgradeStats.damage
+    playerStats.movementSpeed = upgradeStats.movementSpeed
+    playerStats.shotSpeed = upgradeStats.shotSpeed
+    playerStats.bulletSpeed = upgradeStats.bulletSpeed
+    playerStats.shotRange = upgradeStats.shotRange
+    Utils.getEngine():removeEntity(upgrade)
   end
 end
 

@@ -1,26 +1,28 @@
-function getCenter()
+local Utils = {}
+
+function Utils.getCenter()
   return {x = love.graphics.getWidth()/2, y = love.graphics.getHeight()/2}
 end
 
-function distToPix(distance)
-  maxDist = getCenter().x
+function Utils.distToPix(distance)
+  maxDist = Utils.getCenter().x
   return distance / 10 * maxDist
 end
 
-function getSound(file_name)
-  return "resources/sounds/"..file_name
+function Utils.getSound(filename)
+  return "resources/sounds/"..filename
 end
 
 local engine
 
-function getEngine()
+function Utils.getEngine()
   if engine == nil then
     engine = Engine()
   end
   return engine
 end
 
-function getChild(entity, label)
+function Utils.getChild(entity, label)
   for _, child in pairs(entity.children) do
     if (child:has("Label") and child:get("Label").label == label) then
       return child
@@ -29,18 +31,20 @@ function getChild(entity, label)
   return nil
 end
 
-function getSpeed(movement_speed)
-  return 300 + movement_speed * 20
+function Utils.getSpeed(movementSpeed)
+  return 300 + movementSpeed * 20
 end
 
-function getShotRange(shot_range)
-  return 150 + 10 * shot_range
+function Utils.getShotRange(shotRange)
+  return 150 + 10 * shotRange
 end
 
-function getShotDelay(shot_speed)
-  return 0.4 - 0.01 * shot_speed
+function Utils.getShotDelay(shotSpeed)
+  return 0.4 - 0.01 * shotSpeed
 end
 
-function getBulletSpeed(bullet_speed)
-  return 700 + 40 * bullet_speed
+function Utils.getBulletSpeed(bulletSpeed)
+  return 700 + 40 * bulletSpeed
 end
+
+return Utils
