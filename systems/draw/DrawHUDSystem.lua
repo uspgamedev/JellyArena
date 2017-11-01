@@ -15,7 +15,10 @@ function DrawHUDSystem:draw()
     love.graphics.rectangle("line", 10, 10, 200, 20)
     love.graphics.rectangle("line", 410, 10, 200, 20)
     love.graphics.printf(string.format("%d/%d", hp.cur, hp.max), 20, 12, 200, "center")
-
+    if ( timer.cooldown <= 0 ) then
+      love.graphics.setColor(255, 255, 0)
+      love.graphics.printf("Charged!", 420, 12, 200, "center")
+    end
   end
 end
 
