@@ -89,7 +89,7 @@ function PlayerInputSystem:melee(entity, dt)
     meleeTimer.isActive = true
     local position = entity:get("Position")
     local damage = 10 * entity:get("Stats").damage
-    local damageArea = createDamageArea(position, 50, damage, entity)
+    local damageArea = createDamageArea(position, 100, damage, entity)
     Utils.getEngine():addEntity(damageArea)
     meleeTimer.cooldown = meleeTimer.waitTime
   end
