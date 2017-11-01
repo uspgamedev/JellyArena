@@ -17,11 +17,14 @@ function CollisionSystem:update(dt)
     local position = v:get("Position")
     local radius = v:get("Circle").radius
     -- Delete entities that have gone outside stage bounds
-    if (self:checkStageBounds(position, radius) and not collider.clampToStageBounds) then
-      collider.active = false
-      self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
-      self.entitiesToRemove[self.entitiesToRemoveCount] = v
+    if (collider.clampToStageBounds) then
+      self:checkStageBounds(position, radius)
     end
+  --  if (self:checkStageBounds(position, radius) and not collider.clampToStageBounds) then
+      --collider.active = false
+      --self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
+      --self.entitiesToRemove[self.entitiesToRemoveCount] = v
+  --  end
   end
 
   -- Generate collision pairs

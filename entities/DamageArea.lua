@@ -8,7 +8,7 @@ function createDamageArea(position, radius, damage, parent, followParent)
   entity:add(Color(255, 0, 0))
   entity:add(Circle(radius))
   entity:add(Damage(damage))
-  entity:add(Collider("DamageArea", true))
+  entity:add(Collider("DamageArea", false))
   entity:add(lifeTime)
   lifeTime:start()
   if(followParent) then
