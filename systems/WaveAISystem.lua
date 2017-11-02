@@ -2,16 +2,42 @@ local WaveAISystem = class("WaveAISystem", System)
 local Actions = require "systems/ai/Actions"
 local Goals = require "systems/ai/Goals"
 local AI = Component.load({"AI"})
-local waveNumber = 0
 
+function WaveAISystem:initialize()
+    System.initialize(self)
+    self.waveNumber = 0
+    self.state = nil
+    self.waitTime = 3
+end
 
 function WaveAISystem:update(dt)
+  -- check if can spawn next wave
+  if curGameState == "waitingWave" then
+    self.waitTime = self.waitTime - dt
+    if not (self.state == "waitingWave") then
+      self.state = "waitingWave"
+      self.waitTime = 3
+    end
+
+    if self.waitTime <= 0 then
+      changeGameState("ingame")
+    end
+  end
+
+  -- check if can start spawn
+  if curGameState == "ingame" and not (self.state == "spawning") and not (self.state == "done") then
+    self.state = "spawning"
+    self:createWave()
+    self.state = "done"
+  end
+
+  -- check if all enemies were defeated
   local count = 0
   for _, p in pairs(self.targets) do
     count = count + 1
   end
-  if count == 0 then
-    self:createWave()
+  if curGameState == "ingame" and self.state == "done" and count == 0 then
+    changeGameState("waitingWave")
   end
 end
 
@@ -57,16 +83,16 @@ end
 
 function WaveAISystem:createWave()
   WaveController.updateLearning()
-  waveNumber = waveNumber + 1
+  self.waveNumber = self.waveNumber + 1
   local waveType = math.random(1, 10)
-  Log.write("wave", "\nWAVE "..waveNumber.."("..waveType.."):")
+  Log.write("wave", "\nWAVE "..self.waveNumber.."("..waveType.."):")
   for i = 1, 4 do
     Log.write("wave", "Enemy "..i..":")
     local ai = {Actions.Idle}
 
     for _, effect in pairs(Goals) do
       print(effect.name)
-      if waveType > waveNumber then
+      if waveType > self.waveNumber then
         self:selectRandomAction(effect, ai)
       else
         self:selectAction(effect, ai)

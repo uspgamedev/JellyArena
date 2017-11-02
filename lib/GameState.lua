@@ -17,7 +17,7 @@ local GameStates = {
       getEngine():addEntity(createPlayerAttack(player))
       getEngine():addEntity(createInvunerable(player))
 
-      changeGameState("ingame")
+      changeGameState("waitingWave")
     end,
     onPause = function() end
   },
@@ -30,7 +30,8 @@ local GameStates = {
       "ProjectileSystem",
       "CleanUpSystem",
       "DrawSystem",
-      "DrawHUDSystem"
+      "DrawHUDSystem",
+      "WaveAISystem"
     },
     onResume = function() end,
     onPause = function() end
