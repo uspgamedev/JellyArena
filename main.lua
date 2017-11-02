@@ -135,10 +135,10 @@ function love.keypressed(key)
     Log.close()
     love.event.quit(0)
   elseif (key == "m") then
-    if (curGameState == "ingame") then
+    if (curGameState == "pauseMenu") then
+      changeGameState(popGameState())
+    else
       changeGameState("pauseMenu")
-    elseif (curGameState == "pauseMenu") then
-      changeGameState("ingame")
     end
   end
 end

@@ -11,6 +11,14 @@ function DrawHUDSystem:draw()
     love.graphics.printf(string.format("%d/%d", hp.cur, hp.max), 20, 12, 200, "center")
   end
 
+  -- debug
+  if curGameState == "waitingWave" then
+    nextWave = (GameData.waveNumber or 0) + 1
+    waveInfo = string.format("Waiting wave %d", nextWave)
+  elseif curGameState == "ingame" then
+    waveInfo = string.format("Wave %d", GameData.waveNumber)
+  end
+  love.graphics.printf(waveInfo, 300, 12, 200, "center")
   love.graphics.printf(string.format("%d spawned enemies", count(self.targets.enemies)), 600, 12, 200, "center")
 end
 

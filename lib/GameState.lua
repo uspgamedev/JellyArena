@@ -1,7 +1,10 @@
+GameData = {}
+
 local GameStates = {
   startingGame = {
     systems = {},
     onResume = function()
+      GameData = {}
       garbage_list = {}
       WaveController.createLearningList()
       Statistic.reset()

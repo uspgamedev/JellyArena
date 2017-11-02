@@ -8,7 +8,7 @@ function WaveAISystem:initialize()
     self.waveNumber = 0
     self.state = nil
     self.waitTime = 3 -- between waves
-    self.totalEnemies = 50 -- per wave
+    self.totalEnemies = 20 -- per wave
     self.spawnInterval = 1
 end
 
@@ -25,6 +25,7 @@ function WaveAISystem:update(dt)
       changeGameState("ingame")
       WaveController.updateLearning()
       self.waveNumber = self.waveNumber + 1
+      GameData.waveNumber = self.waveNumber
       Log.write("wave", "\nWAVE "..self.waveNumber..":")
       self.enemiesCount = 0 -- spawned on current wave
       self.spawnCooldown = self.spawnInterval -- between two enemies spawn
