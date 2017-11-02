@@ -7,7 +7,8 @@ function WaveAISystem:initialize()
     System.initialize(self)
     self.waveNumber = 0
     self.state = nil
-    self.waitTime = 3
+    self.waitTime = 3 -- between waves
+    self.totalEnemies = 10 -- per wave
 end
 
 function WaveAISystem:update(dt)
@@ -21,14 +22,23 @@ function WaveAISystem:update(dt)
 
     if self.waitTime <= 0 then
       changeGameState("ingame")
+      WaveController.updateLearning()
+      self.waveNumber = self.waveNumber + 1
+      Log.write("wave", "\nWAVE "..self.waveNumber..":")
+      self.enemiesCount = 0 -- spawned on current wave
+      self.spawnInterval = 1 -- between two enemies spawn
     end
   end
 
   -- check if can start spawn
-  if curGameState == "ingame" and not (self.state == "spawning") and not (self.state == "done") then
+  if curGameState == "ingame" and not (self.state == "done") then
     self.state = "spawning"
-    self:createWave()
-    self.state = "done"
+
+    self.spawnInterval = self.spawnInterval - dt
+    if self.spawnInterval < 0 then
+      self:spawn()
+      self.spawnInterval = 1
+    end
   end
 
   -- check if all enemies were defeated
@@ -81,32 +91,36 @@ function WaveAISystem:selectRandomAction(effect, ai)
   end
 end
 
-function WaveAISystem:createWave()
-  WaveController.updateLearning()
-  self.waveNumber = self.waveNumber + 1
-  local waveType = math.random(1, 10)
-  Log.write("wave", "\nWAVE "..self.waveNumber.."("..waveType.."):")
-  for i = 1, 4 do
-    Log.write("wave", "Enemy "..i..":")
-    local ai = {Actions.Idle}
-
-    for _, effect in pairs(Goals) do
-      print(effect.name)
-      if waveType > self.waveNumber then
-        self:selectRandomAction(effect, ai)
-      else
-        self:selectAction(effect, ai)
-      end
-    end
-
-    local enemy = createDumbEnemy(i * 100, i * 100)
-    enemy:add(AI(Goals, ai))
-    getEngine():addEntity(enemy)
-    getEngine():addEntity(createDashAttack(enemy))
-    getEngine():addEntity(createMeleeAttack(enemy))
-    getEngine():addEntity(createRangedAttack(enemy))
+function WaveAISystem:spawn()
+  if self.enemiesCount == self.totalEnemies then
+    return
   end
 
+  self.enemiesCount = self.enemiesCount + 1
+  if self.enemiesCount == self.totalEnemies then
+    self.state = "done"
+  end
+
+  local waveType = math.random(1, 10)
+  Log.write("wave", "Enemy "..(self.enemiesCount+1)..":")
+  local ai = {Actions.Idle}
+
+  for _, effect in pairs(Goals) do
+    if waveType > self.waveNumber then
+      self:selectRandomAction(effect, ai)
+    else
+      self:selectAction(effect, ai)
+    end
+  end
+
+  local corners = {{0,0},{0,1000},{1000,0},{1000,1000}}
+  local position = math.random(1, 4)
+  local enemy = createDumbEnemy(corners[position][1], corners[position][2])
+  enemy:add(AI(Goals, ai))
+  getEngine():addEntity(enemy)
+  getEngine():addEntity(createDashAttack(enemy))
+  getEngine():addEntity(createMeleeAttack(enemy))
+  getEngine():addEntity(createRangedAttack(enemy))
 end
 
 return WaveAISystem
