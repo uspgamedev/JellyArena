@@ -1,7 +1,7 @@
 local DrawHUDSystem = class("DrawHUDSystem", System)
 
 function DrawHUDSystem:draw()
-  for i, v in pairs(self.targets) do
+  for i, v in pairs(self.targets.player) do
     local hp = v:get("Hitpoints")
     love.graphics.setNewFont(16)
     love.graphics.setColor(255, 0, 0)
@@ -10,10 +10,12 @@ function DrawHUDSystem:draw()
     love.graphics.rectangle("line", 10, 10, 200, 20)
     love.graphics.printf(string.format("%d/%d", hp.cur, hp.max), 20, 12, 200, "center")
   end
+
+  love.graphics.printf(string.format("%d spawned enemies", count(self.targets.enemies)), 600, 12, 200, "center")
 end
 
 function DrawHUDSystem:requires()
-  return {"IsPlayer", "Hitpoints"}
+  return {player = {"IsPlayer", "Hitpoints"}, enemies = {"AI"}}
 end
 
 return DrawHUDSystem

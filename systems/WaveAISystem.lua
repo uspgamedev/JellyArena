@@ -8,7 +8,8 @@ function WaveAISystem:initialize()
     self.waveNumber = 0
     self.state = nil
     self.waitTime = 3 -- between waves
-    self.totalEnemies = 10 -- per wave
+    self.totalEnemies = 50 -- per wave
+    self.spawnInterval = 1
 end
 
 function WaveAISystem:update(dt)
@@ -26,7 +27,7 @@ function WaveAISystem:update(dt)
       self.waveNumber = self.waveNumber + 1
       Log.write("wave", "\nWAVE "..self.waveNumber..":")
       self.enemiesCount = 0 -- spawned on current wave
-      self.spawnInterval = 1 -- between two enemies spawn
+      self.spawnCooldown = self.spawnInterval -- between two enemies spawn
     end
   end
 
@@ -34,10 +35,10 @@ function WaveAISystem:update(dt)
   if curGameState == "ingame" and not (self.state == "done") then
     self.state = "spawning"
 
-    self.spawnInterval = self.spawnInterval - dt
-    if self.spawnInterval < 0 then
+    self.spawnCooldown = self.spawnCooldown - dt
+    if self.spawnCooldown < 0 then
       self:spawn()
-      self.spawnInterval = 1
+      self.spawnCooldown = self.spawnInterval
     end
   end
 

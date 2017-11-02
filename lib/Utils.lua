@@ -35,6 +35,14 @@ function containsValue(table, data)
       return true
     end
   end
-  
+
   return false
+end
+
+function count(table)
+  local count = 0
+  for _, enemy in pairs(table) do
+    count = count + 1
+  end
+  return count
 end
