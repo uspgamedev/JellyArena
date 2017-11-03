@@ -17,11 +17,14 @@ function CollisionSystem:update(dt)
     local position = v:get("Position")
     local radius = v:get("Circle").radius
     -- Delete entities that have gone outside stage bounds
-    if (self:checkStageBounds(position, radius) and not collider.clampToStageBounds) then
-      collider.active = false
-      self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
-      self.entitiesToRemove[self.entitiesToRemoveCount] = v
+    if (collider.clampToStageBounds) then
+      self:checkStageBounds(position, radius)
     end
+  --  if (self:checkStageBounds(position, radius) and not collider.clampToStageBounds) then
+      --collider.active = false
+      --self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
+      --self.entitiesToRemove[self.entitiesToRemoveCount] = v
+  --  end
   end
 
   -- Generate collision pairs
@@ -69,6 +72,8 @@ function CollisionSystem:update(dt)
         self:PlayerAndHpDrop(pair)
       elseif (pair["Enemy"] and pair["PlayerBullet"]) then
         self:PlayerBulletAndEnemy(pair)
+      elseif (pair["Enemy"] and pair["DamageArea"]) then
+        self:EnemyAndDamageArea(pair)
       elseif (pair["Player"] and pair["DamageArea"]) then
         self:PlayerAndDamageArea(pair)
       elseif (pair["Player"] and pair["EnemyBullet"]) then
@@ -200,13 +205,30 @@ function CollisionSystem:PlayerBulletAndEnemy(pair)
   end
 end
 
+function CollisionSystem:EnemyAndDamageArea(pair)
+  local enemy = pair["Enemy"]
+  local enemyHp = enemy:get("Hitpoints")
+  local damageArea = pair["DamageArea"]
+  local parent = damageArea:getParent()
+  local damage = damageArea:get("Damage").damage
+  if (parent:get("IsPlayer")) then
+    if (enemyHp.cur - damage > 0) then
+      enemyHp.cur = enemyHp.cur - damage
+    else
+      self:killAndDrop(enemy)
+    end
+  end
+end
+
 function CollisionSystem:PlayerAndDamageArea(pair)
   local player = pair["Player"]
   local damage = pair["DamageArea"]
   local parent = damage:getParent()
-  StatisticController.addToActions(damage:get("Damage").damage * parent:get("Stats").damage, parent:get("AI").actions)
+  if (parent ~= player) then
+    StatisticController.addToActions(damage:get("Damage").damage * parent:get("Stats").damage, parent:get("AI").actions)
 
-  self:DamagePlayer(player, damage:get("Damage").damage * parent:get("Stats").damage)
+    self:DamagePlayer(player, damage:get("Damage").damage * parent:get("Stats").damage)
+  end
 end
 
 function CollisionSystem:PlayerAndEnemyBullet(pair)
