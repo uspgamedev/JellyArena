@@ -3,11 +3,12 @@ local Label, Timer, AttackProperties, Damage, AttackRange
 
 function createPlayerAttack(parent)
   local entity = Entity(parent)
+  local stats = parent:get("Stats")
   entity:add(Label("RangedAttack"))
-  entity:add(Timer(0.3))
+  entity:add(Timer(Utils.getShotDelay(stats.shotSpeed)))
   entity:add(AttackProperties(25))
-  entity:add(Damage(5))
-  entity:add(AttackRange(250))
+  entity:add(Damage(1))
+  entity:add(AttackRange(Utils.getShotRange(stats.shotRange)))
   return entity
 end
 
@@ -23,16 +24,18 @@ end
 
 function createRangedAttack(parent)
   local entity = Entity(parent)
+  local stats = parent:get("Stats")
   entity:add(Label("RangedAttack"))
-  entity:add(Timer(0.5))
+  entity:add(Timer(Utils.getShotDelay(stats.shotSpeed)))
   entity:add(AttackProperties(25))
   entity:add(Damage(1))
-  entity:add(AttackRange(400))
+  entity:add(AttackRange(Utils.getShotRange(stats.shotRange)))
   return entity
 end
 
 function createDashAttack(parent)
   local entity = Entity(parent)
+  local stats = parent:get("Stats")
   entity:add(Label("DashAttack"))
   entity:add(Timer(2))
   entity:add(AttackProperties(8))

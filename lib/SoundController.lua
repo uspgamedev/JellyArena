@@ -1,35 +1,44 @@
+local SoundController = {}
+
 local tracks = {
-  ["sample1"] = love.audio.newSource(love.sound.newSoundData(getSound("sample_1.ogg"))),
-  ["sample2"] = love.audio.newSource(love.sound.newSoundData(getSound("sample_2.ogg"))),
-  ["sample3"] = love.audio.newSource(love.sound.newSoundData(getSound("sample_3.ogg")))
+  ["sample1"] = love.audio.newSource(love.sound.newSoundData(Utils.getSound("sample1.ogg"))),
+  ["sample2"] = love.audio.newSource(love.sound.newSoundData(Utils.getSound("sample2.ogg"))),
+  ["sample3"] = love.audio.newSource(love.sound.newSoundData(Utils.getSound("sample3.ogg")))
 }
 
 local sounds = {
-  ["teste"] = love.audio.newSource(getSound("select.ogg"), "static")
+  ["teste"] = love.audio.newSource(Utils.getSound("select.ogg"), "static")
 }
 
-local current_track
+local currentTrack
 
-function setTrack(trackName)
-  if ( tracks[trackName] ~= nil ) then
-    if (current_track ~= nil) then
-      love.audio.stop(current_track)
+function SoundController.setTrack(trackName)
+  if tracks[trackName] then
+    if currentTrack then
+      love.audio.stop(currentTrack)
     end
-    current_track = tracks[trackName]
-    current_track:setVolume(0.5)
-    current_track:setLooping(true)
+    currentTrack = tracks[trackName]
+    currentTrack:setVolume(0.5)
+    currentTrack:setLooping(true)
   end
 end
 
-function playSound(soundName)
-  if ( play_effects == true and sounds[soundName] ~= nil ) then
+function SoundController.playSound(soundName)
+  if (SoundController.isEffectOn and sounds[soundName]) then
     love.audio.rewind(sounds[soundName])
     love.audio.play(sounds[soundName])
   end
 end
 
-function playTrack()
-  if ( play_track == true and current_track ~= nil ) then
-    love.audio.play(current_track)
+function SoundController.playTrack()
+  print(SoundController.isMusicOn, currentTrack)
+  if (SoundController.isMusicOn and currentTrack) then
+    love.audio.play(currentTrack)
   end
 end
+
+SoundController.isMusicOn = true
+
+SoundController.isEffectOn = true
+
+return SoundController

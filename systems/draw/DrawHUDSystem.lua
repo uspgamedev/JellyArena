@@ -19,7 +19,7 @@ function DrawHUDSystem:draw()
     waveInfo = string.format("Wave %d", GameData.waveNumber)
   end
   love.graphics.printf(waveInfo, 300, 12, 200, "center")
-  love.graphics.printf(string.format("%d spawned enemies", count(self.targets.enemies)), 600, 12, 200, "center")
+  love.graphics.printf(string.format("%d spawned enemies", Utils.count(self.targets.enemies)), 600, 12, 200, "center")
 end
 
 function DrawHUDSystem:requires()

@@ -5,20 +5,21 @@ local GameStates = {
     systems = {},
     onResume = function()
       GameData = {}
-      garbage_list = {}
+      garbageList = {}
       WaveController.createLearningList()
-      Statistic.reset()
+      StatisticController.reset()
 
-      for _, entity in pairs(getEngine().entities) do
-        getEngine():removeEntity(entity, true)
+      local engine = Utils.getEngine()
+      for _, entity in pairs(engine.entities) do
+        engine:removeEntity(entity, true)
       end
 
       local player = createPlayer(500, 500)
       local pos = player:get("Position")
       camera = Camera(pos.x, pos.y)
-      getEngine():addEntity(player)
-      getEngine():addEntity(createPlayerAttack(player))
-      getEngine():addEntity(createInvunerable(player))
+      engine:addEntity(player)
+      engine:addEntity(createPlayerAttack(player))
+      engine:addEntity(createInvunerable(player))
 
       changeGameState("waitingWave")
     end,
@@ -64,7 +65,7 @@ local GameStates = {
     },
     onResume = function(previousState)
       pushGameState(previousState)
-      setMenu("pause")
+      MenuController.setMenu("pause")
     end,
     onPause = function() end
   },
@@ -75,7 +76,7 @@ local GameStates = {
       "DrawSystem",
       "DrawHUDSystem"
     },
-    onResume = function() setMenu("gameOver") end,
+    onResume = function() MenuController.setMenu("gameOver") end,
     onPause = function() end
   }
 }
@@ -111,15 +112,16 @@ function changeGameState(state)
     return
   end
 
+  local engine = Utils.getEngine()
   for _, state in pairs(curStateData.systems) do
-    if not containsValue(newStateData.systems, state) then
-      getEngine():stopSystem(state)
+    if not Utils.containsValue(newStateData.systems, state) then
+      engine:stopSystem(state)
     end
   end
 
   for _, state in pairs(newStateData.systems) do
-    if not containsValue(curStateData.systems, state) then
-      getEngine():startSystem(state)
+    if not Utils.containsValue(curStateData.systems, state) then
+      engine:startSystem(state)
     end
   end
 

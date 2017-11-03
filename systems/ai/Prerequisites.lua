@@ -1,14 +1,13 @@
 local Prerequisites = {}
 
 function Prerequisites.InAttackRange(action, prerequisite, agent, target, dt)
-  local attack = getChild(agent, action)
+  local attack = Utils.getChild(agent, action)
   if attack then
     local range = attack:get("AttackRange")
     local agentPosition = agent:get("Position")
     local targetPosition = target:get("Position")
 
     local distance = (agentPosition:toVector() - targetPosition:toVector()):len()
-    local distance = distance - agent:get("Circle").radius - target:get("Circle").radius
     if(distance < 0) then
       distance = 0
     end
@@ -33,7 +32,7 @@ function Prerequisites.InDangerRange(action, prerequisite, agent, target, dt)
 end
 
 function Prerequisites.AttackAvailable(action, prerequisite, agent, target, dt)
-  local attack = getChild(agent, prerequisite.target)
+  local attack = Utils.getChild(agent, prerequisite.target)
   local globalTimer = agent:get("Timer")
   if attack then
     local attackTimer = attack:get("Timer")

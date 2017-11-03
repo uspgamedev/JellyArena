@@ -38,7 +38,7 @@ function PlayerInputSystem:fire(entity, dt)
     end
   end
   local fireDirection = Vector(0, 0)
-  local fireTimer = attack:get("Timer");
+  local fireTimer = attack:get("Timer")
 
   -- Continue only if we can shoot
   if fireTimer.isActive and fireTimer.cooldown > 0 then
@@ -64,14 +64,14 @@ function PlayerInputSystem:fire(entity, dt)
       local position = playerPosition:toVector()
       local attackProperties = attack:get("AttackProperties")
       local range = attack:get("AttackRange")
-      local attackDamage = attack:get("Damage").damage
-
+      local attackDamage = attack:get("Damage").damage * entity:get("Stats").damage
+      local bulletSpeed = Utils.getBulletSpeed(entity:get("Stats").bulletSpeed)
       position = position + attackProperties.spawnDistance * fireDirection
-      bullet = createPlayerBullet(position.x, position.y, fireDirection, attackDamage, range.max)
-      getEngine():addEntity(bullet)
-      hp.cur = hp.cur - 1;
+      bullet = createPlayerBullet(position.x, position.y, fireDirection, attackDamage, range.max, bulletSpeed)
+      Utils.getEngine():addEntity(bullet)
+      hp.cur = hp.cur - 1
       fireTimer.cooldown = fireTimer.waitTime
-      playSound("teste")
+      SoundController.playSound("teste")
     end
   end
 end
@@ -79,11 +79,11 @@ end
 --remove after track test
 function PlayerInputSystem:testTrack()
   if love.keyboard.isDown("1") then
-    setTrack("sample1")
+    SoundController.setTrack("sample1")
   elseif love.keyboard.isDown("2") then
-    setTrack("sample2")
+    SoundController.setTrack("sample2")
   elseif love.keyboard.isDown("3") then
-    setTrack("sample3")
+    SoundController.setTrack("sample3")
   end
 end
 

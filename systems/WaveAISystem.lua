@@ -26,7 +26,7 @@ function WaveAISystem:update(dt)
       WaveController.updateLearning()
       self.waveNumber = self.waveNumber + 1
       GameData.waveNumber = self.waveNumber
-      Log.write("wave", "\nWAVE "..self.waveNumber..":")
+      LogController.write("wave", "\nWAVE "..self.waveNumber..":")
       self.enemiesCount = 0 -- spawned on current wave
       self.spawnCooldown = self.spawnInterval -- between two enemies spawn
     end
@@ -63,7 +63,7 @@ function WaveAISystem:selectAction(effect, ai)
   for action, score in pairs(tuple.actions) do
     if random <= score then
       WaveController.addCurrentActions(action)
-      Log.write("wave", action)
+      LogController.write("wave", action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do
         self:selectAction(prerequisite, ai)
@@ -80,7 +80,7 @@ function WaveAISystem:selectRandomAction(effect, ai)
   local random = math.random(1, tuple.size)
   for action, _ in pairs(tuple.actions) do
     if random <= 1 then
-      Log.write("wave", action)
+      LogController.write("wave", action)
       WaveController.addCurrentActions(action)
       table.insert(ai, Actions[action])
       for _,prerequisite in pairs(Actions[action].prerequisites) do
@@ -104,7 +104,7 @@ function WaveAISystem:spawn()
   end
 
   local waveType = math.random(1, 10)
-  Log.write("wave", "Enemy "..(self.enemiesCount+1)..":")
+  LogController.write("wave", "Enemy "..(self.enemiesCount+1)..":")
   local ai = {Actions.Idle}
 
   for _, effect in pairs(Goals) do
@@ -119,10 +119,28 @@ function WaveAISystem:spawn()
   local position = math.random(1, 4)
   local enemy = createDumbEnemy(corners[position][1], corners[position][2])
   enemy:add(AI(Goals, ai))
-  getEngine():addEntity(enemy)
-  getEngine():addEntity(createDashAttack(enemy))
-  getEngine():addEntity(createMeleeAttack(enemy))
-  getEngine():addEntity(createRangedAttack(enemy))
+  self:setColor(enemy)
+  local engine = Utils.getEngine()
+  engine:addEntity(enemy)
+  engine:addEntity(createDashAttack(enemy))
+  engine:addEntity(createMeleeAttack(enemy))
+  engine:addEntity(createRangedAttack(enemy))
+end
+
+function WaveAISystem:setColor(enemy)
+  local color = enemy:get("Color")
+  local hash = {0, 0, 0}
+  local actions = enemy:get("AI").actions
+  for _,a in ipairs(actions) do
+    local action = a.name
+    for c in action:gmatch(".") do
+      local b = c:byte()
+      hash[1] = (hash[1] + b + 15) % 256
+      hash[2] = (3 * hash[2] - b) % 256
+      hash[3] = ((50 + hash[3]) * b) % 256
+    end
+  end
+  color:set(hash[1], hash[2], hash[3])
 end
 
 return WaveAISystem
