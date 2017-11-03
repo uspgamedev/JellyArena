@@ -7,18 +7,23 @@ function WaveAISystem:initialize()
     System.initialize(self)
     self.waveNumber = 0
     self.state = nil
-    self.waitTime = 3 -- between waves
-    self.totalEnemies = 20 -- per wave
+    self:setWaitTime(5) -- between waves
+    self.totalEnemies = 15 -- per wave
     self.spawnInterval = 1
+end
+
+function WaveAISystem:setWaitTime(waitTime)
+  self.waitTime = waitTime
+  GameData.waveWaitTime = waitTime
 end
 
 function WaveAISystem:update(dt)
   -- check if can spawn next wave
   if curGameState == "waitingWave" then
-    self.waitTime = self.waitTime - dt
+    self:setWaitTime(self.waitTime - dt)
     if not (self.state == "waitingWave") then
       self.state = "waitingWave"
-      self.waitTime = 3
+      self:setWaitTime(5)
     end
 
     if self.waitTime <= 0 then
