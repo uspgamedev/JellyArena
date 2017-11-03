@@ -8,6 +8,8 @@ function CollisionSystem:initialize()
 
   self.entitiesToRemove = {}
   self.entitiesToRemoveCount = 0
+
+  self.ignore = {}
 end
 
 function CollisionSystem:update(dt)
@@ -48,7 +50,7 @@ function CollisionSystem:update(dt)
             local dist = (vPos - wPos):len2()
             local minDist = (vRad + wRad) * (vRad + wRad)
 
-            if (dist < minDist) then
+            if (dist < minDist and not self:checkIgnored(v, w)) then
               self.collisionPairsCount = self.collisionPairsCount + 1
               self.collisionPairs[self.collisionPairsCount] = {[vCollider.type] = v, [wCollider.type] = w}
             end
@@ -134,6 +136,25 @@ function CollisionSystem:checkStageBounds(position, radius)
   return check
 end
 
+function CollisionSystem:checkIgnored(collider1, collider2)
+  if(self.ignore[collider1]) then
+    return self.ignore[collider1][collider2] == true
+  end
+
+  if(self.ignore[collider2]) then
+    return self.ignore[collider2][collider1] == true
+  end
+
+  return false
+end
+
+function CollisionSystem:markIgnored(collider1, collider2)
+  if self.ignore[collider1] == nil then
+      self.ignore[collider1] = {}
+  end
+  self.ignore[collider1][collider2] = true
+end
+
 function CollisionSystem:PlayerAndHpDrop(pair)
   local player = pair["Player"]
   local drop = pair["HpDrop"]
@@ -203,6 +224,7 @@ function CollisionSystem:PlayerBulletAndEnemy(pair)
   else
     self:killAndDrop(enemy)
   end
+  self:markIgnored(bullet, enemy)
 end
 
 function CollisionSystem:EnemyAndDamageArea(pair)
@@ -218,6 +240,7 @@ function CollisionSystem:EnemyAndDamageArea(pair)
       self:killAndDrop(enemy)
     end
   end
+  self:markIgnored(enemy, damageArea)
 end
 
 function CollisionSystem:PlayerAndDamageArea(pair)
@@ -229,6 +252,7 @@ function CollisionSystem:PlayerAndDamageArea(pair)
 
     self:DamagePlayer(player, damage:get("Damage").damage * parent:get("Stats").damage)
   end
+  self:markIgnored(player, damage)
 end
 
 function CollisionSystem:PlayerAndEnemyBullet(pair)
@@ -238,6 +262,7 @@ function CollisionSystem:PlayerAndEnemyBullet(pair)
   StatisticController.addToActions(bullet:get("Projectile").damage * enemy:get("Stats").damage, enemy:get("AI").actions)
 
   self:DamagePlayer(player, bullet:get("Projectile").damage * enemy:get("Stats").damage)
+  self:markIgnored(player, bullet)
 end
 
 function CollisionSystem:PlayerAndEnemy(pair)
@@ -259,7 +284,7 @@ end
 
 function CollisionSystem:DamagePlayer(player, damage)
   invunerable = Utils.getChild(player, "Invunerable")
-  if (invunerable:get("Timer").cooldown <= 0) then
+  if (invunerable:get("Timer").cooldown <= 0 or true) then
     local hp = player:get("Hitpoints")
     hp.cur = hp.cur - damage
     if (hp.cur <= 0) then
