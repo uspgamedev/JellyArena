@@ -31,6 +31,25 @@ function Utils.getChild(entity, label)
   return nil
 end
 
+
+function Utils.containsValue(table, data)
+  for key, value in pairs(table) do
+    if (value == data) then
+      return true
+    end
+  end
+
+  return false
+end
+
+function Utils.count(table)
+  local count = 0
+  for _, enemy in pairs(table) do
+    count = count + 1
+  end
+  return count
+end
+
 function Utils.getSpeed(movementSpeed)
   return 300 + movementSpeed * 20
 end

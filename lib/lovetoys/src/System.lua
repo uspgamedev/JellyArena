@@ -7,7 +7,7 @@ local System = lovetoys.class("System")
 function System:initialize()
     -- Liste aller Entities, die die RequiredComponents dieses Systems haben
     self.targets = {}
-    self.active = true
+    self.active = false
 end
 
 function System:requires() return {} end

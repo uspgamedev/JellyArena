@@ -1,76 +1,133 @@
-GameStates = {
-  ingame    = {},
-  newGame   = {},
-  pauseMenu  = {},
-  gameOver  = {}
+GameData = {}
+
+local GameStates = {
+  startingGame = {
+    systems = {},
+    onResume = function()
+      GameData = {}
+      garbageList = {}
+      WaveController.createLearningList()
+      StatisticController.reset()
+
+      local engine = Utils.getEngine()
+      for _, entity in pairs(engine.entities) do
+        engine:removeEntity(entity, true)
+      end
+
+      local player = createPlayer(500, 500)
+      local pos = player:get("Position")
+      camera = Camera(pos.x, pos.y)
+      engine:addEntity(player)
+      engine:addEntity(createPlayerAttack(player))
+      engine:addEntity(createInvunerable(player))
+
+      changeGameState("waitingWave")
+    end,
+    onPause = function() end
+  },
+  waitingWave = {
+    systems = {
+      "TimerSystem",
+      "MovementSystem",
+      "CollisionSystem",
+      "PlayerInputSystem",
+      "ProjectileSystem",
+      "CleanUpSystem",
+      "DrawSystem",
+      "DrawHUDSystem",
+      "WaveAISystem"
+    },
+    onResume = function() end,
+    onPause = function() end
+  },
+  ingame = {
+    systems = {
+      "TimerSystem",
+      "EnemyAISystem",
+      "MovementSystem",
+      "CollisionSystem",
+      "PlayerInputSystem",
+      "WaveAISystem",
+      "ProjectileSystem",
+      "CleanUpSystem",
+      "DrawSystem",
+      "DrawHUDSystem"
+    },
+    onResume = function() end,
+    onPause = function() end
+  },
+  pauseMenu = {
+    systems = {
+      "MenuInputSystem",
+      "DrawMenuSystem",
+      "DrawSystem",
+      "DrawHUDSystem"
+    },
+    onResume = function(previousState)
+      pushGameState(previousState)
+      MenuController.setMenu("pause")
+    end,
+    onPause = function() end
+  },
+  gameOver = {
+    systems = {
+      "MenuInputSystem",
+      "DrawMenuSystem",
+      "DrawSystem",
+      "DrawHUDSystem"
+    },
+    onResume = function() MenuController.setMenu("gameOver") end,
+    onPause = function() end
+  }
 }
 
+local StateStackSize = 0
+local StateStack = {}
 
-------------- Auxiliary functions -------------
-local function startIngameSystems()
-  Utils.getEngine():startSystem("TimerSystem")
-  Utils.getEngine():startSystem("EnemyAISystem")
-  Utils.getEngine():startSystem("MovementSystem")
-  Utils.getEngine():startSystem("CollisionSystem")
-  Utils.getEngine():startSystem("PlayerInputSystem")
-  Utils.getEngine():startSystem("WaveAISystem")
-  Utils.getEngine():startSystem("ProjectileSystem")
-  Utils.getEngine():startSystem("CleanUpSystem")
+function pushGameState(state)
+  StateStack[StateStackSize] = state
+  StateStackSize = StateStackSize + 1
 end
 
-local function stopIngameSystems()
-  Utils.getEngine():stopSystem("TimerSystem")
-  Utils.getEngine():stopSystem("EnemyAISystem")
-  Utils.getEngine():stopSystem("MovementSystem")
-  Utils.getEngine():stopSystem("CollisionSystem")
-  Utils.getEngine():stopSystem("PlayerInputSystem")
-  Utils.getEngine():stopSystem("WaveAISystem")
-  Utils.getEngine():stopSystem("ProjectileSystem")
-  Utils.getEngine():stopSystem("ProjectileSystem")
-  Utils.getEngine():stopSystem("CleanUpSystem")
-end
-
-local function stopMenuSystems()
-  Utils.getEngine():stopSystem("MenuInputSystem")
-  Utils.getEngine():stopSystem("DrawMenuSystem")
-end
------------------------------------------------
----------- State creation funcitons -----------
-local function setIngameState()
-  startIngameSystems()
-  stopMenuSystems()
-end
-
-local function setNewGameState()
-  local player = createPlayer(Utils.getCenter().x, Utils.getCenter().y)
-  Utils.getEngine():addEntity(player)
-  Utils.getEngine():addEntity(createPlayerAttack(player))
-  Utils.getEngine():addEntity(createInvunerable(player))
-
-  setIngameState()
-  curGameState = GameStates.ingame
-end
-
-local function setPauseMenuState()
-  stopIngameSystems()
-  MenuController.setMenu("pause")
-  Utils.getEngine():startSystem("MenuInputSystem")
-  Utils.getEngine():startSystem("DrawMenuSystem")
-end
-
-local function setGameOverState()
-  stopIngameSystems()
-  MenuController.setMenu("gameOver")
-  Utils.getEngine():startSystem("MenuInputSystem")
-  Utils.getEngine():startSystem("DrawMenuSystem")
-end
-
-function changeGameState(gameState)
-  curGameState = gameState
-
-  if(gameState == GameStates.ingame) then setIngameState()
-  elseif(gameState == GameStates.newGame) then setNewGameState()
-  elseif(gameState == GameStates.pauseMenu) then setPauseMenuState()
-  elseif(gameState == GameStates.gameOver) then setGameOverState()
+function popGameState()
+  if(StateStackSize == 0) then
+    return nil
   end
+  local state = StateStack[StateStackSize-1]
+  StateStack[StateStackSize-1] = nil
+  StateStackSize = StateStackSize - 1
+  return state
+end
+
+function changeGameState(state)
+  local curStateData = GameStates[curGameState] or {
+    systems = {},
+    onResume = function() end,
+    onPause = function() end
+  }
+
+  local newStateData = GameStates[state]
+  if not newStateData then
+    error("Invalid State")
+    return
+  end
+
+  local engine = Utils.getEngine()
+  for _, state in pairs(curStateData.systems) do
+    if not Utils.containsValue(newStateData.systems, state) then
+      engine:stopSystem(state)
+    end
+  end
+
+  for _, state in pairs(newStateData.systems) do
+    if not Utils.containsValue(curStateData.systems, state) then
+      engine:startSystem(state)
+    end
+  end
+
+  previousState = curGameState
+  curGameState = state
+  curStateData.onPause(curGameState)
+  newStateData.onResume(previousState)
+
 end

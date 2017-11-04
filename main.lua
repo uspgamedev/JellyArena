@@ -73,12 +73,10 @@ require "lib/GameState"
 function love.load()
   eventmanager = EventManager()
   debugText = ""
-  garbageList = {}
-  SoundController.isMusicOn = true
+
+  playTrack = true
   playEffects = true
-  curGameState = GameStates.newGame
-  WaveController.createLearningList()
-  StatisticController.reset()
+
   -- TODO: random seed
   -- math.randomseed(os.time())
   LogController.init({"wave"})
@@ -122,7 +120,7 @@ function love.load()
   Utils.getEngine():addSystem(CleanUpSystem(), "update")
   Utils.getEngine():addSystem(TrapSpawnSystem(), "update")
 
-  changeGameState(curGameState)
+  changeGameState("startingGame")
 end
 
 function love.update(dt)
@@ -139,10 +137,10 @@ function love.keypressed(key)
     LogController.close()
     love.event.quit(0)
   elseif (key == "m") then
-    if (curGameState == GameStates.ingame) then
-      changeGameState(GameStates.pauseMenu)
-    elseif (curGameState == GameStates.pauseMenu) then
-      changeGameState(GameStates.ingame)
+    if (curGameState == "pauseMenu") then
+      changeGameState(popGameState())
+    else
+      changeGameState("pauseMenu")
     end
   end
 end
