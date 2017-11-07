@@ -216,6 +216,14 @@ function Engine:toggleSystem(name)
     end
 end
 
+function Engine:getSystem(name)
+    if self.systemRegistry[name] then
+        return self.systemRegistry[name]
+    else
+        lovetoys.debug("Engine: Trying to get not existing System: " .. name)
+    end
+end
+
 function Engine:update(dt)
     for _, system in ipairs(self.systems["update"]) do
         if system.active then
