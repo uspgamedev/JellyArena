@@ -9,6 +9,10 @@ function CollisionSystem:initialize()
   self.entitiesToRemove = {}
   self.entitiesToRemoveCount = 0
 
+  self:reset()
+end
+
+function CollisionSystem:reset()
   self.ignore = {}
 end
 

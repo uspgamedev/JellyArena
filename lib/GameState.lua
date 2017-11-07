@@ -17,6 +17,7 @@ local GameStates = {
       local player = createPlayer(500, 500)
       local pos = player:get("Position")
       camera = Camera(pos.x, pos.y)
+      engine:getSystem("WaveAISystem"):reset()
       engine:addEntity(player)
       engine:addEntity(createPlayerAttack(player))
       engine:addEntity(createInvunerable(player))
@@ -37,7 +38,9 @@ local GameStates = {
       "DrawHUDSystem",
       "WaveAISystem"
     },
-    onResume = function() end,
+    onResume = function()
+      Utils.getEngine():getSystem("CollisionSystem"):reset()
+    end,
     onPause = function() end
   },
   ingame = {
