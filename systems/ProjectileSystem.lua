@@ -11,7 +11,7 @@ function ProjectileSystem:update(dt)
         local position = v:get("Position")
         drop = createHpDrop(position.x, position.y)
         Utils.getEngine():addEntity(drop)
-        Utils.getEngine():removeEntity(v)
+        Utils.getEngine():removeEntity(v, true)
       else
         table.insert(garbageList, v)
       end
