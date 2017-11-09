@@ -3,10 +3,10 @@ local PlayerInputSystem = class("PlayerInputSystem", System)
 function PlayerInputSystem:update(dt)
   for i, entity in pairs(self.targets) do
     -- if curGameState == "ingame" then
-      self:movement(entity)
-      self:fire(entity, dt)
-      self:melee(entity, dt)
-      self:testTrack() --remove after track test
+    self:movement(entity)
+    self:fire(entity, dt)
+    self:melee(entity, dt)
+    self:testTrack() --remove after track test
     -- end
   end
 end
@@ -91,9 +91,9 @@ function PlayerInputSystem:melee(entity, dt)
     local damage = 10 * entity:get("Stats").damage
     local damageArea = createDamageArea(position, 100, damage, entity)
     Utils.getEngine():addEntity(damageArea)
+    table.insert(garbageList, damageArea)
     meleeTimer.cooldown = meleeTimer.waitTime
   end
-
 end
 
 --remove after track test

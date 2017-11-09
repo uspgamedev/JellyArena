@@ -31,7 +31,6 @@ function SoundController.playSound(soundName)
 end
 
 function SoundController.playTrack()
-  print(SoundController.isMusicOn, currentTrack)
   if (SoundController.isMusicOn and currentTrack) then
     love.audio.play(currentTrack)
   end

@@ -24,7 +24,8 @@ local GameStates = {
 
       changeGameState("waitingWave")
     end,
-    onPause = function() end
+    onPause = function()
+    end
   },
   waitingWave = {
     systems = {
@@ -41,7 +42,8 @@ local GameStates = {
     onResume = function()
       Utils.getEngine():getSystem("CollisionSystem"):reset()
     end,
-    onPause = function() end
+    onPause = function()
+    end
   },
   ingame = {
     systems = {
@@ -56,8 +58,10 @@ local GameStates = {
       "DrawSystem",
       "DrawHUDSystem"
     },
-    onResume = function() end,
-    onPause = function() end
+    onResume = function()
+    end,
+    onPause = function()
+    end
   },
   pauseMenu = {
     systems = {
@@ -70,7 +74,8 @@ local GameStates = {
       pushGameState(previousState)
       MenuController.setMenu("pause")
     end,
-    onPause = function() end
+    onPause = function()
+    end
   },
   gameOver = {
     systems = {
@@ -79,8 +84,11 @@ local GameStates = {
       "DrawSystem",
       "DrawHUDSystem"
     },
-    onResume = function() MenuController.setMenu("gameOver") end,
-    onPause = function() end
+    onResume = function()
+      MenuController.setMenu("gameOver")
+    end,
+    onPause = function()
+    end
   }
 }
 
@@ -93,21 +101,25 @@ function pushGameState(state)
 end
 
 function popGameState()
-  if(StateStackSize == 0) then
+  if (StateStackSize == 0) then
     return nil
   end
-  local state = StateStack[StateStackSize-1]
-  StateStack[StateStackSize-1] = nil
+  local state = StateStack[StateStackSize - 1]
+  StateStack[StateStackSize - 1] = nil
   StateStackSize = StateStackSize - 1
   return state
 end
 
 function changeGameState(state)
-  local curStateData = GameStates[curGameState] or {
-    systems = {},
-    onResume = function() end,
-    onPause = function() end
-  }
+  local curStateData =
+    GameStates[curGameState] or
+    {
+      systems = {},
+      onResume = function()
+      end,
+      onPause = function()
+      end
+    }
 
   local newStateData = GameStates[state]
   if not newStateData then
@@ -132,5 +144,4 @@ function changeGameState(state)
   curGameState = state
   curStateData.onPause(curGameState)
   newStateData.onResume(previousState)
-
 end

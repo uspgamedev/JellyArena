@@ -66,4 +66,11 @@ function Utils.getBulletSpeed(bulletSpeed)
   return 700 + 40 * bulletSpeed
 end
 
+function Utils.addGarbage(entity)
+  local id = entity.id
+  if id then
+    garbageList[id] = entity
+  end
+end
+
 return Utils

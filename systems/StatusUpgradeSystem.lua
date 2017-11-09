@@ -3,7 +3,7 @@ local StatusUpgradeSystem = class("StatusUpgradeSystem", System)
 function StatusUpgradeSystem:update(dt)
   local player = nil
   -- get first player
-  for _,p in pairs(self.targets.Player) do
+  for _, p in pairs(self.targets.Player) do
     player = p
     break
   end
@@ -16,14 +16,14 @@ function StatusUpgradeSystem:update(dt)
     playerStats.shotSpeed = upgradeStats.shotSpeed
     playerStats.bulletSpeed = upgradeStats.bulletSpeed
     playerStats.shotRange = upgradeStats.shotRange
-    Utils.getEngine():removeEntity(upgrade)
+    Utils.addGarbage(upgrade)
   end
 end
 
 function StatusUpgradeSystem:requires()
   return {
-    Player = {"Stats", "IsPlayer" },
-    Upgrades = {"Stats", "Timer" }
+    Player = {"Stats", "IsPlayer"},
+    Upgrades = {"Stats", "Timer"}
   }
 end
 
