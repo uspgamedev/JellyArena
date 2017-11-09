@@ -6,9 +6,6 @@ function CollisionSystem:initialize()
   self.collisionPairs = {}
   self.collisionPairsCount = 0
 
-  self.entitiesToRemove = {}
-  self.entitiesToRemoveCount = 0
-
   self:reset()
 end
 
@@ -26,11 +23,6 @@ function CollisionSystem:update(dt)
     if (collider.clampToStageBounds) then
       self:checkStageBounds(position, radius)
     end
-  --  if (self:checkStageBounds(position, radius) and not collider.clampToStageBounds) then
-      --collider.active = false
-      --self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
-      --self.entitiesToRemove[self.entitiesToRemoveCount] = v
-  --  end
   end
 
   -- Generate collision pairs
@@ -104,13 +96,6 @@ function CollisionSystem:update(dt)
     self.collisionPairs[i] = nil
   end
   self.collisionPairsCount = 0
-
-  -- Remove flagged entities
-  for i = 1, self.entitiesToRemoveCount, 1 do
-    Utils.addGarbage(self.entitiesToRemove[i])
-    self.entitiesToRemove[i] = nil
-  end
-  self.entitiesToRemoveCount = 0
 end
 
 function CollisionSystem:requires()
@@ -165,8 +150,7 @@ function CollisionSystem:PlayerAndHpDrop(pair)
   local hp = player:get("Hitpoints")
 
   hp:add(1)
-  self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
-  self.entitiesToRemove[self.entitiesToRemoveCount] = drop
+  Utils.addGarbage(drop)
 end
 
 function CollisionSystem:PlayerAndTrap(pair)
@@ -187,9 +171,7 @@ function CollisionSystem:PlayerAndTrap(pair)
     math.randomseed(os.time())
     self:PushPlayer(player, math.random(4), 200)
   end
-
-  self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
-  self.entitiesToRemove[self.entitiesToRemoveCount] = trap
+  Utils.addGarbage(trap)
 end
 
 function CollisionSystem:PushPlayer(player, direction, displacement)
@@ -303,8 +285,7 @@ end
 function CollisionSystem:killAndDrop(entity)
   local position = entity:get("Position")
   Utils.getEngine():addEntity(createHpDrop(position.x, position.y))
-  self.entitiesToRemoveCount = self.entitiesToRemoveCount + 1
-  self.entitiesToRemove[self.entitiesToRemoveCount] = entity
+  Utils.addGarbage(entity)
 end
 
 return CollisionSystem
