@@ -73,11 +73,9 @@ require "lib/GameState"
 function love.load()
   eventmanager = EventManager()
 
-  playTrack = true
-  playEffects = true
-
   -- TODO: random seed
   -- math.randomseed(os.time())
+  
   LogController.init({"wave"})
   SoundController.setTrack("sample1")
   camera = Camera()
