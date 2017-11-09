@@ -72,7 +72,6 @@ require "lib/GameState"
 
 function love.load()
   eventmanager = EventManager()
-  debugText = ""
 
   playTrack = true
   playEffects = true

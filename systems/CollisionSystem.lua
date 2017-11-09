@@ -82,9 +82,6 @@ function CollisionSystem:update(dt)
         self:PlayerAndEnemy(pair)
       end
     end
-
-    -- lovetoys.debug("BATEU: "..v.id..":"..w.id)
-    -- debugText = "BATEU: "..v.id..":"..w.id
   end
 
   -- Clean collisionPairs array
