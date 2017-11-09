@@ -71,14 +71,13 @@ TrapSpawnSystem = require "systems/TrapSpawnSystem"
 require "lib/GameState"
 
 function love.load()
-  eventmanager = EventManager()
+  camera = Camera()
 
   -- TODO: random seed
   -- math.randomseed(os.time())
   
   LogController.init({"wave"})
   SoundController.setTrack("sample1")
-  camera = Camera()
   -- Update timers
   Utils.getEngine():addSystem(TimerSystem(), "update")
   -- Process input
