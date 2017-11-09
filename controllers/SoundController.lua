@@ -1,13 +1,17 @@
 local SoundController = {}
 
+local function getSound(filename)
+  return "resources/sounds/"..filename
+end
+
 local tracks = {
-  ["sample1"] = love.audio.newSource(love.sound.newSoundData(Utils.getSound("sample1.ogg"))),
-  ["sample2"] = love.audio.newSource(love.sound.newSoundData(Utils.getSound("sample2.ogg"))),
-  ["sample3"] = love.audio.newSource(love.sound.newSoundData(Utils.getSound("sample3.ogg")))
+  ["sample1"] = love.audio.newSource(love.sound.newSoundData(getSound("sample1.ogg"))),
+  ["sample2"] = love.audio.newSource(love.sound.newSoundData(getSound("sample2.ogg"))),
+  ["sample3"] = love.audio.newSource(love.sound.newSoundData(getSound("sample3.ogg")))
 }
 
 local sounds = {
-  ["teste"] = love.audio.newSource(Utils.getSound("select.ogg"), "static")
+  ["teste"] = love.audio.newSource(getSound("select.ogg"), "static")
 }
 
 local currentTrack
