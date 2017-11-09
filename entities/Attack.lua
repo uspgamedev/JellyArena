@@ -5,10 +5,10 @@ function createPlayerAttack(parent)
   local entity = Entity(parent)
   local stats = parent:get("Stats")
   entity:add(Label("RangedAttack"))
-  entity:add(Timer(Utils.getShotDelay(stats.shotSpeed)))
+  entity:add(Timer(stats:getShotDelay()))
   entity:add(AttackProperties(25))
   entity:add(Damage(1))
-  entity:add(AttackRange(Utils.getShotRange(stats.shotRange)))
+  entity:add(AttackRange(stats:getShotRange()))
   return entity
 end
 
@@ -26,10 +26,10 @@ function createRangedAttack(parent)
   local entity = Entity(parent)
   local stats = parent:get("Stats")
   entity:add(Label("RangedAttack"))
-  entity:add(Timer(Utils.getShotDelay(stats.shotSpeed)))
+  entity:add(Timer(stats:getShotDelay()))
   entity:add(AttackProperties(25))
   entity:add(Damage(1))
-  entity:add(AttackRange(Utils.getShotRange(stats.shotRange)))
+  entity:add(AttackRange(stats:getShotRange()))
   return entity
 end
 

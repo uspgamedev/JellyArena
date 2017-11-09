@@ -56,7 +56,7 @@ end
 
 local function updatePlayerStats()
   -- update Movement Speed
-  getPlayer():get("Velocity").speed = Utils.getSpeed(getStats().movementSpeed)
+  getPlayer():get("Velocity").speed = getStats():getSpeed()
 
   local attack
   for _, child in pairs(getPlayer().children) do
@@ -65,9 +65,9 @@ local function updatePlayerStats()
     end
   end
   -- update Shot Speed
-  attack:get("Timer"):setTime(Utils.getShotDelay(getStats().shotSpeed))
+  attack:get("Timer"):setTime(getStats():getShotDelay())
   -- update Shot Range
-  attack:get("AttackRange"):setRange(Utils.getShotRange(getStats().shotRange))
+  attack:get("AttackRange"):setRange(getStats():getShotRange())
 end
 
 local function updateStatsValues()

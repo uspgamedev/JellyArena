@@ -67,7 +67,7 @@ Actions.RangedAttack = {
     local attackDamage = attack:get("Damage").damage
     local position = agent:get("Position")
     local direction = (target:get("Position"):toVector() - position:toVector())
-    local bulletSpeed = Utils.getBulletSpeed(agent:get("Stats").bulletSpeed)
+    local bulletSpeed = agent:get("Stats"):getBulletSpeed()
     direction:normalizeInplace()
     bullet = createEnemyBullet(agent, position.x, position.y, direction, attackDamage, range.max, bulletSpeed)
     Utils.getEngine():addEntity(bullet)

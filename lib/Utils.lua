@@ -1,16 +1,7 @@
 local Utils = {}
 
 function Utils.getCenter()
-  return {x = love.graphics.getWidth()/2, y = love.graphics.getHeight()/2}
-end
-
-function Utils.distToPix(distance)
-  maxDist = Utils.getCenter().x
-  return distance / 10 * maxDist
-end
-
-function Utils.getSound(filename)
-  return "resources/sounds/"..filename
+  return {x = love.graphics.getWidth() / 2, y = love.graphics.getHeight() / 2}
 end
 
 local engine
@@ -31,7 +22,7 @@ function Utils.getChild(entity, label)
   return nil
 end
 
-
+-- Table
 function Utils.containsValue(table, data)
   for key, value in pairs(table) do
     if (value == data) then
@@ -50,22 +41,7 @@ function Utils.count(table)
   return count
 end
 
-function Utils.getSpeed(movementSpeed)
-  return 300 + movementSpeed * 20
-end
-
-function Utils.getShotRange(shotRange)
-  return 150 + 10 * shotRange
-end
-
-function Utils.getShotDelay(shotSpeed)
-  return 0.4 - 0.01 * shotSpeed
-end
-
-function Utils.getBulletSpeed(bulletSpeed)
-  return 700 + 40 * bulletSpeed
-end
-
+-- Garbage
 function Utils.addGarbage(entity)
   local id = entity.id
   if id then
