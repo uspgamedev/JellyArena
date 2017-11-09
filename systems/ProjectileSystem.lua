@@ -11,7 +11,7 @@ function ProjectileSystem:update(dt)
         local position = v:get("Position")
         drop = createHpDrop(position.x, position.y)
         Utils.getEngine():addEntity(drop)
-        Utils.getEngine():removeEntity(v, true)
+        Utils.addGarbage(v)
       else
         table.insert(garbageList, v)
       end
@@ -20,7 +20,7 @@ function ProjectileSystem:update(dt)
 end
 
 function ProjectileSystem:requires()
-  return { "Projectile", "Velocity", "Position" }
+  return {"Projectile", "Velocity", "Position"}
 end
 
 return ProjectileSystem

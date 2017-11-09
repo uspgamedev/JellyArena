@@ -107,7 +107,7 @@ function CollisionSystem:update(dt)
 
   -- Remove flagged entities
   for i = 1, self.entitiesToRemoveCount, 1 do
-    Utils.getEngine():removeEntity(self.entitiesToRemove[i], true)
+    Utils.addGarbage(self.entitiesToRemove[i])
     self.entitiesToRemove[i] = nil
   end
   self.entitiesToRemoveCount = 0

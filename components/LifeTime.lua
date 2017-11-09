@@ -1,4 +1,4 @@
-local LifeTime  = Component.create("LifeTime")
+local LifeTime = Component.create("LifeTime")
 
 function LifeTime:initialize(waitTime, parent)
   self.cooldown = waitTime
@@ -7,11 +7,11 @@ function LifeTime:initialize(waitTime, parent)
   self.parent = parent
 end
 
-function LifeTime:start ()
+function LifeTime:start()
   self.cooldown = self.waitTime
   self.isActive = true
 end
 
 function LifeTime:kill()
-  Utils.getEngine():removeEntity(self.parent, true)
+  Utils.addGarbage(self.parent)
 end
