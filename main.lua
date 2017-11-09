@@ -16,6 +16,7 @@ WaveController = require("lib/WaveController")
 StatisticController = require("lib/StatisticController")
 ActionsController = require("lib/ActionsController")
 LogController = require("lib/LogController")
+GameState = require "lib/GameState"
 
 --- components
 require "components/AI"
@@ -67,15 +68,12 @@ ProjectileSystem = require "systems/ProjectileSystem"
 CleanUpSystem = require "systems/CleanUpSystem"
 TrapSpawnSystem = require "systems/TrapSpawnSystem"
 
---- Utils
-require "lib/GameState"
-
 function love.load()
   camera = Camera()
 
   -- TODO: random seed
   -- math.randomseed(os.time())
-  
+
   LogController.init({"wave"})
   SoundController.setTrack("sample1")
   -- Update timers
@@ -116,7 +114,7 @@ function love.load()
   Utils.getEngine():addSystem(CleanUpSystem(), "update")
   Utils.getEngine():addSystem(TrapSpawnSystem(), "update")
 
-  changeGameState("startingGame")
+  GameState.changeGameState("startingGame")
 end
 
 function love.update(dt)
@@ -134,9 +132,9 @@ function love.keypressed(key)
     love.event.quit(0)
   elseif (key == "m") then
     if (curGameState == "pauseMenu") then
-      changeGameState(popGameState())
+      GameState.changeGameState(GameState.popGameState())
     else
-      changeGameState("pauseMenu")
+      GameState.changeGameState("pauseMenu")
     end
   end
 end

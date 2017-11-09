@@ -42,7 +42,7 @@ local function increaseStat(stat, value)
 end
 
 function restartGame()
-  changeGameState("startingGame")
+  GameState.changeGameState("startingGame")
 end
 
 local function updateMenuStats()
@@ -86,7 +86,7 @@ menus = {
       {
         name = "Resume",
         action = function()
-          changeGameState(popGameState())
+          GameState.changeGameState(GameState.popGameState())
         end
       },
       {

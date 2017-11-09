@@ -24,10 +24,10 @@ function DrawHUDSystem:draw()
   -- debug
   love.graphics.setColor(255, 255, 255)
   if curGameState == "waitingWave" then
-    nextWave = (GameData.waveNumber or 0) + 1
-    waveInfo = string.format("Wave %d starting in %d second(s)", nextWave, GameData.waveWaitTime+0.5)
+    nextWave = (GameState.GameData.waveNumber or 0) + 1
+    waveInfo = string.format("Wave %d starting in %d second(s)", nextWave, GameState.GameData.waveWaitTime+0.5)
   elseif curGameState == "ingame" then
-    waveInfo = string.format("Wave %d", GameData.waveNumber)
+    waveInfo = string.format("Wave %d", GameState.GameData.waveNumber)
   end
   love.graphics.printf(waveInfo, 12, 560, 250, "center")
   love.graphics.printf(string.format("%d spawned enemies", Utils.count(self.targets.enemies)), 600, 560, 200, "center")

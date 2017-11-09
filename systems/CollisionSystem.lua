@@ -160,7 +160,7 @@ function CollisionSystem:PlayerAndTrap(pair)
       player:get("Hitpoints").cur = player:get("Hitpoints").cur - 10
     else
       player:get("Hitpoints").cur = 0
-      changeGameState("gameOver")
+      GameState.changeGameState("gameOver")
     end
   elseif (trapType == "HealingTrap") then
     player:get("Hitpoints"):add(10)
@@ -272,7 +272,7 @@ function CollisionSystem:DamagePlayer(player, damage)
     hp.cur = hp.cur - damage
     if (hp.cur <= 0) then
       hp.cur = 0
-      changeGameState("gameOver")
+      GameState.changeGameState("gameOver")
     else
       Utils.getChild(player, "Invunerable"):get("Timer"):start()
     end
