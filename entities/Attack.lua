@@ -1,6 +1,8 @@
 local Label, Timer, AttackProperties, Damage, AttackRange
 = Component.load({"Label", "Timer", "AttackProperties", "Damage", "AttackRange"})
 
+DefaultAttackConstructors = {}
+
 function createPlayerAttack(parent)
   local entity = Entity(parent)
   local stats = parent:get("Stats")
@@ -12,7 +14,7 @@ function createPlayerAttack(parent)
   return entity
 end
 
-function createMeleeAttack(parent)
+function DefaultAttackConstructors.MeleeAttack(parent)
   local entity = Entity(parent)
   entity:add(Label("MeleeAttack"))
   entity:add(Timer(1))
@@ -22,7 +24,7 @@ function createMeleeAttack(parent)
   return entity
 end
 
-function createRangedAttack(parent)
+function DefaultAttackConstructors.RangedAttack(parent)
   local entity = Entity(parent)
   local stats = parent:get("Stats")
   entity:add(Label("RangedAttack"))
@@ -33,7 +35,7 @@ function createRangedAttack(parent)
   return entity
 end
 
-function createDashAttack(parent)
+function DefaultAttackConstructors.DashAttack(parent)
   local entity = Entity(parent)
   local stats = parent:get("Stats")
   entity:add(Label("DashAttack"))

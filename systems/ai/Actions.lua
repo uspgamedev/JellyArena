@@ -20,6 +20,9 @@ Actions.MeleeAttack = {
       name = "Damage"
     }
   },
+  requiredChildrenEntities = {
+    "MeleeAttack"
+  },
   perform = function(agent, target, dt)
     local attack = Utils.getChild(agent, "MeleeAttack")
     local globalTimer = agent:get("Timer")
@@ -57,6 +60,9 @@ Actions.RangedAttack = {
     {
       name = "Damage"
     }
+  },
+  requiredChildrenEntities = {
+    "RangedAttack"
   },
   perform = function(agent, target, dt)
     local attack = Utils.getChild(agent, "RangedAttack")
@@ -96,6 +102,9 @@ Actions.DashAttack = {
     {
       name = "Damage"
     }
+  },
+  requiredChildrenEntities = {
+    "DashAttack"
   },
   perform = function(agent, target, dt)
     local agentVelocity = agent:get("Velocity")
@@ -161,6 +170,7 @@ Actions.DashFollow = {
       target = "Player"
     }
   },
+  requiredChildrenEntities = {},
   perform = function(agent, target, dt)
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")
@@ -209,6 +219,7 @@ Actions.FollowPlayer = {
       target = "Player"
     }
   },
+  requiredChildrenEntities = {},
   perform = function(agent, target, dt)
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")
@@ -249,6 +260,7 @@ Actions.FleeFromPlayer = {
       name = "Safety"
     }
   },
+  requiredChildrenEntities = {},
   perform = function(agent, target, dt)
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")
@@ -269,6 +281,7 @@ Actions.Idle = {
   score = 1,
   prerequisites = {},
   effects = {},
+  requiredChildrenEntities = {},
   perform = function(agent, target, dt)
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")

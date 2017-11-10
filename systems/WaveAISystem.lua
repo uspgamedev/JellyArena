@@ -131,9 +131,16 @@ function WaveAISystem:spawn()
   self:setColor(enemy)
   local engine = Utils.getEngine()
   engine:addEntity(enemy)
-  engine:addEntity(createDashAttack(enemy))
-  engine:addEntity(createMeleeAttack(enemy))
-  engine:addEntity(createRangedAttack(enemy))
+
+  for _, action in pairs(enemy:get("AI").actions) do
+    print(action.requiredChildrenEntities[1])
+    for _, entityName in pairs(action.requiredChildrenEntities) do
+      engine:addEntity(DefaultAttackConstructors[entityName](enemy))
+    end
+  end
+  -- engine:addEntity(createDashAttack(enemy))
+  -- engine:addEntity(createMeleeAttack(enemy))
+  -- engine:addEntity(createRangedAttack(enemy))
 end
 
 function WaveAISystem:setColor(enemy)
