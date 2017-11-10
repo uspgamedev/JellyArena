@@ -6,7 +6,7 @@ local AI = Component.load({"AI"})
 function WaveAISystem:initialize()
     System.initialize(self)
     self:reset()
-    self:setWaitTime(5) -- between waves
+    self:setWaitTime(3) -- between waves
     self.totalEnemies = 15 -- per wave
     self.spawnInterval = 1
 end
@@ -18,7 +18,7 @@ end
 
 function WaveAISystem:setWaitTime(waitTime)
   self.waitTime = waitTime
-  GameData.waveWaitTime = waitTime
+  GameState.GameData.waveWaitTime = waitTime
 end
 
 function WaveAISystem:update(dt)
@@ -27,14 +27,14 @@ function WaveAISystem:update(dt)
     self:setWaitTime(self.waitTime - dt)
     if not (self.state == "waitingWave") then
       self.state = "waitingWave"
-      self:setWaitTime(5)
+      self:setWaitTime(3)
     end
 
     if self.waitTime <= 0 then
-      changeGameState("ingame")
+      GameState.changeGameState("ingame")
       WaveController.updateLearning()
       self.waveNumber = self.waveNumber + 1
-      GameData.waveNumber = self.waveNumber
+      GameState.GameData.waveNumber = self.waveNumber
       LogController.write("wave", "\nWAVE "..self.waveNumber..":")
       self.enemiesCount = 0 -- spawned on current wave
       self.spawnCooldown = self.spawnInterval -- between two enemies spawn
@@ -57,9 +57,8 @@ function WaveAISystem:update(dt)
   for _, p in pairs(self.targets) do
     count = count + 1
   end
-
   if curGameState == "ingame" and self.state == "done" and count == 0 then
-    changeGameState("waitingWave")
+    GameState.changeGameState("waitingWave")
   end
 end
 

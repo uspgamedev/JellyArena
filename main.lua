@@ -7,15 +7,18 @@ lovetoys.initialize(
     globals = true
   }
 )
-Stack = require "lib/Stack"
 
+Stack = require "lib/Stack"
 Utils = require("lib/Utils")
-SoundController = require("lib/SoundController")
-MenuController = require("lib/MenuController")
-WaveController = require("lib/WaveController")
-StatisticController = require("lib/StatisticController")
-ActionsController = require("lib/ActionsController")
-LogController = require("lib/LogController")
+GameState = require "lib/GameState"
+
+-- controllers
+ActionsController = require("controllers/ActionsController")
+LogController = require("controllers/LogController")
+MenuController = require("controllers/MenuController")
+SoundController = require("controllers/SoundController")
+StatisticController = require("controllers/StatisticController")
+WaveController = require("controllers/WaveController")
 
 --- components
 require "components/AI"
@@ -67,21 +70,14 @@ ProjectileSystem = require "systems/ProjectileSystem"
 CleanUpSystem = require "systems/CleanUpSystem"
 TrapSpawnSystem = require "systems/TrapSpawnSystem"
 
---- Utils
-require "lib/GameState"
-
 function love.load()
-  eventmanager = EventManager()
-  debugText = ""
-
-  playTrack = true
-  playEffects = true
+  camera = Camera()
 
   -- TODO: random seed
   -- math.randomseed(os.time())
+
   LogController.init({"wave"})
   SoundController.setTrack("sample1")
-  camera = Camera()
   -- Update timers
   Utils.getEngine():addSystem(TimerSystem(), "update")
   -- Process input
@@ -120,7 +116,7 @@ function love.load()
   Utils.getEngine():addSystem(CleanUpSystem(), "update")
   Utils.getEngine():addSystem(TrapSpawnSystem(), "update")
 
-  changeGameState("startingGame")
+  GameState.changeGameState("startingGame")
 end
 
 function love.update(dt)
@@ -138,9 +134,9 @@ function love.keypressed(key)
     love.event.quit(0)
   elseif (key == "m") then
     if (curGameState == "pauseMenu") then
-      changeGameState(popGameState())
+      GameState.changeGameState(GameState.popGameState())
     else
-      changeGameState("pauseMenu")
+      GameState.changeGameState("pauseMenu")
     end
   end
 end

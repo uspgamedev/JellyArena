@@ -1,10 +1,20 @@
-GameData = {}
+local GameState = {}
+
+local StateStackSize = 0
+local StateStack = {}
+
+local function pushGameState(state)
+  StateStack[StateStackSize] = state
+  StateStackSize = StateStackSize + 1
+end
+
+GameState.GameData = {}
 
 local GameStates = {
   startingGame = {
     systems = {},
     onResume = function()
-      GameData = {}
+      GameState.GameData = {}
       garbageList = {}
       WaveController.createLearningList()
       StatisticController.reset()
@@ -22,7 +32,7 @@ local GameStates = {
       engine:addEntity(createPlayerAttack(player))
       engine:addEntity(createInvunerable(player))
 
-      changeGameState("waitingWave")
+      GameState.changeGameState("waitingWave")
     end,
     onPause = function()
     end
@@ -92,15 +102,7 @@ local GameStates = {
   }
 }
 
-local StateStackSize = 0
-local StateStack = {}
-
-function pushGameState(state)
-  StateStack[StateStackSize] = state
-  StateStackSize = StateStackSize + 1
-end
-
-function popGameState()
+function GameState.popGameState()
   if (StateStackSize == 0) then
     return nil
   end
@@ -110,7 +112,7 @@ function popGameState()
   return state
 end
 
-function changeGameState(state)
+function GameState.changeGameState(state)
   local curStateData =
     GameStates[curGameState] or
     {
@@ -145,3 +147,5 @@ function changeGameState(state)
   curStateData.onPause(curGameState)
   newStateData.onResume(previousState)
 end
+
+return GameState
