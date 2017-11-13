@@ -49,4 +49,22 @@ function Utils.addGarbage(entity)
   end
 end
 
+function Utils.pairsOrderValuesDesc(tab)
+   local keys = {}
+   for k in pairs(tab) do
+      keys[#keys + 1] = k
+   end
+   table.sort(keys, function(a, b) return tab[a] > tab[b] end)
+   local j = 0
+   return
+      function()
+         j = j + 1
+         local k = keys[j]
+         if k ~= nil then
+            return k, tab[k]
+         end
+      end
+end
+
+
 return Utils

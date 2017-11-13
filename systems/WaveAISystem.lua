@@ -85,18 +85,17 @@ function WaveAISystem:selectAction(effect, ai)
   end
 end
 
-function WaveAISystem:selectBestAction(effect, ai)
+function WaveAISystem:selectBestActions(effect, ai, maxCount)
   local tuple = WaveController.getActionsWithEffect(effect)
-  local bestAction = {action = nil, score = -1}
-  for action, score in pairs(tuple.actions) do
-    if score > bestAction.score then
-      bestAction = {action = action, score = score}
+  local actionCount = 0
+  for action, score in Utils.pairsOrderValuesDesc(tuple.actions) do
+    table.insert(ai, Actions[action])
+    for _,prerequisite in pairs(Actions[action].prerequisites) do
+      self:selectBestActions(prerequisite, ai, 1)
     end
-  end
-  if not (bestAction.action == nil) then
-    table.insert(ai, Actions[bestAction.action])
-    for _,prerequisite in pairs(Actions[bestAction.action].prerequisites) do
-      self:selectBestAction(prerequisite, ai)
+    actionCount = actionCount + 1
+    if actionCount == maxCount then
+      break
     end
   end
 end
@@ -139,7 +138,7 @@ function WaveAISystem:spawn()
 
   for _, effect in pairs(Goals) do
     if self.waveNumber >= 3 then
-      self:selectBestAction(effect, ai)
+      self:selectBestActions(effect, ai) -- Boss
     elseif waveType > self.waveNumber then
       self:selectRandomAction(effect, ai)
     else
