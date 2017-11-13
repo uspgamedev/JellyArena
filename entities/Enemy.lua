@@ -26,7 +26,7 @@ end
 
 function createBossEnemy(x, y)
   local entity = Entity()
-  local stats = Stats(8, 5, 5, 5, 5)
+  local stats = Stats(1, 5, 5, 5, 5)
   entity:add(stats)
   entity:add(Position(x, y))
   entity:add(Circle(40))

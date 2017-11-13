@@ -10,6 +10,7 @@ function WaveAISystem:initialize()
     self:setWaitTime(self.defaultWaitTime) -- between waves
     self.totalEnemies = 5 -- per wave
     self.spawnInterval = 0
+    self.finalWave = 3
 end
 
 function WaveAISystem:reset()
@@ -128,7 +129,7 @@ function WaveAISystem:spawn()
     self.state = "done"
   end
 
-  if self.enemiesCount == 1 and self.waveNumber >= 3 then
+  if self.enemiesCount == 1 and self.waveNumber >= self.finalWave then
     self.state = "done"
   end
 
@@ -137,7 +138,7 @@ function WaveAISystem:spawn()
   local ai = {Actions.Idle}
 
   for _, effect in pairs(Goals) do
-    if self.waveNumber >= 3 then
+    if self.waveNumber >= self.finalWave then
       self:selectBestActions(effect, ai) -- Boss
     elseif waveType > self.waveNumber then
       self:selectRandomAction(effect, ai)
@@ -150,7 +151,7 @@ function WaveAISystem:spawn()
   local position = math.random(1, 4)
 
   local enemy = nil
-  if self.waveNumber < 3 then
+  if self.waveNumber < self.finalWave then
     enemy = createDumbEnemy(corners[position][1], corners[position][2])
   else
     enemy = createBossEnemy(corners[position][1], corners[position][2])
