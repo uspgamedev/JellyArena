@@ -10,6 +10,7 @@ function ProjectileSystem:update(dt)
       if projectile.owner == "Player" then
         local position = v:get("Position")
         drop = createHpDrop(position.x, position.y)
+        StatisticController.add(0.4) -- miss shot score
         Utils.getEngine():addEntity(drop)
         Utils.addGarbage(v)
       else
