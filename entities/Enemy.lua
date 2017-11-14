@@ -23,3 +23,17 @@ function createDumbEnemy(x, y)
   entity:add(Timer(0.5))
   return entity
 end
+
+function createBossEnemy(x, y)
+  local entity = Entity()
+  local stats = Stats(1, 5, 5, 5, 5)
+  entity:add(stats)
+  entity:add(Position(x, y))
+  entity:add(Circle(40))
+  entity:add(Hitpoints(10))
+  entity:add(Velocity(0, 0, stats:getSpeed(1)))
+  entity:add(Color(255, 255, 255))
+  entity:add(Collider("Enemy", true))
+  entity:add(Timer(0.5))
+  return entity
+end

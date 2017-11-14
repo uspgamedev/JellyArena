@@ -256,7 +256,7 @@ function CollisionSystem:PlayerAndEnemy(pair)
   local playerRadius = player:get("Circle").radius
 
   local enemyPos = enemy:get("Position")
-  local enemyRadius = player:get("Circle").radius
+  local enemyRadius = enemy:get("Circle").radius
   local dist = (enemyRadius + playerRadius) - (playerPos:toVector() - enemyPos:toVector()):len()
   local dir = (playerPos:toVector() - enemyPos:toVector()):normalizeInplace()
   local step = dir * dist
