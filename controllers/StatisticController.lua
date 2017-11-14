@@ -15,7 +15,7 @@ function statistic.add(i)
 end
 
 function statistic.addToAction(i, action)
-  for a,s in pairs(score) do
+  for a, s in pairs(score) do
     if a == action then
       score[a] = s + i
       return
@@ -26,15 +26,15 @@ end
 
 function statistic.addToActions(i, actions)
   statistic.add(i)
-  for _,action in pairs(actions) do
+  for _, action in pairs(actions) do
     statistic.addToAction(i, action.name)
   end
 end
 
 function statistic.getScore()
   LogController.write("wave", "-SCORE-")
-  for k,v in pairs(score) do
-    LogController.write("wave", k..":\t"..v)
+  for k, v in pairs(score) do
+    LogController.write("wave", k .. ":\t" .. v)
   end
   LogController.write("wave", "-------")
   return score
