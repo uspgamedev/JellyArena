@@ -1,7 +1,6 @@
 local WaveAISystem = class("WaveAISystem", System)
 local Actions = require "systems/ai/Actions"
 local Goals = require "systems/ai/Goals"
-local AI = Component.load({"AI"})
 
 function WaveAISystem:initialize()
   System.initialize(self)
@@ -151,19 +150,22 @@ function WaveAISystem:spawn()
     end
   end
 
-  local mapSize = Utils.mapDefinitions
+  self:createEnemy(Goals, ai)
+end
 
+function WaveAISystem:createEnemy(Goals, ai)
+  local mapSize = Utils.mapDefinitions
   local corners = {{0, 0}, {0, mapSize.height}, {mapSize.width, 0}, {mapSize.width, mapSize.height}}
   local position = math.random(1, 4)
 
   local enemy = nil
   if self.waveNumber < self.finalWave then
-    enemy = createDumbEnemy(corners[position][1], corners[position][2])
+    enemy = Enemy.createDumbEnemy(corners[position][1], corners[position][2])
   else
-    enemy = createBossEnemy(corners[position][1], corners[position][2])
+    enemy = Enemy.createBossEnemy(corners[position][1], corners[position][2])
   end
 
-  enemy:add(AI(Goals, ai))
+  Enemy.setAI(enemy, Goals, ai)
   self:setColor(enemy)
   local engine = Utils.getEngine()
   engine:addEntity(enemy)
