@@ -22,7 +22,8 @@ function wave.createLearningList()
 end
 
 -- update learning list
-function wave.updateLearning()
+function wave.updateLearning(waveNumber)
+  local alpha = 2.0 / (1 + waveNumber)
   StatisticController.getScore()
   LogController.write("wave", "-LEARNING-")
   for _, effect in pairs(learning) do
@@ -32,7 +33,7 @@ function wave.updateLearning()
       if actionAmount > 0 then
         local actionScoreNormalized = 1.0 * StatisticController.getActionScore(action) / actionAmount
         local score = 0.8 * actionScoreNormalized + 0.2 * StatisticController.getWaveScore()
-        effect.actions[action] = (1 - ALPHA) * s + ALPHA * score
+        effect.actions[action] = (1 - alpha) * s + alpha * score
       end
       effect.total = effect.total + effect.actions[action]
       LogController.write("wave", action..":\t"..effect.actions[action])
