@@ -159,17 +159,17 @@ function WaveAISystem:createEnemy(Goals, ai)
   local position = math.random(1, 4)
 
   local enemy = Enemy.baseEnemy(corners[position][1], corners[position][2])
+  Enemy.setAI(enemy, Goals, ai)
   if self.waveNumber < self.finalWave then
     Enemy.setNormal(enemy)
     Enemy.setHitpoints(enemy, 10)
-    Enemy.setStats(enemy, 1, 1, 1, 1, 2)
+    Enemy.setStats(enemy, 1, 1, 1, 1, 1)
   else
     Enemy.setBoss(enemy)
     Enemy.setHitpoints(enemy, 50)
-    Enemy.setStats(enemy, 1, 5, 5, 5, 5)
+    Enemy.setStats(enemy, 2, 3, 3, 3, 3)
   end
 
-  Enemy.setAI(enemy, Goals, ai)
   Enemy.setColor(enemy)
   local engine = Utils.getEngine()
   engine:addEntity(enemy)
