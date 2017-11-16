@@ -73,7 +73,7 @@ function PlayerInputSystem:fire(entity, dt)
       Utils.getEngine():addEntity(bullet)
       hp.cur = hp.cur - 1
       fireTimer.cooldown = fireTimer.waitTime
-      SoundController.playSound("teste")
+      SoundController.playSound("shot")
     end
   end
 end
@@ -94,17 +94,18 @@ function PlayerInputSystem:melee(entity, dt)
     Utils.getEngine():addEntity(damageArea)
     table.insert(garbageList, damageArea)
     meleeTimer.cooldown = meleeTimer.waitTime
+    SoundController.playSound("melee")
   end
 end
 
 --remove after track test
 function PlayerInputSystem:testTrack()
   if love.keyboard.isDown("1") then
-    SoundController.setTrack("sample1")
+    SoundController.setTrack("menu")
   elseif love.keyboard.isDown("2") then
-    SoundController.setTrack("sample2")
+    SoundController.setTrack("wave")
   elseif love.keyboard.isDown("3") then
-    SoundController.setTrack("sample3")
+    SoundController.setTrack("boss")
   end
 end
 

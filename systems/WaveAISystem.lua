@@ -157,8 +157,10 @@ function WaveAISystem:spawn()
   local enemy = nil
   if self.waveNumber < self.finalWave then
     enemy = createDumbEnemy(corners[position][1], corners[position][2])
+    SoundController:setTrack("waves")
   else
     enemy = createBossEnemy(corners[position][1], corners[position][2])
+    SoundController:setTrack("boss")
   end
 
   enemy:add(AI(Goals, ai))

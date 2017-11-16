@@ -5,13 +5,16 @@ local function getSound(filename)
 end
 
 local tracks = {
-  ["sample1"] = love.audio.newSource(love.sound.newSoundData(getSound("sample1.ogg"))),
-  ["sample2"] = love.audio.newSource(love.sound.newSoundData(getSound("sample2.ogg"))),
-  ["sample3"] = love.audio.newSource(love.sound.newSoundData(getSound("sample3.ogg")))
+  ["menu"] = love.audio.newSource(love.sound.newSoundData(getSound("sample1.ogg"))),
+  ["waves"] = love.audio.newSource(love.sound.newSoundData(getSound("waves.ogg"))),
+  ["boss"] = love.audio.newSource(love.sound.newSoundData(getSound("boss.ogg")))
 }
 
 local sounds = {
-  ["teste"] = love.audio.newSource(getSound("select.ogg"), "static")
+  ["select"] = love.audio.newSource(getSound("select.ogg"), "static"),
+  ["shot"] = love.audio.newSource(getSound("shot.ogg"), "static"),
+  ["hit"] = love.audio.newSource(getSound("hit.ogg"), "static"),
+  ["melee"] = love.audio.newSource(getSound("melee.ogg"), "static"),
 }
 
 local currentTrack
@@ -29,6 +32,7 @@ end
 
 function SoundController.playSound(soundName)
   if (SoundController.isEffectOn and sounds[soundName]) then
+    sounds[soundName]:setVolume(0.2)
     love.audio.rewind(sounds[soundName])
     love.audio.play(sounds[soundName])
   end
