@@ -4,13 +4,14 @@ local Goals = require "systems/ai/Goals"
 local AI = Component.load({"AI"})
 
 function WaveAISystem:initialize()
-    System.initialize(self)
-    self:reset()
-    self.defaultWaitTime = 0
-    self:setWaitTime(self.defaultWaitTime) -- between waves
-    self.totalEnemies = 5 -- per wave
-    self.spawnInterval = 0
-    self.finalWave = 3
+  System.initialize(self)
+  self:reset()
+  self.defaultWaitTime = 0
+  self:setWaitTime(self.defaultWaitTime) -- between waves
+  self.totalEnemies = 5 -- per wave
+  self.spawnInterval = 0
+  self.finalWave = 3
+  self.waveTime = 0
 end
 
 function WaveAISystem:reset()
@@ -34,12 +35,14 @@ function WaveAISystem:update(dt)
 
     if self.waitTime <= 0 then
       GameState.changeGameState("ingame")
+      StatisticController.add(math.sqrt(self.waveTime))
       WaveController.updateLearning()
       self.waveNumber = self.waveNumber + 1
       GameState.GameData.waveNumber = self.waveNumber
-      LogController.write("wave", "\nWAVE "..self.waveNumber..":")
+      LogController.write("wave", "\nWAVE " .. self.waveNumber .. ":")
       self.enemiesCount = 0 -- spawned on current wave
       self.spawnCooldown = self.spawnInterval -- between two enemies spawn
+      self.waveTime = 0
     end
   end
 
@@ -62,6 +65,7 @@ function WaveAISystem:update(dt)
   if curGameState == "ingame" and self.state == "done" and count == 0 then
     GameState.changeGameState("waitingWave")
   end
+  self.waveTime = self.waveTime + dt
 end
 
 function WaveAISystem:requires()
@@ -76,7 +80,7 @@ function WaveAISystem:selectAction(effect, ai)
       WaveController.addCurrentActions(action)
       LogController.write("wave", action)
       table.insert(ai, Actions[action])
-      for _,prerequisite in pairs(Actions[action].prerequisites) do
+      for _, prerequisite in pairs(Actions[action].prerequisites) do
         self:selectAction(prerequisite, ai)
       end
       return
@@ -91,7 +95,7 @@ function WaveAISystem:selectBestActions(effect, ai, maxCount)
   local actionCount = 0
   for action, score in Utils.pairsOrderValuesDesc(tuple.actions) do
     table.insert(ai, Actions[action])
-    for _,prerequisite in pairs(Actions[action].prerequisites) do
+    for _, prerequisite in pairs(Actions[action].prerequisites) do
       self:selectBestActions(prerequisite, ai, 1)
     end
     actionCount = actionCount + 1
@@ -109,7 +113,7 @@ function WaveAISystem:selectRandomAction(effect, ai)
       LogController.write("wave", action)
       WaveController.addCurrentActions(action)
       table.insert(ai, Actions[action])
-      for _,prerequisite in pairs(Actions[action].prerequisites) do
+      for _, prerequisite in pairs(Actions[action].prerequisites) do
         self:selectRandomAction(prerequisite, ai)
       end
       return
@@ -134,7 +138,7 @@ function WaveAISystem:spawn()
   end
 
   local waveType = math.random(1, 10)
-  LogController.write("wave", "Enemy "..(self.enemiesCount+1)..":")
+  LogController.write("wave", "Enemy " .. (self.enemiesCount + 1) .. ":")
   local ai = {Actions.Idle}
 
   for _, effect in pairs(Goals) do
@@ -149,7 +153,7 @@ function WaveAISystem:spawn()
 
   local mapSize = Utils.mapDefinitions
 
-  local corners = {{0,0},{0,mapSize.height},{mapSize.width,0},{mapSize.width,mapSize.height}}
+  local corners = {{0, 0}, {0, mapSize.height}, {mapSize.width, 0}, {mapSize.width, mapSize.height}}
   local position = math.random(1, 4)
 
   local enemy = nil
@@ -169,16 +173,13 @@ function WaveAISystem:spawn()
       engine:addEntity(DefaultAttackConstructors[entityName](enemy))
     end
   end
-  -- engine:addEntity(createDashAttack(enemy))
-  -- engine:addEntity(createMeleeAttack(enemy))
-  -- engine:addEntity(createRangedAttack(enemy))
 end
 
 function WaveAISystem:setColor(enemy)
   local color = enemy:get("Color")
   local hash = {0, 0, 0}
   local actions = enemy:get("AI").actions
-  for _,a in ipairs(actions) do
+  for _, a in ipairs(actions) do
     local action = a.name
     for c in action:gmatch(".") do
       local b = c:byte()
