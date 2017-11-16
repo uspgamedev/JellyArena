@@ -16,8 +16,9 @@ local function MeleeAction(agent, target, dt)
   return true
 end
 
-local function RangedAction(agent, target, dt)
-  local attack = Utils.getChild(agent, "RangedAttack")
+local function RangedAction(agent, target, label, dt)
+  print("Perform ranged attack")
+  local attack = Utils.getChild(agent, label)
   local globalTimer = agent:get("Timer")
   local attackTimer = attack:get("Timer")
   local attackProperties = attack:get("AttackProperties")
@@ -108,8 +109,8 @@ Actions.MeleeAttack = {
   perform = MeleeAction
 }
 
-Actions.RangedAttack = {
-  name = "RangedAttack",
+Actions.BasicRangedAttack = {
+  name = "BasicRangedAttack",
   cost = function(agent, target, dt)
     return 0
   end,
@@ -121,7 +122,7 @@ Actions.RangedAttack = {
 
     {
       name = "AttackAvailable",
-      target = "RangedAttack"
+      target = "BasicRangedAttack"
     }
   },
   effects = {
@@ -130,9 +131,11 @@ Actions.RangedAttack = {
     }
   },
   requiredChildrenEntities = {
-    "RangedAttack"
+    "BasicRangedAttack"
   },
-  perform = RangedAction
+  perform = function(agent, target, dt)
+    return RangedAction(agent, target, "BasicRangedAttack", dt)
+  end
 }
 
 Actions.DashAttack = {
