@@ -10,6 +10,8 @@ local Actions = require "systems/ai/Actions"
 
 -- create a list of effects with a list of (action, score)
 function wave.createLearningList()
+  learning = {}
+  currentActions = {}
   learning = ActionsController.getEffects()
   for k, v in pairs(learning) do
     for l, u in pairs(v.actions) do

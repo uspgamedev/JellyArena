@@ -17,6 +17,7 @@ end
 function WaveAISystem:reset()
   self.waveNumber = 0
   self.state = nil
+  self.waveTime = 0
 end
 
 function WaveAISystem:setWaitTime(waitTime)
