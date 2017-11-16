@@ -151,7 +151,9 @@ function WaveAISystem:spawn()
     end
   end
 
-  local corners = {{0, 0}, {0, 1000}, {1000, 0}, {1000, 1000}}
+  local mapSize = Utils.mapDefinitions
+
+  local corners = {{0, 0}, {0, mapSize.height}, {mapSize.width, 0}, {mapSize.width, mapSize.height}}
   local position = math.random(1, 4)
 
   local enemy = nil
