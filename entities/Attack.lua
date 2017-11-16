@@ -36,6 +36,17 @@ function DefaultAttackConstructors.BasicRangedAttack(parent)
   return entity
 end
 
+function DefaultAttackConstructors.FastRangedAttack(parent)
+  local entity = Entity(parent)
+  local stats = parent:get("Stats")
+  entity:add(Label("FastRangedAttack"))
+  entity:add(Timer(0.4 - 0.05 * (stats.shotSpeed - 1)))
+  entity:add(AttackProperties(25))
+  entity:add(Damage(stats.damage))
+  entity:add(AttackRange(stats.shotRange * 150))
+  return entity
+end
+
 function DefaultAttackConstructors.BasicDashAttack(parent)
   local entity = Entity(parent)
   local stats = parent:get("Stats")
