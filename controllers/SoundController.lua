@@ -10,6 +10,12 @@ local tracks = {
   ["boss"] = love.audio.newSource(love.sound.newSoundData(getSound("boss.ogg")))
 }
 
+local trackDuration = {
+  ["menu"] = 24,
+  ["waves"] = 167, --love.sound.newSoundData(getSound("waves.ogg")):getDuration() - 10,
+  ["boss"] = 137
+}
+
 local sounds = {
   ["select"] = love.audio.newSource(getSound("select.ogg"), "static"),
   ["shot"] = love.audio.newSource(getSound("shot.ogg"), "static"),
@@ -18,15 +24,19 @@ local sounds = {
 }
 
 local currentTrack
+local currentTrackName
+local trackTime = 0
 
 function SoundController.setTrack(trackName)
   if tracks[trackName] then
     if currentTrack then
       love.audio.stop(currentTrack)
     end
+    currentTrackName = trackName
     currentTrack = tracks[trackName]
     currentTrack:setVolume(0.5)
     currentTrack:setLooping(true)
+    trackTime = 0
   end
 end
 
@@ -42,6 +52,14 @@ function SoundController.playTrack()
   if (SoundController.isMusicOn and currentTrack) then
     love.audio.play(currentTrack)
   end
+end
+
+function SoundController.checkDuration(dt)
+  if (trackTime >= trackDuration[currentTrackName]) then
+    love.audio.stop(currentTrack)
+    trackTime = 0
+  end
+  trackTime = trackTime + dt
 end
 
 SoundController.isMusicOn = true
