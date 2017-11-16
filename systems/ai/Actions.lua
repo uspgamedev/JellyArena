@@ -1,7 +1,8 @@
 local Actions = {}
 
-local function MeleeAction(agent, target, dt)
-  local attack = Utils.getChild(agent, "MeleeAttack")
+local function MeleeAction(agent, target, label, dt)
+  print("atack")
+  local attack = Utils.getChild(agent, label)
   local globalTimer = agent:get("Timer")
   local attackTimer = attack:get("Timer")
   local attackProperties = attack:get("AttackProperties")
@@ -17,7 +18,6 @@ local function MeleeAction(agent, target, dt)
 end
 
 local function RangedAction(agent, target, label, dt)
-  print("Perform ranged attack")
   local attack = Utils.getChild(agent, label)
   local globalTimer = agent:get("Timer")
   local attackTimer = attack:get("Timer")
@@ -36,11 +36,11 @@ local function RangedAction(agent, target, label, dt)
   return true
 end
 
-local function DashAttackAction(agent, target, dt)
+local function DashAttackAction(agent, target, label, dt)
   local agentVelocity = agent:get("Velocity")
   local agentPosition = agent:get("Position")
   local state = agent:get("AI").currentState
-  local attack = Utils.getChild(agent, "DashAttack")
+  local attack = Utils.getChild(agent, label)
   local globalTimer = agent:get("Timer")
   local attackTimer = attack:get("Timer")
   local range = attack:get("AttackRange")
@@ -84,8 +84,8 @@ local function DashAttackAction(agent, target, dt)
   return false;
 end
 
-Actions.MeleeAttack = {
-  name = "MeleeAttack",
+Actions.BasicMeleeAttack = {
+  name = "BasicMeleeAttack",
   cost = function(agent, target, dt)
     return 0
   end,
@@ -96,7 +96,7 @@ Actions.MeleeAttack = {
     },
     {
       name = "AttackAvailable",
-      target = "MeleeAttack"
+      target = "BasicMeleeAttack"
     }
   },
   effects = {
@@ -105,9 +105,11 @@ Actions.MeleeAttack = {
     }
   },
   requiredChildrenEntities = {
-    "MeleeAttack"
+    "BasicMeleeAttack"
   },
-  perform = MeleeAction
+  perform = function(agent, target, dt)
+    return MeleeAction(agent, target, "BasicMeleeAttack", dt)
+  end
 }
 
 Actions.BasicRangedAttack = {
@@ -139,8 +141,8 @@ Actions.BasicRangedAttack = {
   end
 }
 
-Actions.DashAttack = {
-  name = "DashAttack",
+Actions.BasicDashAttack = {
+  name = "BasicDashAttack",
   cost = function(agent, target, dt)
     return 0
   end,
@@ -151,7 +153,7 @@ Actions.DashAttack = {
     },
     {
       name = "AttackAvailable",
-      target = "DashAttack"
+      target = "BasicDashAttack"
     }
   },
   effects = {
@@ -160,9 +162,11 @@ Actions.DashAttack = {
     }
   },
   requiredChildrenEntities = {
-    "DashAttack"
+    "BasicDashAttack"
   },
-  perform = DashAttackAction
+  perform = function(agent, target, dt)
+    return DashAttackAction(agent, target, "BasicDashAttack", dt)
+  end
 }
 
 Actions.DashFollow = {
