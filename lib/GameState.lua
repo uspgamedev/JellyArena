@@ -14,6 +14,7 @@ local GameStates = {
   startingGame = {
     systems = {},
     onResume = function()
+      SoundController.setTrack("waves")
       GameState.GameData = {}
       garbageList = {}
       WaveController.createLearningList()

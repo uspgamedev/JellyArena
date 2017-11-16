@@ -76,7 +76,6 @@ function love.load()
   -- TODO: random seed
   -- math.randomseed(os.time())
   LogController.init({"wave"})
-  SoundController.setTrack("waves")
   -- Update timers
   Utils.getEngine():addSystem(TimerSystem(), "update")
   -- Process input
