@@ -17,6 +17,7 @@ ActionsController = require("controllers/ActionsController")
 LogController = require("controllers/LogController")
 MenuController = require("controllers/MenuController")
 SoundController = require("controllers/SoundController")
+ImageController = require("controllers/ImageController")
 StatisticController = require("controllers/StatisticController")
 WaveController = require("controllers/WaveController")
 
@@ -71,8 +72,6 @@ CleanUpSystem = require "systems/CleanUpSystem"
 TrapSpawnSystem = require "systems/TrapSpawnSystem"
 
 function love.load()
-  camera = Camera()
-
   -- TODO: random seed
   -- math.randomseed(os.time())
 

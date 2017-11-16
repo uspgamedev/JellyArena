@@ -18,15 +18,16 @@ local GameStates = {
       garbageList = {}
       WaveController.createLearningList()
       StatisticController.reset()
+      ImageController.load()
 
       local engine = Utils.getEngine()
       for _, entity in pairs(engine.entities) do
         engine:removeEntity(entity, true)
       end
-
-      local player = createPlayer(500, 500)
+      local mapSize = Utils.mapDefinitions
+      local player = createPlayer(mapSize.width/2, mapSize.height/2)
       local pos = player:get("Position")
-      camera = Camera(pos.x, pos.y)
+      camera = Camera(pos.x, pos.y, 0.75)
       engine:getSystem("WaveAISystem"):reset()
       engine:addEntity(player)
       engine:addEntity(createPlayerAttack(player))
