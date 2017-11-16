@@ -158,39 +158,29 @@ function WaveAISystem:createEnemy(Goals, ai)
   local corners = {{0, 0}, {0, mapSize.height}, {mapSize.width, 0}, {mapSize.width, mapSize.height}}
   local position = math.random(1, 4)
 
-  local enemy = nil
+  local enemy = Enemy.baseEnemy(corners[position][1], corners[position][2])
   if self.waveNumber < self.finalWave then
-    enemy = Enemy.createDumbEnemy(corners[position][1], corners[position][2])
+    Enemy.setNormal(enemy)
+    Enemy.setHitpoints(enemy, 10)
+    Enemy.setStats(enemy, 1, 1, 1, 1, 2)
   else
-    enemy = Enemy.createBossEnemy(corners[position][1], corners[position][2])
+    Enemy.setBoss(enemy)
+    Enemy.setHitpoints(enemy, 50)
+    Enemy.setStats(enemy, 1, 5, 5, 5, 5)
   end
 
   Enemy.setAI(enemy, Goals, ai)
-  self:setColor(enemy)
+  Enemy.setColor(enemy)
   local engine = Utils.getEngine()
   engine:addEntity(enemy)
 
+
+  -- add attacks to engine
   for _, action in pairs(enemy:get("AI").actions) do
     for _, entityName in pairs(action.requiredChildrenEntities) do
       engine:addEntity(DefaultAttackConstructors[entityName](enemy))
     end
   end
-end
-
-function WaveAISystem:setColor(enemy)
-  local color = enemy:get("Color")
-  local hash = {0, 0, 0}
-  local actions = enemy:get("AI").actions
-  for _, a in ipairs(actions) do
-    local action = a.name
-    for c in action:gmatch(".") do
-      local b = c:byte()
-      hash[1] = (hash[1] + b + 15) % 256
-      hash[2] = (3 * hash[2] - b) % 256
-      hash[3] = ((50 + hash[3]) * b) % 256
-    end
-  end
-  color:set(hash[1], hash[2], hash[3])
 end
 
 return WaveAISystem
