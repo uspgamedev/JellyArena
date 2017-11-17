@@ -119,7 +119,6 @@ end
 
 function love.update(dt)
   Utils.getEngine():update(dt)
-  SoundController.playTrack()
   SoundController.checkDuration(dt)
 end
 

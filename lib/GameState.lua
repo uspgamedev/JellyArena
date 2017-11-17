@@ -15,6 +15,7 @@ local GameStates = {
     systems = {},
     onResume = function()
       SoundController.setTrack("waves")
+      SoundController.playTrack()
       GameState.GameData = {}
       garbageList = {}
       WaveController.createLearningList()
@@ -97,7 +98,7 @@ local GameStates = {
     },
     onResume = function()
       MenuController.setMenu("gameOver")
-      SoundController.setLooping = false
+      SoundController.setLooping(false)
       SoundController.setTrack("gameover")
     end,
     onPause = function()

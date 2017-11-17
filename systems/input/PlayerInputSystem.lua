@@ -103,7 +103,7 @@ function PlayerInputSystem:testTrack()
   if love.keyboard.isDown("1") then
     SoundController.setTrack("menu")
   elseif love.keyboard.isDown("2") then
-    SoundController.setTrack("wave")
+    SoundController.setTrack("waves")
   elseif love.keyboard.isDown("3") then
     SoundController.setTrack("boss")
   end
