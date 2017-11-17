@@ -97,8 +97,11 @@ local GameStates = {
     },
     onResume = function()
       MenuController.setMenu("gameOver")
+      SoundController.setLooping = false
+      SoundController.setTrack("gameover")
     end,
     onPause = function()
+      SoundController.setLooping(true)
     end
   }
 }
