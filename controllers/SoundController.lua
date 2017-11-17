@@ -28,7 +28,7 @@ local currentTrackName
 local trackTime = 0
 
 function SoundController.setTrack(trackName)
-  if tracks[trackName] then
+  if tracks[trackName] and trackName ~= currentTrackName then
     if currentTrack then
       love.audio.stop(currentTrack)
     end
