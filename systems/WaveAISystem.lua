@@ -17,6 +17,7 @@ end
 function WaveAISystem:reset()
   self.waveNumber = 0
   self.state = nil
+  self.waveTime = 0
 end
 
 function WaveAISystem:setWaitTime(waitTime)
@@ -36,7 +37,7 @@ function WaveAISystem:update(dt)
     if self.waitTime <= 0 then
       GameState.changeGameState("ingame")
       StatisticController.add(math.sqrt(self.waveTime))
-      WaveController.updateLearning()
+      WaveController.updateLearning(self.waveNumber)
       self.waveNumber = self.waveNumber + 1
       GameState.GameData.waveNumber = self.waveNumber
       LogController.write("wave", "\nWAVE " .. self.waveNumber .. ":")
