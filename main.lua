@@ -115,7 +115,7 @@ function love.load()
   Utils.getEngine():addSystem(CleanUpSystem(), "update")
   Utils.getEngine():addSystem(TrapSpawnSystem(), "update")
 
-  GameState.changeGameState("startingGame")
+  GameState.changeGameState("startMenu")
 end
 
 function love.update(dt)
