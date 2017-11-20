@@ -244,6 +244,24 @@ menus = {
         end
       }
     }
+  },
+  ["credits"] = {
+    title = "Credits",
+    align = "center",
+    items = {
+      {
+        name = "Os cara que fizeram o jogo:\n\z
+        Felipe Brigalante\n\z
+        Hugo Mitsumori\n\z
+        Luan Torres\n\z
+        Mateus Rocha\n\z\n\z
+        Recursos externos:\n\z
+        ",
+        action = function()
+          MenuController.setMenu("start")
+        end
+      }
+    }
   }
 }
 
