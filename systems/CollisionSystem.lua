@@ -202,6 +202,7 @@ function CollisionSystem:PlayerBulletAndEnemy(pair)
   local bulletDamage = bullet:get("Projectile").damage
   self:killAndDrop(bullet)
   bullet:get("Collider").resolved = true
+  SoundController.playSound("hit")
   if (enemyHp.cur - bulletDamage > 0) then
     enemyHp.cur = enemyHp.cur - bulletDamage
   else

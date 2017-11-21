@@ -74,9 +74,7 @@ TrapSpawnSystem = require "systems/TrapSpawnSystem"
 function love.load()
   -- TODO: random seed
   -- math.randomseed(os.time())
-
   LogController.init({"wave"})
-  SoundController.setTrack("sample1")
   -- Update timers
   Utils.getEngine():addSystem(TimerSystem(), "update")
   -- Process input
@@ -120,7 +118,7 @@ end
 
 function love.update(dt)
   Utils.getEngine():update(dt)
-  SoundController.playTrack()
+  SoundController.checkDuration(dt)
 end
 
 function love.draw()
