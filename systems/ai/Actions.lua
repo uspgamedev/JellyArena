@@ -1,90 +1,91 @@
 local Actions = {}
 
-Actions.MeleeAttack = {
-  name = "MeleeAttack",
-  cost = function(agent, target, dt)
-    return 0
-  end,
-  prerequisites = {
-    {
-      name = "InAttackRange",
-      target = "Player"
-    },
-    {
-      name = "AttackAvailable",
-      target = "MeleeAttack"
-    }
-  },
-  effects = {
-    {
-      name = "Damage"
-    }
-  },
-  requiredChildrenEntities = {
-    "MeleeAttack"
-  },
-  perform = function(agent, target, dt)
-    local attack = Utils.getChild(agent, "MeleeAttack")
-    local globalTimer = agent:get("Timer")
-    local attackTimer = attack:get("Timer")
-    local attackProperties = attack:get("AttackProperties")
-    local range = attack:get("AttackRange")
-    local attackDamage = attack:get("Damage").damage
-    local radius = agent:get("Circle").radius + range.max
-    local damage = createDamageArea(agent:get("Position"), radius, attackDamage, agent)
-    Utils.getEngine():addEntity(damage)
-    table.insert(garbageList, damage)
-    attackTimer:start()
-    globalTimer:start()
-    return true
-  end
-}
+local function MeleeAction(agent, target, label, dt)
+  print("atack")
+  local attack = Utils.getChild(agent, label)
+  local globalTimer = agent:get("Timer")
+  local attackTimer = attack:get("Timer")
+  local attackProperties = attack:get("AttackProperties")
+  local range = attack:get("AttackRange")
+  local attackDamage = attack:get("Damage").damage
+  local radius = agent:get("Circle").radius + range.max
+  local damage = createDamageArea(agent:get("Position"), radius, attackDamage, agent)
+  Utils.getEngine():addEntity(damage)
+  table.insert(garbageList, damage)
+  attackTimer:start()
+  globalTimer:start()
+  return true
+end
 
-Actions.RangedAttack = {
-  name = "RangedAttack",
-  cost = function(agent, target, dt)
-    return 0
-  end,
-  prerequisites = {
-    {
-      name = "InAttackRange",
-      target = "Player"
-    },
+local function RangedAction(agent, target, label, dt)
+  local attack = Utils.getChild(agent, label)
+  local globalTimer = agent:get("Timer")
+  local attackTimer = attack:get("Timer")
+  local attackProperties = attack:get("AttackProperties")
+  local range = attack:get("AttackRange")
+  local attackDamage = attack:get("Damage").damage
+  local position = agent:get("Position")
+  local direction = (target:get("Position"):toVector() - position:toVector())
+  local bulletSpeed = agent:get("Stats"):getBulletSpeed()
+  direction:normalizeInplace()
+  local bulletPos = position:toVector() + attackProperties.spawnDistance * direction
+  bullet = createEnemyBullet(agent, bulletPos.x, bulletPos.y, direction, attackDamage, range.max, bulletSpeed)
+  Utils.getEngine():addEntity(bullet)
+  attackTimer:start()
+  globalTimer:start()
+  return true
+end
 
-    {
-      name = "AttackAvailable",
-      target = "RangedAttack"
-    }
-  },
-  effects = {
-    {
-      name = "Damage"
-    }
-  },
-  requiredChildrenEntities = {
-    "RangedAttack"
-  },
-  perform = function(agent, target, dt)
-    local attack = Utils.getChild(agent, "RangedAttack")
-    local globalTimer = agent:get("Timer")
-    local attackTimer = attack:get("Timer")
-    local attackProperties = attack:get("AttackProperties")
-    local range = attack:get("AttackRange")
-    local attackDamage = attack:get("Damage").damage
-    local position = agent:get("Position")
-    local direction = (target:get("Position"):toVector() - position:toVector())
-    local bulletSpeed = agent:get("Stats"):getBulletSpeed()
+local function DashAttackAction(agent, target, label, dt)
+  local agentVelocity = agent:get("Velocity")
+  local agentPosition = agent:get("Position")
+  local state = agent:get("AI").currentState
+  local attack = Utils.getChild(agent, label)
+  local globalTimer = agent:get("Timer")
+  local attackTimer = attack:get("Timer")
+  local range = attack:get("AttackRange")
+
+  if not state.travelledDistance then
+    -- lock target
+    local direction = (target:get("Position"):toVector() - agentPosition:toVector())
     direction:normalizeInplace()
-    bullet = createEnemyBullet(agent, position.x, position.y, direction, attackDamage, range.max, bulletSpeed)
-    Utils.getEngine():addEntity(bullet)
-    attackTimer:start()
-    globalTimer:start()
-    return true
-  end
-}
+    agentVelocity.speed = 1000
+    agentVelocity:setDirection(direction)
+    state.travelledDistance = 0
 
-Actions.DashAttack = {
-  name = "DashAttack",
+    -- damaging area around agent
+    local attackProperties = attack:get("AttackProperties")
+    local attackDamage = attack:get("Damage").damage
+    local radius = agent:get("Circle").radius
+    state.damage = createDamageArea(agentPosition, radius, attackDamage, agent, true)
+    Utils.getEngine():addEntity(state.damage)
+  end
+
+  -- finish dash and enter cooldown
+  if state.travelledDistance > range.max then
+    agentVelocity.speed = 0
+
+    if not state.waitTime then
+      table.insert(garbageList, state.damage)
+      attackTimer:start()
+      globalTimer:start()
+      state.waitTime = 0
+    end
+
+    state.waitTime = state.waitTime + dt
+    if state.waitTime > 1 then
+      return true
+    else
+      return false
+    end
+  end
+
+  state.travelledDistance = state.travelledDistance + dt * agentVelocity.speed
+  return false;
+end
+
+Actions.BasicMeleeAttack = {
+  name = "BasicMeleeAttack",
   cost = function(agent, target, dt)
     return 0
   end,
@@ -95,7 +96,7 @@ Actions.DashAttack = {
     },
     {
       name = "AttackAvailable",
-      target = "DashAttack"
+      target = "BasicMeleeAttack"
     }
   },
   effects = {
@@ -104,54 +105,96 @@ Actions.DashAttack = {
     }
   },
   requiredChildrenEntities = {
-    "DashAttack"
+    "BasicMeleeAttack"
   },
   perform = function(agent, target, dt)
-    local agentVelocity = agent:get("Velocity")
-    local agentPosition = agent:get("Position")
-    local state = agent:get("AI").currentState
-    local attack = Utils.getChild(agent, "DashAttack")
-    local globalTimer = agent:get("Timer")
-    local attackTimer = attack:get("Timer")
-    local range = attack:get("AttackRange")
+    return MeleeAction(agent, target, "BasicMeleeAttack", dt)
+  end
+}
 
-    if not state.travelledDistance then
-      -- lock target
-      local direction = (target:get("Position"):toVector() - agentPosition:toVector())
-      direction:normalizeInplace()
-      agentVelocity.speed = 1000
-      agentVelocity:setDirection(direction)
-      state.travelledDistance = 0
+Actions.BasicRangedAttack = {
+  name = "BasicRangedAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
 
-      -- damaging area around agent
-      local attackProperties = attack:get("AttackProperties")
-      local attackDamage = attack:get("Damage").damage
-      local radius = agent:get("Circle").radius
-      state.damage = createDamageArea(agentPosition, radius, attackDamage, agent, true)
-      Utils.getEngine():addEntity(state.damage)
-    end
+    {
+      name = "AttackAvailable",
+      target = "BasicRangedAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "BasicRangedAttack"
+  },
+  perform = function(agent, target, dt)
+    return RangedAction(agent, target, "BasicRangedAttack", dt)
+  end
+}
 
-    -- finish dash and enter cooldown
-    if state.travelledDistance > range.max then
-      agentVelocity.speed = 0
+Actions.FastRangedAttack = {
+  name = "FastRangedAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
 
-      if not state.waitTime then
-        table.insert(garbageList, state.damage)
-        attackTimer:start()
-        globalTimer:start()
-        state.waitTime = 0
-      end
+    {
+      name = "AttackAvailable",
+      target = "FastRangedAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "FastRangedAttack"
+  },
+  perform = function(agent, target, dt)
+    return RangedAction(agent, target, "FastRangedAttack", dt)
+  end
+}
 
-      state.waitTime = state.waitTime + dt
-      if state.waitTime > 1 then
-        return true
-      else
-        return false
-      end
-    end
-
-    state.travelledDistance = state.travelledDistance + dt * agentVelocity.speed
-    return false;
+Actions.BasicDashAttack = {
+  name = "BasicDashAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
+    {
+      name = "AttackAvailable",
+      target = "BasicDashAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "BasicDashAttack"
+  },
+  perform = function(agent, target, dt)
+    return DashAttackAction(agent, target, "BasicDashAttack", dt)
   end
 }
 

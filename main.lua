@@ -17,6 +17,7 @@ ActionsController = require("controllers/ActionsController")
 LogController = require("controllers/LogController")
 MenuController = require("controllers/MenuController")
 SoundController = require("controllers/SoundController")
+ImageController = require("controllers/ImageController")
 StatisticController = require("controllers/StatisticController")
 WaveController = require("controllers/WaveController")
 
@@ -46,7 +47,7 @@ require "entities/Attack"
 require "entities/Invunerable"
 require "entities/Bullet"
 require "entities/DamageArea"
-require "entities/Enemy"
+Enemy = require "entities/Enemy"
 require "entities/HpDrop"
 require "entities/Player"
 require "entities/Trap"
@@ -71,8 +72,6 @@ CleanUpSystem = require "systems/CleanUpSystem"
 TrapSpawnSystem = require "systems/TrapSpawnSystem"
 
 function love.load()
-  camera = Camera()
-
   -- TODO: random seed
   -- math.randomseed(os.time())
   LogController.init({"wave"})
@@ -114,7 +113,7 @@ function love.load()
   Utils.getEngine():addSystem(CleanUpSystem(), "update")
   Utils.getEngine():addSystem(TrapSpawnSystem(), "update")
 
-  GameState.changeGameState("startingGame")
+  GameState.changeGameState("startMenu")
 end
 
 function love.update(dt)

@@ -1,7 +1,6 @@
 local WaveAISystem = class("WaveAISystem", System)
 local Actions = require "systems/ai/Actions"
 local Goals = require "systems/ai/Goals"
-local AI = Component.load({"AI"})
 
 function WaveAISystem:initialize()
   System.initialize(self)
@@ -17,6 +16,7 @@ end
 function WaveAISystem:reset()
   self.waveNumber = 0
   self.state = nil
+  self.waveTime = 0
 end
 
 function WaveAISystem:setWaitTime(waitTime)
@@ -36,7 +36,7 @@ function WaveAISystem:update(dt)
     if self.waitTime <= 0 then
       GameState.changeGameState("ingame")
       StatisticController.add(math.sqrt(self.waveTime))
-      WaveController.updateLearning()
+      WaveController.updateLearning(self.waveNumber)
       self.waveNumber = self.waveNumber + 1
       GameState.GameData.waveNumber = self.waveNumber
       LogController.write("wave", "\nWAVE " .. self.waveNumber .. ":")
@@ -74,7 +74,7 @@ end
 
 function WaveAISystem:selectAction(effect, ai)
   local tuple = WaveController.getActionsWithEffect(effect)
-  local random = math.random(1, math.floor(tuple.total))
+  local random = math.random(0, math.floor(tuple.total))
   for action, score in pairs(tuple.actions) do
     if random <= score then
       WaveController.addCurrentActions(action)
@@ -151,44 +151,39 @@ function WaveAISystem:spawn()
     end
   end
 
-  local corners = {{0, 0}, {0, 1000}, {1000, 0}, {1000, 1000}}
+  self:createEnemy(Goals, ai)
+end
+
+function WaveAISystem:createEnemy(Goals, ai)
+  local mapSize = Utils.mapDefinitions
+  local corners = {{0, 0}, {0, mapSize.height}, {mapSize.width, 0}, {mapSize.width, mapSize.height}}
   local position = math.random(1, 4)
 
-  local enemy = nil
+  local enemy = Enemy.baseEnemy(corners[position][1], corners[position][2])
+  Enemy.setAI(enemy, Goals, ai)
   if self.waveNumber < self.finalWave then
-    enemy = createDumbEnemy(corners[position][1], corners[position][2])
+    Enemy.setNormal(enemy)
+    Enemy.setHitpoints(enemy, 10)
+    Enemy.setStats(enemy, 1, 1, 1, 1, 1)
     SoundController.setTrack("waves")
   else
-    enemy = createBossEnemy(corners[position][1], corners[position][2])
+    Enemy.setBoss(enemy)
+    Enemy.setHitpoints(enemy, 50)
+    Enemy.setStats(enemy, 2, 3, 3, 3, 3)
     SoundController.setTrack("boss")
   end
 
-  enemy:add(AI(Goals, ai))
-  self:setColor(enemy)
+  Enemy.setColor(enemy)
   local engine = Utils.getEngine()
   engine:addEntity(enemy)
 
+
+  -- add attacks to engine
   for _, action in pairs(enemy:get("AI").actions) do
     for _, entityName in pairs(action.requiredChildrenEntities) do
       engine:addEntity(DefaultAttackConstructors[entityName](enemy))
     end
   end
-end
-
-function WaveAISystem:setColor(enemy)
-  local color = enemy:get("Color")
-  local hash = {0, 0, 0}
-  local actions = enemy:get("AI").actions
-  for _, a in ipairs(actions) do
-    local action = a.name
-    for c in action:gmatch(".") do
-      local b = c:byte()
-      hash[1] = (hash[1] + b + 15) % 256
-      hash[2] = (3 * hash[2] - b) % 256
-      hash[3] = ((50 + hash[3]) * b) % 256
-    end
-  end
-  color:set(hash[1], hash[2], hash[3])
 end
 
 return WaveAISystem

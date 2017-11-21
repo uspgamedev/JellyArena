@@ -66,5 +66,11 @@ function Utils.pairsOrderValuesDesc(tab)
       end
 end
 
+Utils.mapDefinitions = {
+  height = 896, -- 28 tiles
+  width = 896,
+  xOffset = 640,
+  yOffset = 640
+}
 
 return Utils

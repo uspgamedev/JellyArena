@@ -100,8 +100,8 @@ function CollisionSystem:requires()
 end
 
 function CollisionSystem:checkStageBounds(position, radius)
-  -- TODO: change to stage bounds instead of window bounds
-  local size = {["x"] = 1000 - radius, ["y"] = 1000 - radius}
+  local mapSize = Utils.mapDefinitions
+  local size = {["x"] = mapSize.width - radius, ["y"] = mapSize.height - radius}
   local check = false
   if position.x < radius then
     check = true
@@ -232,9 +232,9 @@ function CollisionSystem:PlayerAndDamageArea(pair)
   local damage = pair["DamageArea"]
   local parent = damage:getParent()
   if (parent ~= player) then
-    StatisticController.addToActions(damage:get("Damage").damage * parent:get("Stats").damage, parent:get("AI").actions)
+    StatisticController.addToActions(damage:get("Damage").damage, parent:get("AI").actions)
 
-    self:DamagePlayer(player, damage:get("Damage").damage * parent:get("Stats").damage)
+    self:DamagePlayer(player, damage:get("Damage").damage)
   end
   self:markIgnored(player, damage)
 end
