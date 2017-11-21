@@ -231,9 +231,9 @@ function CollisionSystem:PlayerAndDamageArea(pair)
   local damage = pair["DamageArea"]
   local parent = damage:getParent()
   if (parent ~= player) then
-    StatisticController.addToActions(damage:get("Damage").damage * parent:get("Stats").damage, parent:get("AI").actions)
+    StatisticController.addToActions(damage:get("Damage").damage, parent:get("AI").actions)
 
-    self:DamagePlayer(player, damage:get("Damage").damage * parent:get("Stats").damage)
+    self:DamagePlayer(player, damage:get("Damage").damage)
   end
   self:markIgnored(player, damage)
 end
