@@ -74,7 +74,7 @@ end
 
 function WaveAISystem:selectAction(effect, ai)
   local tuple = WaveController.getActionsWithEffect(effect)
-  local random = math.random(1, math.floor(tuple.total))
+  local random = math.random(0, math.floor(tuple.total))
   for action, score in pairs(tuple.actions) do
     if random <= score then
       WaveController.addCurrentActions(action)
