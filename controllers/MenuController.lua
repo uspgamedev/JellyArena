@@ -77,8 +77,40 @@ end
 
 local selectedItem = 1
 local currentMenu = menus["pause"]
+local previousMenu
+
+local function setPreviousMenu(previous)
+  previousMenu = previous
+end
+
+local function getpreviousMenu()
+  return previousMenu
+end
 
 menus = {
+  ["start"] = {
+    title = "Jelly Arena",
+    align = "center",
+    items = {
+      {
+        name = "Start Game",
+        action = restartGame
+      },
+      {
+        name = "Options",
+        action = function()
+          setPreviousMenu("start")
+          MenuController.setMenu("options")
+        end
+      },
+      {
+        name = "Credits",
+        action = function()
+          MenuController.setMenu("credits")
+        end
+      }
+    }
+  },
   ["pause"] = {
     title = "Pause",
     align = "center",
@@ -103,6 +135,7 @@ menus = {
       {
         name = "Options",
         action = function()
+          setPreviousMenu("pause")
           MenuController.setMenu("options")
         end
       },
@@ -158,7 +191,7 @@ menus = {
       {
         name = "Back",
         action = function()
-          MenuController.setMenu("pause")
+          MenuController.setMenu(getpreviousMenu())
         end
       }
     }
@@ -208,6 +241,24 @@ menus = {
         name = "Back",
         action = function()
           MenuController.setMenu("pause")
+        end
+      }
+    }
+  },
+  ["credits"] = {
+    title = "Credits",
+    align = "center",
+    items = {
+      {
+        name = "Os cara que fizeram o jogo:\n\z
+        Felipe Brigalante\n\z
+        Hugo Mitsumori\n\z
+        Luan Torres\n\z
+        Mateus Rocha\n\z\n\z
+        Recursos externos:\n\z
+        ",
+        action = function()
+          MenuController.setMenu("start")
         end
       }
     }

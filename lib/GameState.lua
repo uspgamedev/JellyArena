@@ -74,6 +74,18 @@ local GameStates = {
     onPause = function()
     end
   },
+  startMenu = {
+    systems = {
+      "MenuInputSystem",
+      "DrawMenuSystem",
+    },
+    onResume = function(previousState)
+      pushGameState(previousState)
+      MenuController.setMenu("start")
+    end,
+    onPause = function()
+    end
+  },
   pauseMenu = {
     systems = {
       "MenuInputSystem",
