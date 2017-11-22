@@ -83,7 +83,7 @@ local function setPreviousMenu(previous)
   previousMenu = previous
 end
 
-local function getpreviousMenu()
+local function getPreviousMenu()
   return previousMenu
 end
 
@@ -95,6 +95,13 @@ menus = {
       {
         name = "Start Game",
         action = restartGame
+      },
+      {
+        name = "How to Play",
+        action = function()
+          setPreviousMenu("start")
+          MenuController.setMenu("howtoplay")
+        end
       },
       {
         name = "Options",
@@ -130,6 +137,13 @@ menus = {
         action = function()
           updateStatsValues()
           MenuController.setMenu("stats")
+        end
+      },
+      {
+        name = "How to Play",
+        action = function()
+          setPreviousMenu("pause")
+          MenuController.setMenu("howtoplay")
         end
       },
       {
@@ -191,7 +205,7 @@ menus = {
       {
         name = "Back",
         action = function()
-          MenuController.setMenu(getpreviousMenu())
+          MenuController.setMenu(getPreviousMenu())
         end
       }
     }
@@ -241,6 +255,24 @@ menus = {
         name = "Back",
         action = function()
           MenuController.setMenu("pause")
+        end
+      }
+    }
+  },
+  ["howtoplay"] = {
+    title = "How to Play",
+    align = "center",
+    items = {
+      {
+        name = "Move: press w, a, s, d to move the character over the field\n\z\n\z
+        Shot: press the diretional arrows to fire a bullet in one of the four directions\n\z\n\z
+        Special attack: when charged, press space to damage all enemies around you\n\z\n\z
+        \n\z
+        If tired, press M to a little break\n\z
+        \n\z
+        Be careful! Your bullets are your body! Don't waste yourself!",
+        action = function()
+          MenuController.setMenu(getPreviousMenu())
         end
       }
     }
