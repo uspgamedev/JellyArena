@@ -56,6 +56,11 @@ local GameStates = {
       Utils.getEngine():getSystem("CollisionSystem"):reset()
     end,
     onPause = function()
+    end,
+    keyPressed = function(key)
+      if (key == "escape") then
+        GameState.changeGameState("pauseMenu")
+      end
     end
   },
   ingame = {
@@ -74,6 +79,11 @@ local GameStates = {
     onResume = function()
     end,
     onPause = function()
+    end,
+    keyPressed = function(key)
+      if (key == "escape") then
+        GameState.changeGameState("pauseMenu")
+      end
     end
   },
   startMenu = {
@@ -101,6 +111,11 @@ local GameStates = {
       MenuController.setMenu("pause")
     end,
     onPause = function()
+    end,
+    keyPressed = function(key)
+      if (key == "escape") then
+        GameState.changeGameState(GameState.popGameState())
+      end
     end
   },
   gameOver = {
@@ -165,6 +180,14 @@ function GameState.changeGameState(state)
   curGameState = state
   curStateData.onPause(curGameState)
   newStateData.onResume(previousState)
+end
+
+function GameState.keyPressed(key)
+  callback = GameStates[curGameState].keyPressed
+  print(callback ~= nil)
+  if callback ~= nil then
+    callback(key)
+  end
 end
 
 return GameState

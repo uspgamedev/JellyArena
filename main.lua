@@ -126,14 +126,5 @@ function love.draw()
 end
 
 function love.keypressed(key)
-  if (key == "escape") then
-    LogController.close()
-    love.event.quit(0)
-  elseif (key == "m") then
-    if (curGameState == "pauseMenu") then
-      GameState.changeGameState(GameState.popGameState())
-    else
-      GameState.changeGameState("pauseMenu")
-    end
-  end
+  GameState.keyPressed(key)
 end
