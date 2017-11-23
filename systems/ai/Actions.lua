@@ -85,6 +85,20 @@ local function DashAttackAction(agent, target, label, dt)
   return false;
 end
 
+local function SetTrapAction(agent, target, label, dt)
+  local attack = Utils.getChild(agent, label)
+  local globalTimer = agent:get("Timer")
+  local attackTimer = attack:get("Timer")
+  local attackProperties = attack:get("AttackProperties")
+  local attackDamage = attack:get("Damage").damage
+  local position = agent:get("Position")
+  local trap = createDamageTrap(position.x, position.y, agent, attackDamage)
+  Utils.getEngine():addEntity(trap)
+  attackTimer:start()
+  globalTimer:start()
+  return true
+end
+
 Actions.BasicMeleeAttack = {
   name = "BasicMeleeAttack",
   cost = function(agent, target, dt)
@@ -285,6 +299,30 @@ Actions.BasicDashAttack = {
   end
 }
 
+Actions.SetTrap = {
+  name = "SetTrap",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "AttackAvailable",
+      target = "SetTrap"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "SetTrap"
+  },
+  perform = function(agent, target, dt)
+    return SetTrapAction(agent, target, "SetTrap", dt)
+  end
+}
+
 Actions.SlowBigDashAttack = {
   name = "SlowBigDashAttack",
   cost = function(agent, target, dt)
@@ -434,9 +472,43 @@ Actions.FleeFromPlayer = {
   end
 }
 
+Actions.Scout = {
+  name = "Scout",
+  cost = function()
+    return math.huge
+  end,
+  prerequisites = {},
+  effects = {
+    {
+      name = "Scout"
+    }
+  },
+  requiredChildrenEntities = {},
+  perform = function(agent, target, dt)
+    local agentVelocity = agent:get("Velocity")
+    local agentPosition = agent:get("Position")
+
+    local direction = nil
+    local mapSize = Utils.mapDefinitions
+    if agentPosition.x < mapSize.width*0.1 or agentPosition.x > mapSize.width*0.9 or
+        agentPosition.y < mapSize.height*0.1 or agentPosition.y > mapSize.height*0.9 then
+
+      direction = Vector(mapSize.width/2, mapSize.height/2) - agentPosition:toVector()
+      direction:normalizeInplace()
+    else
+      local angle = (math.random() - 0.5) * math.pi / 8
+      direction = agentVelocity:getDirection():rotated(angle)
+    end
+    agentVelocity:setDirection(direction)
+    return true
+  end
+}
+
 Actions.Idle = {
   name = "Idle",
-  score = 1,
+  cost = function()
+    return math.huge
+  end,
   prerequisites = {},
   effects = {},
   requiredChildrenEntities = {},

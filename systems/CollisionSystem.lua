@@ -156,12 +156,9 @@ function CollisionSystem:PlayerAndTrap(pair)
   local trapType = trap:get("Label").label
 
   if (trapType == "DamageTrap") then
-    if (player:get("Hitpoints").cur >= 10) then
-      player:get("Hitpoints").cur = player:get("Hitpoints").cur - 10
-    else
-      player:get("Hitpoints").cur = 0
-      GameState.changeGameState("gameOver")
-    end
+    local damage = trap:get("Damage").damage
+    StatisticController.addToActions(damage, trap:getParent():get("AI").actions)
+    self:DamagePlayer(player, damage)
   elseif (trapType == "HealingTrap") then
     player:get("Hitpoints"):add(10)
   else
