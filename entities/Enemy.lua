@@ -56,8 +56,8 @@ function Enemy.setColor(enemy)
     for c in action:gmatch(".") do
       local b = c:byte()
       hash[1] = (hash[1] + b + 15) % 256
-      hash[2] = (3 * hash[2] - b) % 256
-      hash[3] = ((50 + hash[3]) * b) % 256
+      hash[2] = (3 * hash[2] - b + hash[1]) % 256
+      hash[3] = ((50 + hash[3]) * b + hash[2]) % 256
     end
   end
   enemy:add(Color(hash[1], hash[2], hash[3]))

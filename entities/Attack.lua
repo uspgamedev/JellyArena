@@ -18,7 +18,7 @@ function DefaultAttackConstructors.BasicMeleeAttack(parent)
   local entity = Entity(parent)
   local level = parent:get("Level").level
   entity:add(Label("BasicMeleeAttack"))
-  entity:add(Timer(1 - 0.2 * (level - 1)))
+  entity:add(Timer(1 - 0.4 * (level - 1)))
   entity:add(AttackProperties(0))
   entity:add(Damage(level * 2))
   entity:add(AttackRange(2))
@@ -45,12 +45,26 @@ function DefaultAttackConstructors.FastRangedAttack(parent)
   local entity = Entity(parent)
   local level = parent:get("Level").level
   entity:add(Label("FastRangedAttack"))
-  entity:add(Timer(0.4 - 0.05 * (level - 1)))
+  entity:add(Timer(0.4 - 0.1 * (level - 1)))
   entity:add(AttackProperties(25))
   entity:add(Damage(level))
   entity:add(AttackRange(level * 150))
   entity:add(BulletProperties(level * 100 + 500, 2 + level))
   Enemy.setSpeed(parent, level * 50 + 250)
+  Enemy.addBonusHitpoints(parent, level * 5)
+  return entity
+end
+
+function DefaultAttackConstructors.SniperRangedAttack(parent)
+  local entity = Entity(parent)
+  local level = parent:get("Level").level
+  entity:add(Label("SniperRangedAttack"))
+  entity:add(Timer(1.5 - 0.3 * (level - 1)))
+  entity:add(AttackProperties(25))
+  entity:add(Damage(level * 2))
+  entity:add(AttackRange(level * 800))
+  entity:add(BulletProperties(level * 600, 4 + level))
+  Enemy.setSpeed(parent, level * 50 + 50)
   Enemy.addBonusHitpoints(parent, level * 5)
   return entity
 end
