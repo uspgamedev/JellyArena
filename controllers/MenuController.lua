@@ -170,11 +170,17 @@ menus = {
         action = restartGame
       },
       {
+        name = "Return to Title",
+        action = function()
+          GameState.changeGameState("startMenu")
+        end
+      },
+      {
         name = "Exit",
         action = function()
           love.event.quit(0)
         end
-      }
+      },
     }
   },
   ["options"] = {
