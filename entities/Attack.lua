@@ -57,3 +57,13 @@ function DefaultAttackConstructors.BasicDashAttack(parent)
   entity:add(AttackRange(stats.shotRange * 150))
   return entity
 end
+
+function DefaultAttackConstructors.SetTrap(parent)
+  local entity = Entity(parent)
+  local stats = parent:get("Stats")
+  entity:add(Label("SetTrap"))
+  entity:add(Timer(10 - (stats.shotSpeed - 0.4)))
+  entity:add(AttackProperties(8))
+  entity:add(Damage(stats.damage * 4))
+  return entity
+end
