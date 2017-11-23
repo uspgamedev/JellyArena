@@ -333,13 +333,13 @@ Actions.DashFollow = {
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")
     local state = agent:get("AI").currentState
-    local range = 200
+    local range = agentVelocity.maxSpeed * 0.5
 
     if not state.travelledDistance then
       -- lock target
       local direction = (target:get("Position"):toVector() - agentPosition:toVector())
       direction:normalizeInplace()
-      agentVelocity.speed = 1000
+      agentVelocity.speed = agentVelocity.maxSpeed * 2
       agentVelocity:setDirection(direction)
       state.travelledDistance = 0
     end
