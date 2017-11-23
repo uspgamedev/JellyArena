@@ -64,6 +64,7 @@ function WaveAISystem:update(dt)
   end
   if curGameState == "ingame" and self.state == "done" and count == 0 then
     GameState.changeGameState("waitingWave")
+    Utils.addPlayerPoints(2)
   end
   self.waveTime = self.waveTime + dt
 end

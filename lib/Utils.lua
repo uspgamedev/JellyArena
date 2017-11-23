@@ -1,5 +1,14 @@
 local Utils = {}
 
+function Utils.addPlayerPoints(x)
+  for _, e in pairs(Utils.getEngine().entities) do
+    if e:has("IsPlayer") then
+      e:get("RemainingPoints"):add(x)
+      break
+    end
+  end
+end
+
 function Utils.getCenter()
   return {x = love.graphics.getWidth() / 2, y = love.graphics.getHeight() / 2}
 end
