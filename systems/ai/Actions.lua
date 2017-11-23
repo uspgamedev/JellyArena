@@ -26,10 +26,11 @@ local function RangedAction(agent, target, label, dt)
   local attackDamage = attack:get("Damage").damage
   local position = agent:get("Position")
   local direction = (target:get("Position"):toVector() - position:toVector())
-  local bulletSpeed = agent:get("Stats"):getBulletSpeed()
+  local bulletSpeed = attack:get("BulletProperties").speed
+  local bulletRadius = attack:get("BulletProperties").radius
   direction:normalizeInplace()
   local bulletPos = position:toVector() + attackProperties.spawnDistance * direction
-  bullet = createEnemyBullet(agent, bulletPos.x, bulletPos.y, direction, attackDamage, range.max, bulletSpeed)
+  bullet = createEnemyBullet(agent, bulletPos.x, bulletPos.y, direction, attackDamage, range.max, bulletSpeed, bulletRadius)
   Utils.getEngine():addEntity(bullet)
   attackTimer:start()
   globalTimer:start()
@@ -126,6 +127,34 @@ Actions.BasicMeleeAttack = {
   end
 }
 
+Actions.LightMeleeAttack = {
+  name = "LightMeleeAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
+    {
+      name = "AttackAvailable",
+      target = "LightMeleeAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "LightMeleeAttack"
+  },
+  perform = function(agent, target, dt)
+    return MeleeAction(agent, target, "LightMeleeAttack", dt)
+  end
+}
+
 Actions.BasicRangedAttack = {
   name = "BasicRangedAttack",
   cost = function(agent, target, dt)
@@ -184,6 +213,64 @@ Actions.FastRangedAttack = {
   end
 }
 
+Actions.SniperRangedAttack = {
+  name = "SniperRangedAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
+
+    {
+      name = "AttackAvailable",
+      target = "SniperRangedAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "SniperRangedAttack"
+  },
+  perform = function(agent, target, dt)
+    return RangedAction(agent, target, "SniperRangedAttack", dt)
+  end
+}
+
+Actions.BigRangedAttack = {
+  name = "BigRangedAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
+
+    {
+      name = "AttackAvailable",
+      target = "BigRangedAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "BigRangedAttack"
+  },
+  perform = function(agent, target, dt)
+    return RangedAction(agent, target, "BigRangedAttack", dt)
+  end
+}
+
 Actions.BasicDashAttack = {
   name = "BasicDashAttack",
   cost = function(agent, target, dt)
@@ -236,6 +323,34 @@ Actions.SetTrap = {
   end
 }
 
+Actions.SlowBigDashAttack = {
+  name = "SlowBigDashAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
+    {
+      name = "AttackAvailable",
+      target = "SlowBigDashAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "SlowBigDashAttack"
+  },
+  perform = function(agent, target, dt)
+    return DashAttackAction(agent, target, "SlowBigDashAttack", dt)
+  end
+}
+
 Actions.DashFollow = {
   name = "DashFollow",
   cost = function(agent, target, dt)
@@ -256,13 +371,13 @@ Actions.DashFollow = {
     local agentVelocity = agent:get("Velocity")
     local agentPosition = agent:get("Position")
     local state = agent:get("AI").currentState
-    local range = 200
+    local range = agentVelocity.maxSpeed * 0.5
 
     if not state.travelledDistance then
       -- lock target
       local direction = (target:get("Position"):toVector() - agentPosition:toVector())
       direction:normalizeInplace()
-      agentVelocity.speed = 1000
+      agentVelocity.speed = agentVelocity.maxSpeed * 2
       agentVelocity:setDirection(direction)
       state.travelledDistance = 0
     end

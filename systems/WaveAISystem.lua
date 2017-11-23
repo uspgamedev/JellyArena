@@ -5,11 +5,11 @@ local Goals = require "systems/ai/Goals"
 function WaveAISystem:initialize()
   System.initialize(self)
   self:reset()
-  self.defaultWaitTime = 0
+  self.defaultWaitTime = 3
   self:setWaitTime(self.defaultWaitTime) -- between waves
-  self.totalEnemies = 30 -- per wave
-  self.spawnInterval = 1
-  self.finalWave = 10
+  self.totalEnemies = 5 -- per wave
+  self.spawnInterval = 0.5
+  self.finalWave = 5
   self.waveTime = 0
 end
 
@@ -163,13 +163,13 @@ function WaveAISystem:createEnemy(Goals, ai)
   Enemy.setAI(enemy, Goals, ai)
   if self.waveNumber < self.finalWave then
     Enemy.setNormal(enemy)
-    Enemy.setHitpoints(enemy, 10)
-    Enemy.setStats(enemy, 1, 1, 1, 1, 1)
+    Enemy.setBaseHitpoints(enemy, 5)
+    Enemy.setLevel(enemy, 1)
     SoundController.setTrack("waves")
   else
     Enemy.setBoss(enemy)
-    Enemy.setHitpoints(enemy, 50)
-    Enemy.setStats(enemy, 2, 3, 3, 3, 3)
+    Enemy.setBaseHitpoints(enemy, 30)
+    Enemy.setLevel(enemy, 3)
     SoundController.setTrack("boss")
   end
 

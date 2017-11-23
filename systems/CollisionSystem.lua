@@ -240,9 +240,9 @@ function CollisionSystem:PlayerAndEnemyBullet(pair)
   local player = pair["Player"]
   local bullet = pair["EnemyBullet"]
   local enemy = bullet:getParent()
-  StatisticController.addToActions(bullet:get("Projectile").damage * enemy:get("Stats").damage, enemy:get("AI").actions)
+  StatisticController.addToActions(bullet:get("Projectile").damage, enemy:get("AI").actions)
 
-  self:DamagePlayer(player, bullet:get("Projectile").damage * enemy:get("Stats").damage)
+  self:DamagePlayer(player, bullet:get("Projectile").damage)
   self:markIgnored(player, bullet)
 end
 
