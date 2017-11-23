@@ -98,119 +98,119 @@ local function SetTrapAction(agent, target, label, dt)
   return true
 end
 
--- Actions.BasicMeleeAttack = {
---   name = "BasicMeleeAttack",
---   cost = function(agent, target, dt)
---     return 0
---   end,
---   prerequisites = {
---     {
---       name = "InAttackRange",
---       target = "Player"
---     },
---     {
---       name = "AttackAvailable",
---       target = "BasicMeleeAttack"
---     }
---   },
---   effects = {
---     {
---       name = "Damage"
---     }
---   },
---   requiredChildrenEntities = {
---     "BasicMeleeAttack"
---   },
---   perform = function(agent, target, dt)
---     return MeleeAction(agent, target, "BasicMeleeAttack", dt)
---   end
--- }
+Actions.BasicMeleeAttack = {
+  name = "BasicMeleeAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
+    {
+      name = "AttackAvailable",
+      target = "BasicMeleeAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "BasicMeleeAttack"
+  },
+  perform = function(agent, target, dt)
+    return MeleeAction(agent, target, "BasicMeleeAttack", dt)
+  end
+}
 
--- Actions.BasicRangedAttack = {
---   name = "BasicRangedAttack",
---   cost = function(agent, target, dt)
---     return 0
---   end,
---   prerequisites = {
---     {
---       name = "InAttackRange",
---       target = "Player"
---     },
---
---     {
---       name = "AttackAvailable",
---       target = "BasicRangedAttack"
---     }
---   },
---   effects = {
---     {
---       name = "Damage"
---     }
---   },
---   requiredChildrenEntities = {
---     "BasicRangedAttack"
---   },
---   perform = function(agent, target, dt)
---     return RangedAction(agent, target, "BasicRangedAttack", dt)
---   end
--- }
---
--- Actions.FastRangedAttack = {
---   name = "FastRangedAttack",
---   cost = function(agent, target, dt)
---     return 0
---   end,
---   prerequisites = {
---     {
---       name = "InAttackRange",
---       target = "Player"
---     },
---
---     {
---       name = "AttackAvailable",
---       target = "FastRangedAttack"
---     }
---   },
---   effects = {
---     {
---       name = "Damage"
---     }
---   },
---   requiredChildrenEntities = {
---     "FastRangedAttack"
---   },
---   perform = function(agent, target, dt)
---     return RangedAction(agent, target, "FastRangedAttack", dt)
---   end
--- }
---
--- Actions.BasicDashAttack = {
---   name = "BasicDashAttack",
---   cost = function(agent, target, dt)
---     return 0
---   end,
---   prerequisites = {
---     {
---       name = "InAttackRange",
---       target = "Player"
---     },
---     {
---       name = "AttackAvailable",
---       target = "BasicDashAttack"
---     }
---   },
---   effects = {
---     {
---       name = "Damage"
---     }
---   },
---   requiredChildrenEntities = {
---     "BasicDashAttack"
---   },
---   perform = function(agent, target, dt)
---     return DashAttackAction(agent, target, "BasicDashAttack", dt)
---   end
--- }
+Actions.BasicRangedAttack = {
+  name = "BasicRangedAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
+
+    {
+      name = "AttackAvailable",
+      target = "BasicRangedAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "BasicRangedAttack"
+  },
+  perform = function(agent, target, dt)
+    return RangedAction(agent, target, "BasicRangedAttack", dt)
+  end
+}
+
+Actions.FastRangedAttack = {
+  name = "FastRangedAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
+
+    {
+      name = "AttackAvailable",
+      target = "FastRangedAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "FastRangedAttack"
+  },
+  perform = function(agent, target, dt)
+    return RangedAction(agent, target, "FastRangedAttack", dt)
+  end
+}
+
+Actions.BasicDashAttack = {
+  name = "BasicDashAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
+    {
+      name = "AttackAvailable",
+      target = "BasicDashAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "BasicDashAttack"
+  },
+  perform = function(agent, target, dt)
+    return DashAttackAction(agent, target, "BasicDashAttack", dt)
+  end
+}
 
 Actions.SetTrap = {
   name = "SetTrap",
