@@ -26,10 +26,11 @@ local function RangedAction(agent, target, label, dt)
   local attackDamage = attack:get("Damage").damage
   local position = agent:get("Position")
   local direction = (target:get("Position"):toVector() - position:toVector())
-  local bulletSpeed = 700 + 40 * agent:get("Level").level
+  local bulletSpeed = attack:get("BulletProperties").speed
+  local bulletRadius = attack:get("BulletProperties").radius
   direction:normalizeInplace()
   local bulletPos = position:toVector() + attackProperties.spawnDistance * direction
-  bullet = createEnemyBullet(agent, bulletPos.x, bulletPos.y, direction, attackDamage, range.max, bulletSpeed)
+  bullet = createEnemyBullet(agent, bulletPos.x, bulletPos.y, direction, attackDamage, range.max, bulletSpeed, bulletRadius)
   Utils.getEngine():addEntity(bullet)
   attackTimer:start()
   globalTimer:start()

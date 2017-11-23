@@ -1,5 +1,5 @@
-local Label, Timer, AttackProperties, Damage, AttackRange
-= Component.load({"Label", "Timer", "AttackProperties", "Damage", "AttackRange"})
+local Label, Timer, AttackProperties, Damage, AttackRange, BulletProperties
+= Component.load({"Label", "Timer", "AttackProperties", "Damage", "AttackRange", "BulletProperties"})
 
 DefaultAttackConstructors = {}
 
@@ -35,6 +35,7 @@ function DefaultAttackConstructors.BasicRangedAttack(parent)
   entity:add(AttackProperties(25))
   entity:add(Damage(level))
   entity:add(AttackRange(level * 200))
+  entity:add(BulletProperties(level * 100 + 600, 4 + level))
   Enemy.setSpeed(parent, level * 50 + 200)
   Enemy.addBonusHitpoints(parent, level * 5)
   return entity
@@ -48,6 +49,7 @@ function DefaultAttackConstructors.FastRangedAttack(parent)
   entity:add(AttackProperties(25))
   entity:add(Damage(level))
   entity:add(AttackRange(level * 150))
+  entity:add(BulletProperties(level * 100 + 500, 2 + level))
   Enemy.setSpeed(parent, level * 50 + 250)
   Enemy.addBonusHitpoints(parent, level * 5)
   return entity
