@@ -13,6 +13,6 @@ function createPlayer(x, y)
   entity:add(IsPlayer())
   entity:add(Color(255, 255, 255))
   entity:add(Collider("Player", true))
-  entity:add(RemainingPoints(10))
+  entity:add(RemainingPoints(5))
   return entity
 end
