@@ -200,6 +200,35 @@ Actions.SniperRangedAttack = {
   end
 }
 
+Actions.BigRangedAttack = {
+  name = "BigRangedAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
+
+    {
+      name = "AttackAvailable",
+      target = "BigRangedAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "BigRangedAttack"
+  },
+  perform = function(agent, target, dt)
+    return RangedAction(agent, target, "BigRangedAttack", dt)
+  end
+}
+
 Actions.BasicDashAttack = {
   name = "BasicDashAttack",
   cost = function(agent, target, dt)

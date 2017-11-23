@@ -69,6 +69,20 @@ function DefaultAttackConstructors.SniperRangedAttack(parent)
   return entity
 end
 
+function DefaultAttackConstructors.BigRangedAttack(parent)
+  local entity = Entity(parent)
+  local level = parent:get("Level").level
+  entity:add(Label("BigRangedAttack"))
+  entity:add(Timer(2 - 0.4 * (level - 1)))
+  entity:add(AttackProperties(25))
+  entity:add(Damage(level * 3))
+  entity:add(AttackRange(level * 500))
+  entity:add(BulletProperties(level * 200, 10 + 5 * level))
+  Enemy.setSpeed(parent, level * 50 + 200)
+  Enemy.addBonusHitpoints(parent, level * 7)
+  return entity
+end
+
 function DefaultAttackConstructors.BasicDashAttack(parent)
   local entity = Entity(parent)
   local level = parent:get("Level").level
