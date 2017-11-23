@@ -268,15 +268,17 @@ menus = {
   ["howtoplay"] = {
     title = "How to Play",
     align = "center",
+    hideSelector = true,
     items = {
       {
         name = "Move: press w, a, s, d to move the character over the field\n\z\n\z
-        Shot: press the diretional arrows to fire a bullet in one of the four directions\n\z\n\z
-        Special attack: when charged, press space to damage all enemies around you\n\z\n\z
+        Shot: press the diretional arrows to fire a bullet in one\n\z\n\zof the four directions\n\z\n\z
+        Special attack: when charged, press space to damage all enemies\n\z\n\z around you\n\z\n\z
         \n\z
-        If tired, press M to a little break\n\z
+        If tired, press ESC to a little break\n\z
         \n\z
-        Be careful! Your bullets are your body! Don't waste yourself!",
+        Be careful! Your bullets are your body! Don't waste yourself!\n\z\n\z\n\z\n\z
+        Press Enter to return",
         action = function()
           MenuController.setMenu(getPreviousMenu())
         end

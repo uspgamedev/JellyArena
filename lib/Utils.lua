@@ -66,6 +66,14 @@ function Utils.pairsOrderValuesDesc(tab)
       end
 end
 
+local font
+function Utils.defaultFont()
+  if font == nil then
+    font = love.graphics.newFont("resources/fonts/PressStart2P.ttf")
+  end
+  return font
+end
+
 Utils.mapDefinitions = {
   height = 896, -- 28 tiles
   width = 896,
