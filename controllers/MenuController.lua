@@ -278,7 +278,7 @@ menus = {
         If tired, press ESC to a little break\n\z
         \n\z
         Be careful! Your bullets are your body! Don't waste yourself!\n\z\n\z\n\z\n\z
-        Press Enter to back",
+        Press Enter to return",
         action = function()
           MenuController.setMenu(getPreviousMenu())
         end
