@@ -228,6 +228,34 @@ Actions.BasicDashAttack = {
   end
 }
 
+Actions.SlowBigDashAttack = {
+  name = "SlowBigDashAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
+    {
+      name = "AttackAvailable",
+      target = "SlowBigDashAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "SlowBigDashAttack"
+  },
+  perform = function(agent, target, dt)
+    return DashAttackAction(agent, target, "SlowBigDashAttack", dt)
+  end
+}
+
 Actions.DashFollow = {
   name = "DashFollow",
   cost = function(agent, target, dt)

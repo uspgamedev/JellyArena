@@ -81,3 +81,16 @@ function DefaultAttackConstructors.BasicDashAttack(parent)
   Enemy.addBonusHitpoints(parent, level * 10)
   return entity
 end
+
+function DefaultAttackConstructors.SlowBigDashAttack(parent)
+  local entity = Entity(parent)
+  local level = parent:get("Level").level
+  entity:add(Label("SlowBigDashAttack"))
+  entity:add(Timer(4 - (level - 1)))
+  entity:add(AttackProperties(8))
+  entity:add(Damage(level * 4))
+  entity:add(AttackRange(level * 500))
+  Enemy.setSpeed(parent, level * 100)
+  Enemy.addBonusHitpoints(parent, level * 15)
+  return entity
+end
