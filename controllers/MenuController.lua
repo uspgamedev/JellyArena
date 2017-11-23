@@ -286,17 +286,16 @@ menus = {
     }
   },
   ["credits"] = {
-    title = "Credits",
+    title = "Credits - USPGameDev",
     align = "center",
+    hideSelector = true,
     items = {
       {
-        name = "Os cara que fizeram o jogo:\n\z
+        name = "Authors:\n\z
         Felipe Brigalante\n\z
         Hugo Mitsumori\n\z
         Luan Torres\n\z
-        Mateus Rocha\n\z\n\z
-        Recursos externos:\n\z
-        ",
+        Mateus Rocha\n\z\n\z\n\z\n\zPress Enter to return",
         action = function()
           MenuController.setMenu("start")
         end
