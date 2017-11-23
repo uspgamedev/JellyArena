@@ -39,7 +39,10 @@ end
 function Enemy.setStats(entity, damage, movementSpeed, shotSpeed, bulletSpeed, shotRange)
   local stats = Stats(damage, movementSpeed, shotSpeed, bulletSpeed, shotRange)
   entity:add(stats)
-  entity:add(Velocity(0, 0, stats:getSpeed()))
+end
+
+function Enemy.setSpeed(entity, speed)
+  entity:add(Velocity(0, 0, speed))
 end
 
 function Enemy.setColor(enemy)
