@@ -6,11 +6,11 @@ function DrawMenuSystem:draw()
   local menu = MenuController.getMenu()
   love.graphics.setColor(background.r, background.g, background.b, 200)
   love.graphics.rectangle("fill", 0, 0, love.graphics.getWidth(), love.graphics.getHeight())
-  love.graphics.setNewFont(50)
+  love.graphics.setFont(Utils.defaultFont(), 50)
   love.graphics.setColor(255, 255, 255, 255)
   love.graphics.printf(menu.title, 0, 50, love.graphics.getWidth(), "center")
 
-  love.graphics.setNewFont(20)
+  love.graphics.setFont(Utils.defaultFont(), 20)
   local textWidth
   local textX
   love.graphics.setColor(255, 255, 0, 255)
@@ -25,7 +25,7 @@ function DrawMenuSystem:draw()
     elseif (MenuController.getMenu().align == "left") then
       textX = 100
     end
-    love.graphics.printf(v.name, textX, 200 + i * 50, textWidth, "center")
+    love.graphics.printf(v.name, textX, 208 + i * 50, textWidth, "center")
   end
 
   local highlightWidth = love.graphics.getFont():getWidth(menu.items[MenuController.getSelectedItem()].name)
@@ -35,7 +35,9 @@ function DrawMenuSystem:draw()
   elseif (MenuController.getMenu().align == "left") then
     highlightX = 80
   end
-  love.graphics.circle("fill", highlightX, 210 + MenuController.getSelectedItem() * 50, 10)
+  if not MenuController.getMenu().hideSelector then
+    love.graphics.circle("fill", highlightX, 210 + MenuController.getSelectedItem() * 50, 10)
+  end
 end
 
 return DrawMenuSystem
