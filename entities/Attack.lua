@@ -23,6 +23,7 @@ function DefaultAttackConstructors.BasicMeleeAttack(parent)
   entity:add(Damage(stats.damage * 2))
   entity:add(AttackRange(2))
   Enemy.setSpeed(parent, stats.movementSpeed * 100 + 250)
+  Enemy.addBonusHitpoints(parent, stats.damage * 10)
   return entity
 end
 
@@ -35,6 +36,7 @@ function DefaultAttackConstructors.BasicRangedAttack(parent)
   entity:add(Damage(stats.damage))
   entity:add(AttackRange(stats.shotRange * 200))
   Enemy.setSpeed(parent, stats.movementSpeed * 50 + 200)
+  Enemy.addBonusHitpoints(parent, stats.damage * 5)
   return entity
 end
 
@@ -47,6 +49,7 @@ function DefaultAttackConstructors.FastRangedAttack(parent)
   entity:add(Damage(stats.damage))
   entity:add(AttackRange(stats.shotRange * 150))
   Enemy.setSpeed(parent, stats.movementSpeed * 50 + 250)
+  Enemy.addBonusHitpoints(parent, stats.damage * 5)
   return entity
 end
 
@@ -59,5 +62,6 @@ function DefaultAttackConstructors.BasicDashAttack(parent)
   entity:add(Damage(stats.damage * 4))
   entity:add(AttackRange(stats.shotRange * 150))
   Enemy.setSpeed(parent, stats.movementSpeed * 50 + 300)
+  Enemy.addBonusHitpoints(parent, stats.damage * 10)
   return entity
 end

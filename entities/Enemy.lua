@@ -32,8 +32,12 @@ function Enemy.setAI(entity, goals, actions)
   entity:add(AI(goals, actions))
 end
 
-function Enemy.setHitpoints(entity, hp)
+function Enemy.setBaseHitpoints(entity, hp)
   entity:add(Hitpoints(hp))
+end
+
+function Enemy.addBonusHitpoints(entity, bonus)
+  entity:get("Hitpoints"):add(bonus)
 end
 
 function Enemy.setStats(entity, damage, movementSpeed, shotSpeed, bulletSpeed, shotRange)
