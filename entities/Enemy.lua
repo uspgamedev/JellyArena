@@ -45,7 +45,12 @@ function Enemy.setLevel(entity, level)
 end
 
 function Enemy.setSpeed(entity, speed)
-  entity:add(Velocity(0, 0, speed))
+  if entity:has("Velocity") then
+    local current = entity:get("Velocity")
+    current.maxSpeed = (current.maxSpeed + speed) / 2
+  else
+    entity:add(Velocity(0, 0, speed))
+  end
 end
 
 function Enemy.setColor(enemy)
