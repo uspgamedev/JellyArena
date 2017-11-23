@@ -113,6 +113,34 @@ Actions.BasicMeleeAttack = {
   end
 }
 
+Actions.LightMeleeAttack = {
+  name = "LightMeleeAttack",
+  cost = function(agent, target, dt)
+    return 0
+  end,
+  prerequisites = {
+    {
+      name = "InAttackRange",
+      target = "Player"
+    },
+    {
+      name = "AttackAvailable",
+      target = "LightMeleeAttack"
+    }
+  },
+  effects = {
+    {
+      name = "Damage"
+    }
+  },
+  requiredChildrenEntities = {
+    "LightMeleeAttack"
+  },
+  perform = function(agent, target, dt)
+    return MeleeAction(agent, target, "LightMeleeAttack", dt)
+  end
+}
+
 Actions.BasicRangedAttack = {
   name = "BasicRangedAttack",
   cost = function(agent, target, dt)

@@ -27,6 +27,19 @@ function DefaultAttackConstructors.BasicMeleeAttack(parent)
   return entity
 end
 
+function DefaultAttackConstructors.LightMeleeAttack(parent)
+  local entity = Entity(parent)
+  local level = parent:get("Level").level
+  entity:add(Label("LightMeleeAttack"))
+  entity:add(Timer(1 - 0.4 * (level - 1)))
+  entity:add(AttackProperties(0))
+  entity:add(Damage(level))
+  entity:add(AttackRange(2))
+  Enemy.setSpeed(parent, level * 150 + 350)
+  Enemy.addBonusHitpoints(parent,level * 5)
+  return entity
+end
+
 function DefaultAttackConstructors.BasicRangedAttack(parent)
   local entity = Entity(parent)
   local level = parent:get("Level").level
