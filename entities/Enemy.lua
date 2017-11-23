@@ -3,10 +3,10 @@ local Position,
   AI,
   Hitpoints,
   Velocity,
-  Stats,
+  Level,
   Color,
   Collider,
-  Timer = Component.load({"Position", "Circle", "AI", "Hitpoints", "Velocity", "Stats", "Color", "Collider", "Timer"})
+  Timer = Component.load({"Position", "Circle", "AI", "Hitpoints", "Velocity", "Level", "Color", "Collider", "Timer"})
 
 local Actions = require "systems/ai/Actions"
 
@@ -40,9 +40,8 @@ function Enemy.addBonusHitpoints(entity, bonus)
   entity:get("Hitpoints"):add(bonus)
 end
 
-function Enemy.setStats(entity, damage, movementSpeed, shotSpeed, bulletSpeed, shotRange)
-  local stats = Stats(damage, movementSpeed, shotSpeed, bulletSpeed, shotRange)
-  entity:add(stats)
+function Enemy.setLevel(entity, level)
+  entity:add(Level(level))
 end
 
 function Enemy.setSpeed(entity, speed)

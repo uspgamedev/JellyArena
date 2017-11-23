@@ -164,12 +164,12 @@ function WaveAISystem:createEnemy(Goals, ai)
   if self.waveNumber < self.finalWave then
     Enemy.setNormal(enemy)
     Enemy.setBaseHitpoints(enemy, 5)
-    Enemy.setStats(enemy, 1, 1, 1, 1, 1)
+    Enemy.setLevel(enemy, 1)
     SoundController.setTrack("waves")
   else
     Enemy.setBoss(enemy)
-    Enemy.setBaseHitpoints(enemy, 50)
-    Enemy.setStats(enemy, 2, 3, 3, 3, 3)
+    Enemy.setBaseHitpoints(enemy, 30)
+    Enemy.setLevel(enemy, 3)
     SoundController.setTrack("boss")
   end
 

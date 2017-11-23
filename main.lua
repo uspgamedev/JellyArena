@@ -41,6 +41,7 @@ require "components/Timer"
 require "components/Velocity"
 require "components/Stats"
 require "components/Visibility"
+require "components/Level"
 
 --- Entities
 require "entities/Attack"
