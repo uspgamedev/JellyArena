@@ -1,0 +1,13 @@
+Sound effects:
+- shot sound by MWLANDI - https://freesound.org/people/MWLANDI/sounds/85863/
+  (changed to a faster tempo)
+- bullet hit sound by Honor Hunter - https://freesound.org/people/HonorHunter/sounds/271666/
+- melee sound by gelo_papas- https://freesound.org/people/gelo_papas/sounds/47340/
+  (changed to a slower tempo)
+- menu select sound by MattLeschuck - https://freesound.org/people/MattLeschuck/sounds/402402/
+
+Images:
+- map tilesets by Hyptosis, Zabin, Daniel Cook - https://opengameart.org/content/castle-tiles-for-rpgs
+
+Fonts:
+- PressStart2P font by codeman38 - http://www.fontspace.com/codeman38/press-start-2p

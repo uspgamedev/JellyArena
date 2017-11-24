@@ -1,20 +1,20 @@
 local MenuInputSystem = class("MenuInputSystem", System)
-local COOLDOWN = 0.2
+local COOLDOWN = 0.18
 local timer = COOLDOWN
 
 function MenuInputSystem:update(dt)
   if timer >= COOLDOWN then
     if (love.keyboard.isDown("down")) then
-      nextMenuItem()
-      playSound("teste")
+      MenuController.nextMenuItem()
+      SoundController.playSound("select")
       timer = 0
     elseif (love.keyboard.isDown("up")) then
-      previousMenuItem()
-      playSound("teste")
+      MenuController.previousMenuItem()
+      SoundController.playSound("select")
       timer = 0
     elseif (love.keyboard.isDown("return")) then
-      selectMenuitem()
-      playSound("teste")
+      MenuController.selectMenuitem()
+      SoundController.playSound("select")
       timer = 0
     end
   else

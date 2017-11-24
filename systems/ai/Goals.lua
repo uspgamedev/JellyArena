@@ -10,6 +10,13 @@ Goals.Damage = {
 Goals.Safety = {
   name = "Safety",
   weight = function(agent, target, dt)
+    return 5
+  end
+}
+
+Goals.Scout = {
+  name = "Scout",
+  weight = function(agent, target, dt)
     return 0
   end
 }

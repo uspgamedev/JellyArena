@@ -1,12 +1,14 @@
-local Label, Position, Circle, Color, Collider, Visibility =
-  Component.load({"Label", "Position", "Circle", "Color", "Collider", "Visibility" })
+local Label, Position, Circle, Color, Collider, Visibility, Damage =
+  Component.load({"Label", "Position", "Circle", "Color", "Collider", "Visibility", "Damage" })
 
-function createDamageTrap(x, y)
-  local entity = Entity()
+function createDamageTrap(x, y, parent, damage)
+  local entity = Entity(parent)
   entity:add(Label("DamageTrap"))
   entity:add(Position(x, y))
   entity:add(Circle(10))
   entity:add(Color(100, 15, 15))
+  entity:add(Visibility(true))
+  entity:add(Damage(damage))
   entity:add(Collider("Trap", true))
   entity:add(Visibility(true))
   return entity

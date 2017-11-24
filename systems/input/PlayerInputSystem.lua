@@ -2,11 +2,12 @@ local PlayerInputSystem = class("PlayerInputSystem", System)
 
 function PlayerInputSystem:update(dt)
   for i, entity in pairs(self.targets) do
-    if curGameState == GameStates.ingame then
-      self:movement(entity)
-      self:fire(entity, dt)
-      self:testTrack() --remove after track test
-    end
+    -- if curGameState == "ingame" then
+    self:movement(entity)
+    self:fire(entity, dt)
+    self:melee(entity, dt)
+    self:testTrack() --remove after track test
+    -- end
   end
 end
 
@@ -38,7 +39,7 @@ function PlayerInputSystem:fire(entity, dt)
     end
   end
   local fireDirection = Vector(0, 0)
-  local fireTimer = attack:get("Timer");
+  local fireTimer = attack:get("Timer")
 
   -- Continue only if we can shoot
   if fireTimer.isActive and fireTimer.cooldown > 0 then
@@ -64,26 +65,47 @@ function PlayerInputSystem:fire(entity, dt)
       local position = playerPosition:toVector()
       local attackProperties = attack:get("AttackProperties")
       local range = attack:get("AttackRange")
-      local attackDamage = attack:get("Damage").damage
-
+      local stats = entity:get("Stats")
+      local attackDamage = attack:get("Damage").damage * stats.damage
+      local bulletSpeed = stats:getBulletSpeed()
       position = position + attackProperties.spawnDistance * fireDirection
-      bullet = createPlayerBullet(position.x, position.y, fireDirection, attackDamage, range.max)
-      getEngine():addEntity(bullet)
-      hp.cur = hp.cur - 1;
+      bullet = createPlayerBullet(position.x, position.y, fireDirection, attackDamage, range.max, bulletSpeed)
+      Utils.getEngine():addEntity(bullet)
+      hp.cur = hp.cur - 1
       fireTimer.cooldown = fireTimer.waitTime
-      playSound("teste")
+      SoundController.playSound("shot")
     end
+  end
+end
+
+function PlayerInputSystem:melee(entity, dt)
+  local meleeTimer = entity:get("Timer")
+  if meleeTimer.isActive and meleeTimer.cooldown > 0 then
+    return
+  end
+
+  meleeTimer.isActive = false
+
+  if love.keyboard.isDown("space") then
+    meleeTimer.isActive = true
+    local position = entity:get("Position")
+    local damage = 10 * entity:get("Stats").damage
+    local damageArea = createDamageArea(position, 100, damage, entity)
+    Utils.getEngine():addEntity(damageArea)
+    table.insert(garbageList, damageArea)
+    meleeTimer.cooldown = meleeTimer.waitTime
+    SoundController.playSound("melee")
   end
 end
 
 --remove after track test
 function PlayerInputSystem:testTrack()
   if love.keyboard.isDown("1") then
-    setTrack("sample1")
+    SoundController.setTrack("menu")
   elseif love.keyboard.isDown("2") then
-    setTrack("sample2")
+    SoundController.setTrack("waves")
   elseif love.keyboard.isDown("3") then
-    setTrack("sample3")
+    SoundController.setTrack("boss")
   end
 end
 
