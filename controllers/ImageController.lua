@@ -7,7 +7,7 @@ function ImageController.load()
     return
   end
 
-  local filenames = {"map", "jello", "charger", "shooter", "bullet", "health", "pushTrap", "damageTrap"}
+  local filenames = {"map", "jello", "charger", "shooter", "bullet", "health", "pushTrap", "damageTrap", "dummy"}
   local basePath = "resources/images/"
   for _, filename in pairs(filenames) do
     Images[filename] = love.graphics.newImage(basePath..filename..".png" )
@@ -18,9 +18,6 @@ function ImageController.load()
 
   --TODO: change to proper hybrid animation
   Images["hybrid"] = Images["shooter"]
-
-  --TODO: change to proper dummy animation
-  Images["dummy"] = Images["jello"]
 
   loaded = true
 end
