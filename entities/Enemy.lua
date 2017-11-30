@@ -18,8 +18,6 @@ function Enemy.baseEnemy(x, y)
   entity:add(Position(x, y))
   entity:add(Collider("Enemy", true))
   entity:add(Timer(0.5))
-  --TODO: change here - move animation to each type of enemy
-  entity:add(Animation(ImageController.getAnimation("charger", 2, 0.4)))
   return entity
 end
 
@@ -54,6 +52,10 @@ function Enemy.setSpeed(entity, speed)
   else
     entity:add(Velocity(0, 0, speed))
   end
+end
+
+function Enemy.setAnimation(entity, animation)
+  entity:add(animation)
 end
 
 function Enemy.setColor(enemy)

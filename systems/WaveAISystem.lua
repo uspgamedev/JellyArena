@@ -2,6 +2,8 @@ local WaveAISystem = class("WaveAISystem", System)
 local Actions = require "systems/ai/Actions"
 local Goals = require "systems/ai/Goals"
 
+local Animation = Component.load({"Animation"});
+
 function WaveAISystem:initialize()
   System.initialize(self)
   self:reset()
@@ -170,11 +172,36 @@ function WaveAISystem:createEnemy(Goals, ai)
     else
       Enemy.setLevel(enemy, 2)
     end
+
+    local melee = false
+    local ranged = false
+
+    for _, a in ipairs(ai) do
+      local action = a.name
+      
+      if(action:find("Ranged")) then ranged = true
+      elseif(action:find("Melee")) then melee = true
+      elseif(action:find("Dash")) then melee = true
+      end
+    end
+
+    if(melee and not ranged) then
+      Enemy.setAnimation(enemy, Animation(ImageController.getAnimation("charger", 2, 0.4)))
+    elseif(not melee and ranged) then
+      Enemy.setAnimation(enemy, Animation(ImageController.getAnimation("shooter", 2, 0.4)))
+    elseif(melee and ranged) then
+      Enemy.setAnimation(enemy, Animation(ImageController.getAnimation("hybrid", 2, 0.4)))
+    else
+      Enemy.setAnimation(enemy, Animation(ImageController.getAnimation("dummy", 2, 0.4)))    
+    end
+
     SoundController.setTrack("waves")
   else
     Enemy.setBoss(enemy)
     Enemy.setBaseHitpoints(enemy, 30)
     Enemy.setLevel(enemy, 3)
+    --TODO: change boss animation
+    Enemy.setAnimation(Animation(enemy, ImageController.getAnimation("boss", 2, 0.4)))
     SoundController.setTrack("boss")
   end
 

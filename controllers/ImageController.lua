@@ -13,6 +13,15 @@ function ImageController.load()
     Images[filename] = love.graphics.newImage(basePath..filename..".png" )
   end
 
+  --TODO: change to proper boss animation
+  Images["boss"] = Images["charger"]
+
+  --TODO: change to proper hybrid animation
+  Images["hybrid"] = Images["shooter"]
+
+  --TODO: change to proper dummy animation
+  Images["dummy"] = Images["jello"]
+
   loaded = true
 end
 
