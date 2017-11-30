@@ -200,8 +200,7 @@ function WaveAISystem:createEnemy(Goals, ai)
     Enemy.setBoss(enemy)
     Enemy.setBaseHitpoints(enemy, 30)
     Enemy.setLevel(enemy, 3)
-    --TODO: change boss animation
-    Enemy.setAnimation(Animation(enemy, ImageController.getAnimation("boss", 2, 0.4)))
+    Enemy.setAnimation(Animation(enemy, ImageController.getAnimation("boss", 2, 0.4, 64)))
     SoundController.setTrack("boss")
   end
 

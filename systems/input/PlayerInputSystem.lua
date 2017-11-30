@@ -20,6 +20,13 @@ function PlayerInputSystem:movement(entity)
   movementDir.x = (love.keyboard.isDown("d") and 1 or 0) - (love.keyboard.isDown("a") and 1 or 0)
   movementDir.y = (love.keyboard.isDown("s") and 1 or 0) - (love.keyboard.isDown("w") and 1 or 0)
 
+  local animation = entity:get("Animation")
+  if(movementDir == Vector(0, 0)) then
+    animation:changeFrameTime(0.4)
+  else
+    animation:changeFrameTime(0.1)
+  end
+
   local velocity = entity:get("Velocity")
   velocity:setDirection(movementDir)
 end
