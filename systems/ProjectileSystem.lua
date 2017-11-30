@@ -10,17 +10,18 @@ function ProjectileSystem:update(dt)
       if projectile.owner == "Player" then
         local position = v:get("Position")
         drop = createHpDrop(position.x, position.y)
-        getEngine():addEntity(drop)
-        getEngine():removeEntity(v)
+        StatisticController.add(0.4) -- miss shot score
+        Utils.getEngine():addEntity(drop)
+        Utils.addGarbage(v)
       else
-        table.insert(garbage_list, v)
+        table.insert(garbageList, v)
       end
     end
   end
 end
 
 function ProjectileSystem:requires()
-  return { "Projectile", "Velocity", "Position" }
+  return {"Projectile", "Velocity", "Position"}
 end
 
 return ProjectileSystem

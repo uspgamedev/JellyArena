@@ -7,15 +7,19 @@ lovetoys.initialize(
     globals = true
   }
 )
-Stack = require "lib/Stack"
 
-require("lib/Utils")
-require("lib/SoundController")
-require("lib/MenuController")
-WaveController = require("lib/WaveController")
-Statistic = require("lib/StatisticController")
-ActionsController = require("lib/ActionsController")
-Log = require("lib/LogController")
+Stack = require "lib/Stack"
+Utils = require("lib/Utils")
+GameState = require "lib/GameState"
+
+-- controllers
+ActionsController = require("controllers/ActionsController")
+LogController = require("controllers/LogController")
+MenuController = require("controllers/MenuController")
+SoundController = require("controllers/SoundController")
+ImageController = require("controllers/ImageController")
+StatisticController = require("controllers/StatisticController")
+WaveController = require("controllers/WaveController")
 
 --- components
 require "components/AI"
@@ -29,19 +33,23 @@ require "components/Follow"
 require "components/Hitpoints"
 require "components/IsPlayer"
 require "components/Label"
+require "components/LifeTime"
 require "components/Position"
 require "components/Projectile"
+require "components/RemainingPoints"
 require "components/Timer"
 require "components/Velocity"
 require "components/Stats"
 require "components/Visibility"
+require "components/Level"
+require "components/BulletProperties"
 
 --- Entities
 require "entities/Attack"
 require "entities/Invunerable"
 require "entities/Bullet"
 require "entities/DamageArea"
-require "entities/Enemy"
+Enemy = require "entities/Enemy"
 require "entities/HpDrop"
 require "entities/Player"
 require "entities/Trap"
@@ -65,46 +73,33 @@ ProjectileSystem = require "systems/ProjectileSystem"
 CleanUpSystem = require "systems/CleanUpSystem"
 TrapSpawnSystem = require "systems/TrapSpawnSystem"
 
---- Utils
-require "lib/GameState"
-
 function love.load()
-  eventmanager = EventManager()
-  debug_text = ""
-  garbage_list = {}
-  play_track = true
-  play_effects = true
-  curGameState = GameStates.newGame
-  WaveController.createLearningList()
-  Statistic.reset()
   -- TODO: random seed
   -- math.randomseed(os.time())
-  Log.init({"wave"})
-  setTrack("sample1")
-  camera = Camera()
+  LogController.init({"wave"})
   -- Update timers
-  getEngine():addSystem(TimerSystem(), "update")
+  Utils.getEngine():addSystem(TimerSystem(), "update")
   -- Process input
-  getEngine():addSystem(PlayerInputSystem(), "update")
-  getEngine():addSystem(MenuInputSystem(), "update")
+  Utils.getEngine():addSystem(PlayerInputSystem(), "update")
+  Utils.getEngine():addSystem(MenuInputSystem(), "update")
   -- Update player vars and state
   -- Go to menu
   -- process wave AI
-  getEngine():addSystem(WaveAISystem(), "update")
+  Utils.getEngine():addSystem(WaveAISystem(), "update")
   -- select group of enemies to spawn
   -- process group AI
   -- process individual enemy AI
-  getEngine():addSystem(EnemyAISystem(), "update")
+  Utils.getEngine():addSystem(EnemyAISystem(), "update")
   -- Based on current game state
   -- Based on player current input <-- cheating AI
   -- Process movement
-  getEngine():addSystem(MovementSystem(), "update")
-  getEngine():addSystem(ProjectileSystem(), "update")
+  Utils.getEngine():addSystem(MovementSystem(), "update")
+  Utils.getEngine():addSystem(ProjectileSystem(), "update")
   -- Update velocity
   -- Update position
   -- Update collision groups
   -- Process collisions
-  getEngine():addSystem(CollisionSystem(), "update")
+  Utils.getEngine():addSystem(CollisionSystem(), "update")
   -- Find all colliding pairs
   -- Process each pair (maybe use callbacks for collision response, like play sound, die, etc)
   -- If we 'delete' something, invalidade all remaining collisions for that body
@@ -113,34 +108,25 @@ function love.load()
   -- Update animations & visual effects
   -- Do clean up
   -- Display
-  getEngine():addSystem(DrawSystem(), "draw")
-  getEngine():addSystem(DrawHUDSystem(), "draw")
-  getEngine():addSystem(DrawMessageSystem(), "draw")
-  getEngine():addSystem(DrawMenuSystem(), "draw")
-  getEngine():addSystem(CleanUpSystem(), "update")
-  getEngine():addSystem(TrapSpawnSystem(), "update")
+  Utils.getEngine():addSystem(DrawSystem(), "draw")
+  Utils.getEngine():addSystem(DrawHUDSystem(), "draw")
+  Utils.getEngine():addSystem(DrawMessageSystem(), "draw")
+  Utils.getEngine():addSystem(DrawMenuSystem(), "draw")
+  Utils.getEngine():addSystem(CleanUpSystem(), "update")
+  Utils.getEngine():addSystem(TrapSpawnSystem(), "update")
 
-  changeGameState(curGameState)
+  GameState.changeGameState("startMenu")
 end
 
 function love.update(dt)
-  getEngine():update(dt)
-  playTrack()
+  Utils.getEngine():update(dt)
+  SoundController.checkDuration(dt)
 end
 
 function love.draw()
-  getEngine():draw()
+  Utils.getEngine():draw()
 end
 
 function love.keypressed(key)
-  if (key == "escape") then
-    Log.close()
-    love.event.quit(0)
-  elseif (key == "m") then
-    if (curGameState == GameStates.ingame) then
-      changeGameState(GameStates.pauseMenu)
-    elseif (curGameState == GameStates.pauseMenu) then
-      changeGameState(GameStates.ingame)
-    end
-  end
+  GameState.keyPressed(key)
 end

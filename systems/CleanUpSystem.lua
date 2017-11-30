@@ -1,10 +1,10 @@
 local CleanUpSystem = class("CleanUpSystem", System)
 
 function CleanUpSystem:update(dt)
-  for _, target in pairs(garbage_list) do
-    getEngine():removeEntity(target)
+  for _, target in pairs(garbageList) do
+    Utils.getEngine():removeEntity(target, true)
   end
-  garbage_list = {}
+  garbageList = {}
 end
 
 function CleanUpSystem:requires()
