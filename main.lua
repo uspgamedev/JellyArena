@@ -43,6 +43,7 @@ require "components/Stats"
 require "components/Visibility"
 require "components/Level"
 require "components/BulletProperties"
+require "components/Sprite"
 
 --- Entities
 require "entities/Attack"
@@ -107,6 +108,7 @@ function love.load()
   -- Update statistics (collision response can also change statistics)
   -- Update animations & visual effects
   -- Do clean up
+  --Utils.getEngine():
   -- Display
   Utils.getEngine():addSystem(DrawSystem(), "draw")
   Utils.getEngine():addSystem(DrawHUDSystem(), "draw")
