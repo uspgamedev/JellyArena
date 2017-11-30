@@ -43,7 +43,7 @@ require "components/Stats"
 require "components/Visibility"
 require "components/Level"
 require "components/BulletProperties"
-require "components/Sprite"
+require "components/Animation"
 
 --- Entities
 require "entities/Attack"

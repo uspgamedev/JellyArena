@@ -1,7 +1,6 @@
 local Animation = Component.create("Animation")
 
 function Animation:initialize(spriteImage, keyframes, frameTime)
-
   self.time = 0
   self.spriteImage = spriteImage
   self.curFrame = 1
@@ -20,19 +19,23 @@ function Animation:changeFrame()
   end
 end
 
-function Animation:getSprite(dt)  
+function Animation:update(dt)  
   self.time = self.time + dt;
   if(self.time >= self.frameTime) then
-    changeFrame(); 
+    self:changeFrame(); 
   end
-  return keyframe[curSprite];
+end
+
+function Animation:getSprite(dt)
+  print(self.keyframes[self.curFrame])
+  return self.spriteImage, self.keyframes[self.curFrame];
 end
 
 function Animation:changeFrameTime(newTime)
   self.frameTime = newTime;
 
   if(self.time >= newTime) then
-    changeFrame();
+    self:changeFrame();
     self.time = 0;
   end
 end

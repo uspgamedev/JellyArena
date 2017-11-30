@@ -28,7 +28,7 @@ function ImageController.getAnimation(name, frameCount, frameTime)
   end
   local animationMetadata = {spriteSheet, keyframes, frameTime}
   
-  return animationMetadata
+  return spriteSheet, keyframes, frameTime
 end
 
 return ImageController

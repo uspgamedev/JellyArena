@@ -7,18 +7,26 @@ function DrawSystem:draw()
   -- love.graphics.rectangle("fill", 0, 0, 1000, 1000)
   local mapDefinitions = Utils.mapDefinitions
   love.graphics.draw(ImageController.getImage("map"), -mapDefinitions.xOffset, -mapDefinitions.yOffset)
-  for i, v in pairs(self.targets) do
+  for i, v in pairs(self.targets.oldEntities) do
     local position = v:get("Position")
     local circle = v:get("Circle")
     local color = v:get("Color")
     love.graphics.setColor(color.r, color.g, color.b)
     love.graphics.circle("fill", position.x, position.y, circle.radius)
   end
+  love.graphics.setColor(255, 255, 255)
+  for i, v in pairs(self.targets.animated) do
+    local position = v:get("Position")
+    local animation = v:get("Animation")
+    local tex, quad = animation:getSprite()
+    love.graphics.draw(tex, quad, position.x, position.y, 0, 1, 1, 16, 16)
+  end
   camera:detach()
 end
 
 function DrawSystem:requires()
-  return {"Position", "Circle", "Color"}
+  --return {"Position", "Circle", "Color"}
+  return {oldEntities = {"Position", "Circle", "Color"}, animated = {"Position", "Animation"}}
 end
 
 return DrawSystem

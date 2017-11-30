@@ -14,7 +14,6 @@ function createPlayer(x, y)
   entity:add(Color(255, 255, 255))
   entity:add(Collider("Player", true))
   entity:add(RemainingPoints(5))
-  local animData = ImageController.getAnimation("jello", 2, 0.2)
-  entity:add(Animation(animData[1], animData[2], animData[3]))
+  entity:add(Animation(ImageController.getAnimation("jello", 2, 0.2)))
   return entity
 end

@@ -6,7 +6,8 @@ local Position,
   Level,
   Color,
   Collider,
-  Timer = Component.load({"Position", "Circle", "AI", "Hitpoints", "Velocity", "Level", "Color", "Collider", "Timer"})
+  Animation,
+  Timer = Component.load({"Position", "Circle", "AI", "Hitpoints", "Velocity", "Level", "Color", "Collider", "Animation", "Timer"})
 
 local Actions = require "systems/ai/Actions"
 
@@ -17,6 +18,8 @@ function Enemy.baseEnemy(x, y)
   entity:add(Position(x, y))
   entity:add(Collider("Enemy", true))
   entity:add(Timer(0.5))
+  --TODO: change here - move animation to each type of enemy
+  entity:add(Animation(ImageController.getAnimation("charger", 2, 0.2)))
   return entity
 end
 
