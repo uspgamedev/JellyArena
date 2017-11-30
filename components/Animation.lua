@@ -1,12 +1,14 @@
 local Animation = Component.create("Animation")
 
-function Animation:initialize(spriteImage, keyframes, frameTime)
+function Animation:initialize(spriteImage, keyframes, frameTime, rotationSpeed)
   self.time = 0
   self.spriteImage = spriteImage
   self.curFrame = 1
   self.keyframes = keyframes
   self.frameTime = frameTime -- time for each frame in ms
   self.maxFrames = #keyframes
+  self.rotationSpeed = (rotationSpeed or 0)
+  self.rotation = 0;
 end
 
 function Animation:changeFrame()  
@@ -20,6 +22,10 @@ function Animation:changeFrame()
 end
 
 function Animation:update(dt)
+  self.rotation = self.rotation + self.rotationSpeed * dt;
+  if(self.rotation > 2 * math.pi) then
+    self.rotation = self.rotation - 2 * math.pi;
+  end
   self.time = self.time + dt;
   if(self.time >= self.frameTime) then
     self:changeFrame(); 

@@ -7,7 +7,7 @@ function ImageController.load()
     return
   end
 
-  local filenames = {"map", "jello", "charger", "shooter"}
+  local filenames = {"map", "jello", "charger", "shooter", "bullet", "health", "pushTrap", "damageTrap"}
   local basePath = "resources/images/"
   for _, filename in pairs(filenames) do
     Images[filename] = love.graphics.newImage(basePath..filename..".png" )
@@ -20,15 +20,18 @@ function ImageController.getImage(name)
   return Images[name]
 end
 
-function ImageController.getAnimation(name, frameCount, frameTime)
+function ImageController.getAnimation(name, frameCount, frameTime, spriteSize, rotationSpeed)
+  spriteSize = spriteSize or 32
+  rotationSpeed = rotationSpeed or 0
+  
   local spriteSheet = Images[name]
   local keyframes = {}
-  for i=1,frameCount do
-    keyframes[i] = love.graphics.newQuad((i - 1) * 32, 0, 32, 32, spriteSheet:getDimensions())
-  end
-  local animationMetadata = {spriteSheet, keyframes, frameTime}
   
-  return spriteSheet, keyframes, frameTime
+  for i=1,frameCount do
+    keyframes[i] = love.graphics.newQuad((i - 1) * spriteSize, 0, spriteSize, spriteSize, spriteSheet:getDimensions())
+  end
+
+  return spriteSheet, keyframes, frameTime, rotationSpeed
 end
 
 return ImageController
