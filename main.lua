@@ -71,6 +71,7 @@ MovementSystem = require "systems/MovementSystem"
 CollisionSystem = require "systems/CollisionSystem"
 WaveAISystem = require "systems/WaveAISystem"
 ProjectileSystem = require "systems/ProjectileSystem"
+AnimationSystem = require "systems/AnimationSystem"
 CleanUpSystem = require "systems/CleanUpSystem"
 TrapSpawnSystem = require "systems/TrapSpawnSystem"
 
@@ -107,13 +108,13 @@ function love.load()
   -- If not, just separate both bodies (may generate new collisions, not that important)
   -- Update statistics (collision response can also change statistics)
   -- Update animations & visual effects
-  -- Do clean up
-  --Utils.getEngine():
+  Utils.getEngine():addSystem(AnimationSystem(), "update")
   -- Display
   Utils.getEngine():addSystem(DrawSystem(), "draw")
   Utils.getEngine():addSystem(DrawHUDSystem(), "draw")
   Utils.getEngine():addSystem(DrawMessageSystem(), "draw")
   Utils.getEngine():addSystem(DrawMenuSystem(), "draw")
+  -- Do clean up
   Utils.getEngine():addSystem(CleanUpSystem(), "update")
   Utils.getEngine():addSystem(TrapSpawnSystem(), "update")
 

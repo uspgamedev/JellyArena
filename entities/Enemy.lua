@@ -19,7 +19,7 @@ function Enemy.baseEnemy(x, y)
   entity:add(Collider("Enemy", true))
   entity:add(Timer(0.5))
   --TODO: change here - move animation to each type of enemy
-  entity:add(Animation(ImageController.getAnimation("charger", 2, 0.2)))
+  entity:add(Animation(ImageController.getAnimation("charger", 2, 0.4)))
   return entity
 end
 

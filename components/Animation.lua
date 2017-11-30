@@ -13,21 +13,20 @@ function Animation:changeFrame()
   self.curFrame = self.curFrame + 1
   self.time = self.time - self.frameTime -- try to keep animation stable regardless of FPS
 
-  if(self.curFrame == self.maxFrames) then
+  if(self.curFrame > self.maxFrames) then
     -- TODO: signal End of animation
     self.curFrame = 1
   end
 end
 
-function Animation:update(dt)  
+function Animation:update(dt)
   self.time = self.time + dt;
   if(self.time >= self.frameTime) then
     self:changeFrame(); 
   end
 end
 
-function Animation:getSprite(dt)
-  print(self.keyframes[self.curFrame])
+function Animation:getSprite()
   return self.spriteImage, self.keyframes[self.curFrame];
 end
 

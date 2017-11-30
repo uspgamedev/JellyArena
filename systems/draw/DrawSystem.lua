@@ -19,7 +19,7 @@ function DrawSystem:draw()
     local position = v:get("Position")
     local animation = v:get("Animation")
     local tex, quad = animation:getSprite()
-    love.graphics.draw(tex, quad, position.x, position.y, 0, 1, 1, 16, 16)
+    love.graphics.draw(tex, quad, position.x, position.y, 0, 1.4, 1.4, 16, 18)
   end
   camera:detach()
 end
