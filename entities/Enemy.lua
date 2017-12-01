@@ -6,7 +6,8 @@ local Position,
   Level,
   Color,
   Collider,
-  Timer = Component.load({"Position", "Circle", "AI", "Hitpoints", "Velocity", "Level", "Color", "Collider", "Timer"})
+  Animation,
+  Timer = Component.load({"Position", "Circle", "AI", "Hitpoints", "Velocity", "Level", "Color", "Collider", "Animation", "Timer"})
 
 local Actions = require "systems/ai/Actions"
 
@@ -51,6 +52,10 @@ function Enemy.setSpeed(entity, speed)
   else
     entity:add(Velocity(0, 0, speed))
   end
+end
+
+function Enemy.setAnimation(entity, animation)
+  entity:add(animation)
 end
 
 function Enemy.setColor(enemy)

@@ -1,5 +1,5 @@
-local Position, Circle, IsPlayer, Velocity, Timer, HP, Color, Collider, Stats, RemainingPoints =
-  Component.load({"Position", "Circle", "IsPlayer", "Velocity", "Timer", "Hitpoints", "Color", "Collider", "Stats", "RemainingPoints"})
+local Position, Circle, IsPlayer, Velocity, Timer, HP, Color, Collider, Stats, RemainingPoints, Animation =
+  Component.load({"Position", "Circle", "IsPlayer", "Velocity", "Timer", "Hitpoints", "Color", "Collider", "Stats", "RemainingPoints", "Animation"})
 
 function createPlayer(x, y)
   local entity = Entity()
@@ -14,5 +14,6 @@ function createPlayer(x, y)
   entity:add(Color(255, 255, 255))
   entity:add(Collider("Player", true))
   entity:add(RemainingPoints(5))
+  entity:add(Animation(ImageController.getAnimation("jello", 2, 0.4)))
   return entity
 end
