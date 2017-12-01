@@ -50,7 +50,8 @@ local GameStates = {
       "CleanUpSystem",
       "DrawSystem",
       "DrawHUDSystem",
-      "WaveAISystem"
+      "WaveAISystem",
+      "AnimationSystem"
     },
     onResume = function()
       Utils.getEngine():getSystem("CollisionSystem"):reset()
@@ -74,7 +75,8 @@ local GameStates = {
       "ProjectileSystem",
       "CleanUpSystem",
       "DrawSystem",
-      "DrawHUDSystem"
+      "DrawHUDSystem",
+      "AnimationSystem"
     },
     onResume = function()
     end,

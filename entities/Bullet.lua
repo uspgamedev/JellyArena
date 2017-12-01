@@ -1,10 +1,11 @@
-local Position, Circle, Velocity, Projectile, Color, Collider
-  = Component.load({"Position", "Circle", "Velocity", "Projectile", "Color", "Collider"})
+local Position, Circle, Velocity, Projectile, Color, Collider, Animation
+  = Component.load({"Position", "Circle", "Velocity", "Projectile", "Color", "Collider", "Animation"})
 
 function createBullet(entity, x, y, direction, damage, speed, radius)
   entity:add(Position(x, y))
   entity:add(Circle(radius))
   entity:add(Velocity(direction.x, direction.y, speed))
+  entity:add(Animation(ImageController.getAnimation("bullet", 1, 1, 8, 1)))
 end
 
 local function setBulletColor(entity, parentColor)
