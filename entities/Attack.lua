@@ -35,7 +35,7 @@ function DefaultAttackConstructors.LightMeleeAttack(parent)
   entity:add(AttackProperties(0))
   entity:add(Damage(level))
   entity:add(AttackRange(2))
-  Enemy.setSpeed(parent, level * 70 + 200)
+  Enemy.setSpeed(parent, level * 75 + 125)
   Enemy.addBonusHitpoints(parent,level * 5)
   return entity
 end
@@ -129,6 +129,6 @@ function DefaultAttackConstructors.SetTrap(parent)
   entity:add(Timer(6 - level * 1))
   entity:add(Damage(level * 4 + 1))
   Enemy.setSpeed(parent, level * 50 + 100)
-  Enemy.addBonusHitpoints(parent, level * 25)
+  Enemy.addBonusHitpoints(parent, level * 15)
   return entity
 end

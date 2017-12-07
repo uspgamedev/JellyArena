@@ -198,7 +198,7 @@ function WaveAISystem:createEnemy(Goals, ai)
     SoundController.setTrack("waves")
   else
     Enemy.setBoss(enemy)
-    Enemy.setBaseHitpoints(enemy, 30)
+    Enemy.setBaseHitpoints(enemy, 20)
     Enemy.setLevel(enemy, 3)
     Enemy.setAnimation(enemy, Animation(ImageController.getAnimation("boss", 2, 0.4, 64)))
     SoundController.setTrack("boss")
