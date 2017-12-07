@@ -101,6 +101,17 @@ local GameStates = {
     onPause = function()
     end
   },
+  victoryMenu = {
+    systems = {
+      "MenuInputSystem",
+      "DrawMenuSystem",
+    },
+    onResume = function(previousState)
+      MenuController.setMenu("victory")
+    end,
+    onPause = function()
+    end
+  },
   pauseMenu = {
     systems = {
       "MenuInputSystem",

@@ -301,6 +301,19 @@ menus = {
         end
       }
     }
+  },
+  ["victory"] = {
+    title = "Victory",
+    align = "center",
+    hideSelector = true,
+    items = {
+      {
+        name = "You've defeated Jelly King and\n\zare finally free, congratulations!!\n\z\n\z\n\z\n\zPress Enter to return",
+        action = function()
+          GameState.changeGameState("startMenu")
+        end
+      }
+    }
   }
 }
 
