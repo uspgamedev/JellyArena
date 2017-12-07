@@ -9,9 +9,9 @@ function WaveAISystem:initialize()
   self:reset()
   self.defaultWaitTime = 3
   self:setWaitTime(self.defaultWaitTime) -- between waves
-  self.totalEnemies = 5 -- per wave
-  self.spawnInterval = 0.5
-  self.finalWave = 5
+  self.totalEnemies = 10 -- per wave
+  self.spawnInterval = 1
+  self.finalWave = 10
   self.waveTime = 0
 end
 
