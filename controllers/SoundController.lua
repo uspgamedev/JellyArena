@@ -23,6 +23,7 @@ local sounds = {
   ["shot"] = love.audio.newSource(getSound("shot.ogg"), "static"),
   ["hit"] = love.audio.newSource(getSound("hit.ogg"), "static"),
   ["melee"] = love.audio.newSource(getSound("melee.ogg"), "static"),
+  ["victory"] = love.audio.newSource(getSound("win.ogg"), "static"),
 }
 
 local currentTrack

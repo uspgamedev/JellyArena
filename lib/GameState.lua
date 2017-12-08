@@ -108,6 +108,7 @@ local GameStates = {
     },
     onResume = function(previousState)
       MenuController.setMenu("victory")
+      SoundController.playSound("victory")
     end,
     onPause = function()
     end
