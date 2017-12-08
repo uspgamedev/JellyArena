@@ -45,12 +45,14 @@ local function DashAttackAction(agent, target, label, dt)
   local globalTimer = agent:get("Timer")
   local attackTimer = attack:get("Timer")
   local range = attack:get("AttackRange")
+  local speed = agent:get("Velocity").maxSpeed
+  local level = agent:get("Level").level
 
   if not state.travelledDistance then
     -- lock target
     local direction = (target:get("Position"):toVector() - agentPosition:toVector())
     direction:normalizeInplace()
-    agentVelocity.speed = 1000
+    agentVelocity.speed = 500 + (level - 1) * 100
     agentVelocity:setDirection(direction)
     state.travelledDistance = 0
 

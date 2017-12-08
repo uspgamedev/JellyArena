@@ -77,7 +77,7 @@ TrapSpawnSystem = require "systems/TrapSpawnSystem"
 
 function love.load()
   -- TODO: random seed
-  -- math.randomseed(os.time())
+  math.randomseed(os.time())
   LogController.init({"wave"})
   -- Update timers
   Utils.getEngine():addSystem(TimerSystem(), "update")

@@ -9,9 +9,9 @@ function WaveAISystem:initialize()
   self:reset()
   self.defaultWaitTime = 3
   self:setWaitTime(self.defaultWaitTime) -- between waves
-  self.totalEnemies = 5 -- per wave
-  self.spawnInterval = 0.5
-  self.finalWave = 5
+  self.totalEnemies = 10 -- per wave
+  self.spawnInterval = 1
+  self.finalWave = 10
   self.waveTime = 0
 end
 
@@ -206,7 +206,7 @@ function WaveAISystem:createEnemy(Goals, ai)
     SoundController.setTrack("waves")
   else
     Enemy.setBoss(enemy)
-    Enemy.setBaseHitpoints(enemy, 30)
+    Enemy.setBaseHitpoints(enemy, 20)
     Enemy.setLevel(enemy, 3)
     Enemy.setAnimation(enemy, Animation(ImageController.getAnimation("boss", 2, 0.4, 64)))
   end
