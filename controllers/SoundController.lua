@@ -8,14 +8,16 @@ local tracks = {
   ["menu"] = love.audio.newSource(love.sound.newSoundData(getSound("menu.ogg"))),
   ["waves"] = love.audio.newSource(love.sound.newSoundData(getSound("waves.ogg"))),
   ["boss"] = love.audio.newSource(love.sound.newSoundData(getSound("boss.ogg"))),
-  ["gameover"] = love.audio.newSource(love.sound.newSoundData(getSound("gameover.ogg")))
+  ["gameover"] = love.audio.newSource(love.sound.newSoundData(getSound("gameover.ogg"))),
+  ["victory"] = love.audio.newSource(love.sound.newSoundData(getSound("win.ogg"))),
 }
 
 local trackDuration = {
   ["menu"] = 48,
   ["waves"] = 168,
   ["boss"] = 137,
-  ["gameover"] = 9
+  ["gameover"] = 9,
+  ["victory"] = 15,
 }
 
 local sounds = {
