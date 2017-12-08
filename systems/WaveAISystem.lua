@@ -9,9 +9,9 @@ function WaveAISystem:initialize()
   self:reset()
   self.defaultWaitTime = 3
   self:setWaitTime(self.defaultWaitTime) -- between waves
-  self.totalEnemies = 5 -- per wave
-  self.spawnInterval = 0.5
-  self.finalWave = 5
+  self.totalEnemies = 10 -- per wave
+  self.spawnInterval = 1
+  self.finalWave = 10
   self.waveTime = 0
 end
 
@@ -65,7 +65,15 @@ function WaveAISystem:update(dt)
     count = count + 1
   end
   if curGameState == "ingame" and self.state == "done" and count == 0 then
+    if self.waveNumber == self.finalWave then
+      GameState.changeGameState("victoryMenu")
+      return
+    end
+
     GameState.changeGameState("waitingWave")
+    if self.waveNumber == self.finalWave-1 then
+      SoundController.setTrack("boss")
+    end
     Utils.addPlayerPoints(2)
   end
   self.waveTime = self.waveTime + dt
@@ -178,7 +186,7 @@ function WaveAISystem:createEnemy(Goals, ai)
 
     for _, a in ipairs(ai) do
       local action = a.name
-      
+
       if(action:find("Ranged")) then ranged = true
       elseif(action:find("Melee")) then melee = true
       elseif(action:find("Dash")) then melee = true
@@ -192,16 +200,15 @@ function WaveAISystem:createEnemy(Goals, ai)
     elseif(melee and ranged) then
       Enemy.setAnimation(enemy, Animation(ImageController.getAnimation("hybrid", 2, 0.4)))
     else
-      Enemy.setAnimation(enemy, Animation(ImageController.getAnimation("dummy", 2, 0.4)))    
+      Enemy.setAnimation(enemy, Animation(ImageController.getAnimation("dummy", 2, 0.4)))
     end
 
     SoundController.setTrack("waves")
   else
     Enemy.setBoss(enemy)
-    Enemy.setBaseHitpoints(enemy, 30)
+    Enemy.setBaseHitpoints(enemy, 20)
     Enemy.setLevel(enemy, 3)
     Enemy.setAnimation(enemy, Animation(ImageController.getAnimation("boss", 2, 0.4, 64)))
-    SoundController.setTrack("boss")
   end
 
   Enemy.setColor(enemy)

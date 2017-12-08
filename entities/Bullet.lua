@@ -18,7 +18,7 @@ end
 function createPlayerBullet(x, y, direction, damage, range, speed)
   local entity = Entity()
   entity:add(Color(255, 255, 255))
-  createBullet(entity, x, y, direction, damage, speed, 5)
+  createBullet(entity, x, y, direction, damage, speed, 10)
   entity:add(Projectile("Player", damage, range))
   entity:add(Collider("PlayerBullet", true))
   return entity

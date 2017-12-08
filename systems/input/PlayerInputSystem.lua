@@ -96,7 +96,7 @@ function PlayerInputSystem:melee(entity, dt)
   if love.keyboard.isDown("space") then
     meleeTimer.isActive = true
     local position = entity:get("Position")
-    local damage = 10 * entity:get("Stats").damage
+    local damage = 4 * entity:get("Stats").damage
     local damageArea = createDamageArea(position, 100, damage, entity)
     Utils.getEngine():addEntity(damageArea)
     table.insert(garbageList, damageArea)

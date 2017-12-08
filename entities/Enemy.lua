@@ -48,7 +48,7 @@ end
 function Enemy.setSpeed(entity, speed)
   if entity:has("Velocity") then
     local current = entity:get("Velocity")
-    current.maxSpeed = (current.maxSpeed + speed) / 2
+    current.maxSpeed = math.sqrt(current.maxSpeed * speed)
   else
     entity:add(Velocity(0, 0, speed))
   end

@@ -9,17 +9,17 @@ function Stats:initialize(damage, movementSpeed, shotSpeed, bulletSpeed, shotRan
 end
 
 function Stats:getSpeed()
-  return 300 + self.movementSpeed * 20
+  return 150 + 20 * self.movementSpeed
 end
 
 function Stats:getShotRange()
-  return 150 + 10 * self.shotRange
+  return 150 + 20 * self.shotRange
 end
 
 function Stats:getShotDelay()
-  return 0.4 - 0.01 * self.shotSpeed
+  return 3.0 / self.shotSpeed
 end
 
 function Stats:getBulletSpeed()
-  return 700 + 40 * self.bulletSpeed
+  return 200 + 25 * self.bulletSpeed
 end
